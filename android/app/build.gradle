@@ -5,6 +5,14 @@ plugins {
     id "dev.flutter.flutter-gradle-plugin"
 }
 
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+        maven { url "https://jitpack.io" } // Thêm JitPack để tải UCrop
+    }
+}
+
 android {
     namespace = "vn.edu.phloc.job_app"
     compileSdk = flutter.compileSdkVersion
@@ -28,6 +36,7 @@ android {
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+        compileSdk = 35
     }
 
     buildTypes {
@@ -41,4 +50,9 @@ android {
 
 flutter {
     source = "../.."
+}
+
+// Thêm dependencies
+dependencies {
+    implementation 'com.github.yalantis:ucrop:2.2.8' // Thêm UCrop dependency
 }

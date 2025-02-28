@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color> <!-- Màu chính -->
+    <color name="colorPrimaryDark">#303F9F</color> <!-- Màu tối hơn cho status bar -->
+    <color name="colorAccent">#FF4081</color> <!-- Màu nhấn -->
+</resources>
