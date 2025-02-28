@@ -11,8 +11,9 @@ class PageTwo extends StatelessWidget {
     return Scaffold(
       body: Container(
         width: width,
-        height: hieght,
+        height: height,
         color: Color(kDarkBlue.value),
+        child: Image.asset("assets/images/page2.png"),
         ),);
   }
 }

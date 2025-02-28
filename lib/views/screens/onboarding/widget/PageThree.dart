@@ -14,8 +14,9 @@ class PageThree extends StatelessWidget {
     return Scaffold(
       body: Container(
         width: width,
-        height: hieght,
+        height: height,
         color: Color(kLightBlue.value),
+        child: Image.asset("assets/images/page3.png"),
        ),
     );
   }

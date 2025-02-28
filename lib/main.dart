@@ -14,8 +14,8 @@ import 'package:job_app/views/screens/mainscreen.dart';
 import 'package:job_app/views/screens/onboarding/onboarding_screen.dart';
 import 'package:provider/provider.dart';
 
-// Widget defaultHome = const OnboardingScreen();
-Widget defaultHome = const Mainscreen();
+Widget defaultHome = const OnboardingScreen();
+// Widget defaultHome = const Mainscreen();
 ///TODO: Hook the app to firebase using firebase cli
 void main() async {
  
