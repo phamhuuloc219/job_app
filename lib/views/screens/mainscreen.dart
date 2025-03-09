@@ -14,7 +14,10 @@ class _MainscreenState extends State<Mainscreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Center(
-          child: ReusableText(text: "Welcome to NTU Student Job Market", style: appStyle(18, Color(kDark.value), FontWeight.bold)),
+          child: ReusableText(
+              text: "Welcome to NTU Student Job Market",
+              style: appStyle(18, Color(kDark.value), FontWeight.bold)
+          ),
         ),
     );
   }
