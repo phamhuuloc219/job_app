@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:job_app/constants/app_constants.dart';
 import 'package:job_app/views/common/custom_outline_btn.dart';
 import 'package:job_app/views/common/exports.dart';
-import 'package:job_app/views/screens/mainscreen.dart';
+import 'package:job_app/views/screens/main_screen.dart';
 
 class PageThree extends StatelessWidget {
   const PageThree({super.key});

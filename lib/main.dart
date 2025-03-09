@@ -10,7 +10,7 @@ import 'package:job_app/controllers/onboarding_provider.dart';
 import 'package:job_app/controllers/profile_provider.dart';
 import 'package:job_app/controllers/signup_provider.dart';
 import 'package:job_app/controllers/zoom_provider.dart';
-import 'package:job_app/views/screens/mainscreen.dart';
+import 'package:job_app/views/screens/main_screen.dart';
 import 'package:job_app/views/screens/onboarding/onboarding_screen.dart';
 import 'package:provider/provider.dart';
 
