@@ -4,9 +4,11 @@ import 'package:job_app/constants/app_constants.dart';
 import 'package:job_app/views/common/app_bar.dart';
 import 'package:job_app/views/common/app_style.dart';
 import 'package:job_app/views/common/drawer/drawer_widget.dart';
+import 'package:job_app/views/common/heading_widget.dart';
 import 'package:job_app/views/common/reusable_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:job_app/views/common/search.dart';
 import 'package:job_app/views/screens/auth/profile_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -48,11 +50,31 @@ class _HomeScreenState extends State<HomeScreen> {
               )
           ),
       ),
-      body: Center(
-        child: ReusableText(
-            text: "Home Screen",
-            style: appStyle(30, Color(kDark.value), FontWeight.bold)
-        ),
+      body: SafeArea(
+          child: SingleChildScrollView(
+            child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Search \n Find & Apply",
+                    style: appStyle(38, Color(kDark.value), FontWeight.bold),),
+                  SizedBox(height: 20.h,),
+                  SearchWidget(
+                    onTap: () {
+                      
+                    },
+                  ),
+                  SizedBox(height: 30.h,),
+                  const HeadingWidget(text: "Popular Jobs"),
+
+                  SizedBox(height: 30.h,),
+                  const HeadingWidget(text: "Recently Posted"),
+                ],
+              ),
+            ),
+          )
       ),
     );
   }

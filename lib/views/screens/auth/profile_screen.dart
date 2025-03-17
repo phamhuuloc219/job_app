@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:job_app/views/common/BackBtn.dart';
 import 'package:job_app/views/common/app_bar.dart';
 import 'package:job_app/views/common/drawer/drawer_widget.dart';
 import 'package:job_app/views/common/exports.dart';
@@ -43,7 +44,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ],
             child: Padding(
               padding: EdgeInsets.all(12.0.h),
-              child: DrawerWidget(color: Color(kDark.value)),
+              child: widget.drawer == false ? BackBtn() : DrawerWidget(color: Color(kDark.value)),
             )
         ),
       ),
