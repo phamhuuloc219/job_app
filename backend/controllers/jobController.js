@@ -78,8 +78,19 @@ module.exports = {
         const searchQuery = req.query.search;
         try {
             const results = await Job.aggregate([
-                
-            ])
+                {
+                  $search: {
+                    index: "jobsearch",
+                    text: {
+                      query: req.params.key,
+                      path: {
+                        wildcard: "*"
+                      }
+                    }
+                  }
+                }
+              ])
+              res.status(200).json(results);
         }
         catch (error) {
             res.status(500).json({ message: error.message });
