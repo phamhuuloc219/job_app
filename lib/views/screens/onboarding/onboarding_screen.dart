@@ -27,71 +27,80 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Consumer<OnBoardNotifier>(builder: (context, onBoardNotifier, child) {
-        return Stack(
-          children: [
-            PageView(
-              controller: pageController,
-              physics: onBoardNotifier.isLastPage
-                  ? NeverScrollableScrollPhysics()
-                  : AlwaysScrollableScrollPhysics(),
-              onPageChanged: (page) {
-                onBoardNotifier.isLastPage = page == 2;
-              },
-              children: const [PageOne(), PageTwo(), PageThree()],
-            ),
-            onBoardNotifier.isLastPage ? SizedBox.shrink() :Positioned(
-                bottom: height * 0.12,
-                left: 0,
-                right: 0,
-                child: Center(
-                  child: SmoothPageIndicator(
+      body: Consumer<OnBoardNotifier>(
+        builder: (context, onBoardNotifier, child) {
+          return Stack(
+            children: [
+              PageView(
+                controller: pageController,
+                physics: onBoardNotifier.isLastPage
+                    ? const NeverScrollableScrollPhysics()
+                    : const AlwaysScrollableScrollPhysics(),
+                onPageChanged: (page) {
+                  // Cập nhật trạng thái isLastPage khi thay đổi trang
+                  onBoardNotifier.setLastPage(page == 2);
+                  setState(() {});
+                },
+                children: const [PageOne(), PageTwo(), PageThree()],
+              ),
+              if (!onBoardNotifier.isLastPage)
+                Positioned(
+                  bottom: height * 0.12,
+                  left: 0,
+                  right: 0,
+                  child: Center(
+                    child: SmoothPageIndicator(
                       controller: pageController,
                       count: 3,
-                    effect: WormEffect(
-                      dotColor: Color(kLight.value),
-                      activeDotColor: Color(kOrange.value),
-                      dotHeight: 12,
-                      dotWidth: 12,
-                      spacing: 10
-                    ),
-                  ),
-                )),
-            Positioned(
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 20,
-                          vertical: 30
+                      effect: WormEffect(
+                        dotColor: Color(kLight.value),
+                        activeDotColor: Color(kOrange.value),
+                        dotHeight: 12,
+                        dotWidth: 12,
+                        spacing: 10,
                       ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        ReusableText(
-                            text: 'Skip',
-                            style: appStyle(16, Color(kLight.value), FontWeight.normal)
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            pageController.nextPage(
-                                duration: Duration(milliseconds: 300),
-                                curve: Curves.ease
-                            );
-                          },
-                          child: ReusableText(
-                              text: 'Next',
-                              style: appStyle(16, Color(kLight.value), FontWeight.normal)
-                          ),
-                        ),
-                      ],
                     ),
                   ),
-                )
-            )
-          ],
-        );
-      },)
+                ),
+              if (!onBoardNotifier.isLastPage)
+                Positioned(
+                  child: Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 30,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          ReusableText(
+                            text: 'Skip',
+                            style: appStyle(
+                                16, Color(kLight.value), FontWeight.normal),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              pageController.nextPage(
+                                duration: const Duration(milliseconds: 300),
+                                curve: Curves.ease,
+                              );
+                            },
+                            child: ReusableText(
+                              text: 'Next',
+                              style: appStyle(
+                                  16, Color(kLight.value), FontWeight.normal),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+            ],
+          );
+        },
+      ),
     );
   }
 }

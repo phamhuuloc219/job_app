@@ -16,44 +16,38 @@ class PageThree extends StatelessWidget {
         width: width,
         height: height,
         color: Color(kLightBlue.value),
-        child: Column(
+        child: Stack(
           children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Image.asset("assets/images/page3.png"),
+            Image.asset(
+              "assets/images/3.jpg",
+              fit: BoxFit.cover,
+              width: width,
+              height: height,
             ),
-            SizedBox(height: 20,),
             Column(
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Text(
-                  "Welcome to NTU Job",
-                  textAlign: TextAlign.center,
-                  style: appStyle(30, Color(kLight.value), FontWeight.w600),
-                ),
-                SizedBox(height: 10,),
                 Padding(
-                  padding: EdgeInsets.all(8.0.h),
-                  child: Text(
-                    "We help find your dream job according to your skills and experience. We help find your dream job according to your skills and experience.",
-                    textAlign: TextAlign.center,
-                    style: appStyle(14, Color(kLight.value), FontWeight.normal),
+                  padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 30.h),
+                  child: Column(
+                    children: [
+                      CustomOutlineBtn(
+                        onTap: () {
+                          Get.to(() => Mainscreen());
+                        },
+                        hieght: height * 0.05,
+                        width: width * 0.9,
+                        text: "JOIN NOW !",
+                        color: Color(kLight.value),
+                      ),
+                    ],
                   ),
                 ),
-                SizedBox(height: 10,),
-                CustomOutlineBtn(
-                    onTap: () {
-                      Get.to(()=>Mainscreen());
-                    },
-                    hieght: height * 0.05,
-                    width: width * 0.9,
-                    text: "Continue as guest",
-                    color: Color(kLight.value)
-                ),
               ],
-            )
+            ),
           ],
         ),
-       ),
+      ),
     );
   }
 }

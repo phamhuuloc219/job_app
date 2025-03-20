@@ -14,16 +14,23 @@ class PageOne extends StatelessWidget {
         color: Color(kDarkPurple.value),
         child: Column(
           children: [
-            SizedBox(height: 70,),
-            Image.asset("assets/images/page1.png"),
-            SizedBox(height: 40,),
+            Expanded(
+              child: Image.asset(
+                "assets/images/1.jpg",
+                fit: BoxFit.cover,
+                width: width,
+                height: height,
+              ),
+            ),
+            /*
+            SizedBox(height: 40),
             Column(
               children: [
                 ReusableText(
-                    text: "Find your dream job",
-                    style: appStyle(30, Color(kLight.value), FontWeight.w500),
+                  text: "Find your dream job",
+                  style: appStyle(30, Color(kLight.value), FontWeight.w500),
                 ),
-                SizedBox(height: 10,),
+                SizedBox(height: 10),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 30.0),
                   child: Text(
@@ -33,7 +40,8 @@ class PageOne extends StatelessWidget {
                   ),
                 ),
               ],
-            )
+            ),
+            */
           ],
         ),
       ),

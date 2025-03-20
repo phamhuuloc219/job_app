@@ -14,32 +14,14 @@ class PageTwo extends StatelessWidget {
         width: width,
         height: height,
         color: Color(kDarkBlue.value),
-        child: Column(
+        child: Stack(
           children: [
-            SizedBox(height: 65,),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Image.asset("assets/images/page2.png"),
+            Image.asset(
+              "assets/images/2.jpg",
+              fit: BoxFit.cover,
+              width: width,
+              height: height,
             ),
-            SizedBox(height: 20,),
-            Column(
-              children: [
-                Text(
-                  "Stable yourself\n With your abilities",
-                  textAlign: TextAlign.center,
-                  style: appStyle(30, Color(kLight.value), FontWeight.w500),
-                ),
-                SizedBox(height: 10,),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 30.0),
-                  child: Text(
-                    "We help find your dream job according to your skills and experience. We help find your dream job according to your skills and experience.",
-                    textAlign: TextAlign.center,
-                    style: appStyle(14, Color(kLight.value), FontWeight.normal),
-                  ),
-                ),
-              ],
-            )
           ],
         ),
       ),

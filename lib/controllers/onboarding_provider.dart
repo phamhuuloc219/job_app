@@ -9,4 +9,10 @@ class OnBoardNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setLastPage(bool value) {
+    _isLastPage = value;
+    notifyListeners();
+  }
+
 }
+
