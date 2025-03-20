@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:job_app/constants/app_constants.dart';
 import 'package:job_app/controllers/onboarding_provider.dart';
 import 'package:job_app/views/common/exports.dart';
-import 'package:job_app/views/screens/onboarding/widget/PageOne.dart';
-import 'package:job_app/views/screens/onboarding/widget/PageThree.dart';
-import 'package:job_app/views/screens/onboarding/widget/PageTwo.dart';
+import 'package:job_app/views/screens/onboarding/widget/screen_one.dart';
+import 'package:job_app/views/screens/onboarding/widget/screen_three.dart';
+import 'package:job_app/views/screens/onboarding/widget/screen_two.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
