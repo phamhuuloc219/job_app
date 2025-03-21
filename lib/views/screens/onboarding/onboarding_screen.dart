@@ -74,10 +74,15 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          ReusableText(
-                            text: 'Skip',
-                            style: appStyle(
-                                16, Color(kLight.value), FontWeight.normal),
+                          GestureDetector(
+                            onTap: () {
+                              pageController.jumpToPage(2);
+                            },
+                            child: ReusableText(
+                              text: 'Skip',
+                              style: appStyle(
+                                  16, Color(kLight.value), FontWeight.normal),
+                            ),
                           ),
                           GestureDetector(
                             onTap: () {

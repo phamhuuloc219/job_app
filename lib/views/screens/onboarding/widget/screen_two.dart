@@ -17,7 +17,7 @@ class PageTwo extends StatelessWidget {
         child: Stack(
           children: [
             Image.asset(
-              "assets/images/2.jpg",
+              "assets/images/2.PNG",
               fit: BoxFit.cover,
               width: width,
               height: height,

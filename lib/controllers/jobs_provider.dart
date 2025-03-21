@@ -8,4 +8,11 @@ import 'package:job_app/models/response/jobs/jobs_response.dart';
 import 'package:job_app/services/helpers/book_helper.dart';
 import 'package:job_app/services/helpers/jobs_helper.dart';
 
-class JobsNotifier extends ChangeNotifier {}
+class JobsNotifier extends ChangeNotifier {
+  late Future<List<JobsResponse>> jobList;
+
+  Future<List<JobsResponse>> getJobs(){
+    jobList = JobsHelper.getJobs();
+    return jobList;
+  }
+}

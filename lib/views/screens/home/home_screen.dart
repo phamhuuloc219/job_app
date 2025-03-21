@@ -10,6 +10,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:job_app/views/common/search.dart';
 import 'package:job_app/views/screens/auth/profile_screen.dart';
+import 'package:job_app/views/screens/home/widgets/popular_jobs.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -68,6 +69,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   SizedBox(height: 30.h,),
                   const HeadingWidget(text: "Popular Jobs"),
+
+                  SizedBox(height: 30.h,),
+                  PopularJobs(),
 
                   SizedBox(height: 30.h,),
                   const HeadingWidget(text: "Recently Posted"),
