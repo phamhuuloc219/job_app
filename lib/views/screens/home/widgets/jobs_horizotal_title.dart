@@ -21,7 +21,8 @@ class JobsHorizotalTitle extends StatelessWidget {
             height: height * 0.27,
             width:  width * 0.7,
             decoration: BoxDecoration(
-              color: Color(kLightGrey.value)
+              image: DecorationImage(image: NetworkImage(job.imageUrl)),
+              /*color: Color(kLightGrey.value),*/
             ),
           ),
         ),

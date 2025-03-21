@@ -9,61 +9,61 @@ class GetJobRes {
         required this.id,
         required this.title,
         required this.location,
-        required this.company,
-        required this.hiring,
         required this.description,
+        required this.agentName,
         required this.salary,
         required this.period,
         required this.contract,
-        required this.requirements,
+        required this.hiring,
+        required this.requirement,
         required this.imageUrl,
         required this.agentId,
-        required this.updatedAt,
+        required this.v,
     });
 
     final String id;
     final String title;
     final String location;
-    final String company;
-    final bool hiring;
     final String description;
+    final String agentName;
     final String salary;
     final String period;
     final String contract;
-    final List<String> requirements;
+    final bool hiring;
+    final List<String> requirement;
     final String imageUrl;
     final String agentId;
-    final DateTime updatedAt;
+    final int v;
 
     factory GetJobRes.fromJson(Map<String, dynamic> json) => GetJobRes(
         id: json["_id"],
         title: json["title"],
         location: json["location"],
-        company: json["company"],
-        hiring: json["hiring"],
         description: json["description"],
+        agentName: json["agentName"],
         salary: json["salary"],
         period: json["period"],
         contract: json["contract"],
-        requirements: List<String>.from(json["requirements"].map((x) => x)),
+        hiring: json["hiring"],
+        requirement: List<String>.from(json["requirement"].map((x) => x)),
         imageUrl: json["imageUrl"],
         agentId: json["agentId"],
-        updatedAt: DateTime.parse(json["updatedAt"]),
+        v: json["__v"],
     );
 
     Map<String, dynamic> toJson() => {
         "_id": id,
         "title": title,
         "location": location,
-        "company": company,
-        "hiring": hiring,
         "description": description,
+        "agentName": agentName,
         "salary": salary,
         "period": period,
         "contract": contract,
-        "requirements": List<dynamic>.from(requirements.map((x) => x)),
+        "hiring": hiring,
+        "requirement": List<dynamic>.from(requirement.map((x) => x)),
         "imageUrl": imageUrl,
         "agentId": agentId,
-        "updatedAt": updatedAt.toIso8601String(),
+        "__v": v,
     };
 }
