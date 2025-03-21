@@ -33,9 +33,9 @@ class _AppliedJobsState extends State<AppliedJobs> {
                   child: ClipRRect(
                     borderRadius: BorderRadius.all(Radius.circular(50)),
                     child: CachedNetworkImage(
-                      height: 25.w,
-                      width: 25.w,
-                      imageUrl: '',
+                      height: 30.w,
+                      width: 30.w,
+                      imageUrl: 'https://raw.githubusercontent.com/phamhuuloc219/job_app/refs/heads/main/assets/images/user.png',
                       fit: BoxFit.cover,
                     ),
                   ),
