@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:job_app/constants/app_constants.dart';
 import 'package:job_app/models/response/jobs/jobs_response.dart';
 import 'package:job_app/views/common/exports.dart';
+import 'package:job_app/views/common/height_spacer.dart';
 import 'package:job_app/views/common/width_spacer.dart';
 
 class JobsHorizotalTitle extends StatelessWidget {
@@ -54,7 +56,40 @@ class JobsHorizotalTitle extends StatelessWidget {
                       ),
                     )
                   ],
-                )
+                ),
+                HeightSpacer(size: 15),
+                ReusableText(
+                    text: job.title,
+                    style: appStyle(18, Color(kDark.value), FontWeight.w600)
+                ),
+                HeightSpacer(size: 5),
+                ReusableText(
+                    text: job.location,
+                    style: appStyle(16, Color(kDarkGrey.value), FontWeight.w600)
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        ReusableText(
+                            text: job.salary,
+                            style: appStyle(20, Color(kDark.value), FontWeight.w600)
+                        ),
+                        ReusableText(
+                            text: "/${job.period}",
+                            style: appStyle(18, Color(kDarkGrey.value), FontWeight.w600)
+                        ),
+                      ],
+                    ),
+                    CircleAvatar(
+                      radius: 18,
+                      backgroundColor: Color(kLight.value),
+                      child: Icon(Ionicons.chevron_forward),
+                    )
+                  ],
+                ),
+
               ],
             ),
           ),
