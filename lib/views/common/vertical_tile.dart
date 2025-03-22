@@ -45,7 +45,7 @@ class VerticalTile extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           ReusableText(
-                            text: job!.agentName,
+                            text: job!.companyName,
                             style: appStyle(
                                 18, Color(kDark.value), FontWeight.w600),
                           ),
