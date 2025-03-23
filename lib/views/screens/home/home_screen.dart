@@ -10,6 +10,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:job_app/views/common/search.dart';
 import 'package:job_app/views/screens/auth/profile_screen.dart';
+import 'package:job_app/views/screens/job/job_list_screen.dart';
 import 'package:job_app/views/screens/job/widgets/popular_jobs.dart';
 import 'package:job_app/views/screens/job/widgets/recentlist.dart';
 
@@ -67,7 +68,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     onTap: () {},
                   ),
                   SizedBox(height: 30.h,),
-                  const HeadingWidget(text: "Popular Jobs"),
+                  HeadingWidget(
+                    text: "Popular Jobs", 
+                    onTap: () {
+                      Get.to(()=> JobListScreen());
+                    },
+                  ),
                   SizedBox(height: 15.h,),
                   ClipRRect(
                     borderRadius: BorderRadius.all(Radius.circular(12.w)),
@@ -75,7 +81,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
 
                   SizedBox(height: 15.h,),
-                  const HeadingWidget(text: "Recently Posted"),
+                  HeadingWidget(
+                    text: "Recently Posted",
+                    onTap: () {
+                      Get.to(()=> JobListScreen());
+                    },
+                  ),
                   SizedBox(height: 15.h,),
                   RecentJobs()
                 ],
