@@ -33,64 +33,67 @@ class JobsHorizotalTitle extends StatelessWidget {
               ),
               color: Color(kLightGrey.value),
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    CircleAvatar(
-                      radius: 25,
-                      backgroundImage: NetworkImage(job.imageUrl),
-                    ),
-                    const WidthSpacer(width: 15),
-                    Container(
-                      width: 160.w,
-                      padding: EdgeInsetsDirectional.symmetric(horizontal: 20.w),
-                      decoration: BoxDecoration(
-                        color: Color(kLight.value),
-                        borderRadius: BorderRadius.all(Radius.circular(20.w)),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      CircleAvatar(
+                        radius: 25,
+                        backgroundImage: NetworkImage(job.imageUrl),
                       ),
-                      child: ReusableText(
-                          text: job.companyName,
-                          style: appStyle(22, Color(kDark.value), FontWeight.w600)
+                      const WidthSpacer(width: 15),
+                      Container(
+                        width: 160.w,
+                        padding: EdgeInsetsDirectional.symmetric(horizontal: 20.w),
+                        decoration: BoxDecoration(
+                          color: Color(kLight.value),
+                          borderRadius: BorderRadius.all(Radius.circular(20.w)),
+                        ),
+                        child: ReusableText(
+                            text: job.companyName,
+                            style: appStyle(22, Color(kDark.value), FontWeight.w600)
+                        ),
+                      )
+                    ],
+                  ),
+                  HeightSpacer(size: 15),
+                  ReusableText(
+                      text: job.title,
+                      style: appStyle(18, Color(kDark.value), FontWeight.w600)
+                  ),
+                  HeightSpacer(size: 5),
+                  ReusableText(
+                      text: job.location,
+                      style: appStyle(16, Color(kDarkGrey.value), FontWeight.w600)
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          ReusableText(
+                              text: job.salary,
+                              style: appStyle(20, Color(kDark.value), FontWeight.w600)
+                          ),
+                          ReusableText(
+                              text: "/${job.period}",
+                              style: appStyle(18, Color(kDarkGrey.value), FontWeight.w600)
+                          ),
+                        ],
                       ),
-                    )
-                  ],
-                ),
-                HeightSpacer(size: 15),
-                ReusableText(
-                    text: job.title,
-                    style: appStyle(18, Color(kDark.value), FontWeight.w600)
-                ),
-                HeightSpacer(size: 5),
-                ReusableText(
-                    text: job.location,
-                    style: appStyle(16, Color(kDarkGrey.value), FontWeight.w600)
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        ReusableText(
-                            text: job.salary,
-                            style: appStyle(20, Color(kDark.value), FontWeight.w600)
-                        ),
-                        ReusableText(
-                            text: "/${job.period}",
-                            style: appStyle(18, Color(kDarkGrey.value), FontWeight.w600)
-                        ),
-                      ],
-                    ),
-                    CircleAvatar(
-                      radius: 18,
-                      backgroundColor: Color(kLight.value),
-                      child: Icon(Ionicons.chevron_forward),
-                    )
-                  ],
-                ),
+                      CircleAvatar(
+                        radius: 18,
+                        backgroundColor: Color(kLight.value),
+                        child: Icon(Ionicons.chevron_forward),
+                      )
+                    ],
+                  ),
 
-              ],
+                ],
+              ),
             ),
           ),
         ),

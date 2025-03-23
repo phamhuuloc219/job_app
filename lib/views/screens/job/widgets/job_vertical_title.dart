@@ -52,7 +52,7 @@ class JobVerticalTitle extends StatelessWidget {
                             ReusableText(
                                 text: job.companyName,
                                 style: appStyle(
-                                    12,
+                                    15,
                                     Color(kDark.value),
                                     FontWeight.w500
                                 ),
@@ -62,7 +62,7 @@ class JobVerticalTitle extends StatelessWidget {
                               child: ReusableText(
                                 text: job.title,
                                 style: appStyle(
-                                    12,
+                                    12.5,
                                     Color(kDarkGrey.value),
                                     FontWeight.w500
                                 ),
@@ -71,7 +71,7 @@ class JobVerticalTitle extends StatelessWidget {
                             ReusableText(
                               text: "${job.salary} per ${job.period}",
                               style: appStyle(
-                                  12,
+                                  12.5,
                                   Color(kDarkGrey.value),
                                   FontWeight.w500
                               ),
