@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:job_app/constants/app_constants.dart';
 import 'package:job_app/controllers/jobs_provider.dart';
 import 'package:job_app/models/response/jobs/jobs_response.dart';
 import 'package:job_app/views/common/loader.dart';
 import 'package:job_app/views/common/pages_loader.dart';
 import 'package:job_app/views/common/styled_container.dart';
-import 'package:job_app/views/screens/home/widgets/jobs_horizotal_title.dart';
+import 'package:job_app/views/screens/job/job_details_screen.dart';
+import 'package:job_app/views/screens/job/widgets/jobs_horizotal_title.dart';
 import 'package:provider/provider.dart';
 
 class PopularJobs extends StatelessWidget {
@@ -38,7 +40,7 @@ class PopularJobs extends StatelessWidget {
                       return JobsHorizotalTitle(
                         job: job,
                         onTap: () {
-
+                          Get.to(()=> JobDetailsScreen(id: job.id, title: job.title, companyName:  job.companyName));
                         },
                       );
                     },
