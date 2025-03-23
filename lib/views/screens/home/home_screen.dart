@@ -11,6 +11,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:job_app/views/common/search.dart';
 import 'package:job_app/views/screens/auth/profile_screen.dart';
 import 'package:job_app/views/screens/job/widgets/popular_jobs.dart';
+import 'package:job_app/views/screens/job/widgets/recentlist.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -63,18 +64,20 @@ class _HomeScreenState extends State<HomeScreen> {
                     style: appStyle(38, Color(kDark.value), FontWeight.bold),),
                   SizedBox(height: 20.h,),
                   SearchWidget(
-                    onTap: () {
-                      
-                    },
+                    onTap: () {},
                   ),
                   SizedBox(height: 30.h,),
                   const HeadingWidget(text: "Popular Jobs"),
+                  SizedBox(height: 15.h,),
+                  ClipRRect(
+                    borderRadius: BorderRadius.all(Radius.circular(12.w)),
+                      child: const PopularJobs()
+                  ),
 
-                  SizedBox(height: 30.h,),
-                  PopularJobs(),
-
-                  SizedBox(height: 30.h,),
+                  SizedBox(height: 15.h,),
                   const HeadingWidget(text: "Recently Posted"),
+                  SizedBox(height: 15.h,),
+                  RecentJobs()
                 ],
               ),
             ),
