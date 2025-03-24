@@ -5,7 +5,6 @@ import 'package:job_app/views/common/app_bar.dart';
 import 'package:job_app/views/common/app_style.dart';
 import 'package:job_app/views/common/drawer/drawer_widget.dart';
 import 'package:job_app/views/common/heading_widget.dart';
-import 'package:job_app/views/common/reusable_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:job_app/views/common/search.dart';
@@ -13,6 +12,7 @@ import 'package:job_app/views/screens/auth/profile_screen.dart';
 import 'package:job_app/views/screens/job/job_list_screen.dart';
 import 'package:job_app/views/screens/job/widgets/popular_jobs.dart';
 import 'package:job_app/views/screens/job/widgets/recentlist.dart';
+import 'package:job_app/views/screens/search/search_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -65,13 +65,15 @@ class _HomeScreenState extends State<HomeScreen> {
                     style: appStyle(38, Color(kDark.value), FontWeight.bold),),
                   SizedBox(height: 20.h,),
                   SearchWidget(
-                    onTap: () {},
+                    onTap: () {
+                      Get.to(()=> const SearchScreen());
+                    },
                   ),
                   SizedBox(height: 30.h,),
                   HeadingWidget(
                     text: "Popular Jobs", 
                     onTap: () {
-                      Get.to(()=> JobListScreen());
+                      Get.to(()=> const JobListScreen());
                     },
                   ),
                   SizedBox(height: 15.h,),
@@ -84,11 +86,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   HeadingWidget(
                     text: "Recently Posted",
                     onTap: () {
-                      Get.to(()=> JobListScreen());
+                      Get.to(()=> const JobListScreen());
                     },
                   ),
                   SizedBox(height: 15.h,),
-                  RecentJobs()
+                  const RecentJobs()
                 ],
               ),
             ),
