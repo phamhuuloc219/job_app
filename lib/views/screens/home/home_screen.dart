@@ -8,6 +8,7 @@ import 'package:job_app/views/common/heading_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:job_app/views/common/search.dart';
+import 'package:job_app/views/screens/auth/login_screen.dart';
 import 'package:job_app/views/screens/auth/profile_screen.dart';
 import 'package:job_app/views/screens/job/job_list_screen.dart';
 import 'package:job_app/views/screens/job/widgets/popular_jobs.dart';
@@ -33,7 +34,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 padding: EdgeInsets.all(12.0.h),
                 child: GestureDetector(
                   onTap: () {
-                    Get.to(()=> ProfileScreen(drawer: false));
+                    Get.to(()=> LoginScreen());
+                    // Get.to(()=> ProfileScreen(drawer: false));
                   },
                   child: ClipRRect(
                     borderRadius: BorderRadius.all(Radius.circular(50)),
