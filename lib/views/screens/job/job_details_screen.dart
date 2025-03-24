@@ -218,10 +218,11 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                               child: Padding(
                                 padding: EdgeInsets.only(bottom: 20.0.w),
                                 child: CustomOutlineBtn(
-                                    text: "Please Login",
-                                    height: height * 0.06,
-                                    color: Color(kLight.value),
-                                    color2: Color(kOrange.value),
+                                  onTap: () {},
+                                  text: "Please Login",
+                                  height: height * 0.06,
+                                  color: Color(kLight.value),
+                                  color2: Color(kOrange.value),
                                 ),
                               ),
                             ),
