@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
 import 'package:job_app/controllers/login_provider.dart';
 import 'package:job_app/controllers/zoom_provider.dart';
-import 'package:job_app/views/common/BackBtn.dart';
 import 'package:job_app/views/common/app_bar.dart';
 import 'package:job_app/views/common/custom_btn.dart';
 import 'package:job_app/views/common/custom_textfield.dart';
@@ -11,6 +11,7 @@ import 'package:job_app/views/common/exports.dart';
 import 'package:job_app/views/common/height_spacer.dart';
 import 'package:job_app/views/common/styled_container.dart';
 import 'package:job_app/views/screens/auth/register_screen.dart';
+import 'package:job_app/views/screens/main_screen.dart';
 import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -32,7 +33,12 @@ class _LoginScreenState extends State<LoginScreen> {
             preferredSize: Size.fromHeight(50),
             child: CustomAppBar(
               text: 'Login',
-              child: BackBtn(),
+              child: GestureDetector(
+                onTap: () {
+                  Get.offAll(()=> Mainscreen());
+                },
+                child: const Icon(AntDesign.leftcircleo,),
+              ),
             ),
           ),
           body: buildStyleContainer(
@@ -54,7 +60,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ReusableText(
                         text: "Fill in the Details to login to your account",
                         style: appStyle(
-                            14,
+                            12,
                             Color(kDarkGrey.value),
                             FontWeight.w400)
                     ),
@@ -94,21 +100,34 @@ class _LoginScreenState extends State<LoginScreen> {
                       },
                     ),
                     const HeightSpacer(size: 10),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: GestureDetector(
-                        onTap: () {
-                          Get.to(()=> RegisterScreen());
-                        },
-                        child: ReusableText(
-                            text: 'Register',
-                            style: appStyle(
-                                12,
-                                Color(kLightBlue.value),
-                                FontWeight.w400
-                            ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        ReusableText(
+                          text: 'Do not have an account? ',
+                          style: appStyle(
+                              12,
+                              Color(kDarkGrey.value),
+                              FontWeight.w400
+                          ),
                         ),
-                      ),
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: GestureDetector(
+                            onTap: () {
+                              Get.offAll(()=> RegisterScreen());
+                            },
+                            child: ReusableText(
+                                text: 'Register',
+                                style: appStyle(
+                                    12,
+                                    Color(kLightBlue.value),
+                                    FontWeight.w400
+                                ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                     const HeightSpacer(size: 50),
                     Consumer<ZoomNotifier>(
