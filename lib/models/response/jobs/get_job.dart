@@ -17,7 +17,6 @@ class GetJobRes {
         required this.hiring,
         required this.requirement,
         required this.imageUrl,
-        required this.companyId,
         required this.v,
     });
 
@@ -32,7 +31,6 @@ class GetJobRes {
     final bool hiring;
     final List<String> requirement;
     final String imageUrl;
-    final String companyId;
     final int v;
 
     factory GetJobRes.fromJson(Map<String, dynamic> json) => GetJobRes(
@@ -47,7 +45,6 @@ class GetJobRes {
         hiring: json["hiring"],
         requirement: List<String>.from(json["requirement"].map((x) => x)),
         imageUrl: json["imageUrl"],
-        companyId: json["companyId"],
         v: json["__v"],
     );
 
@@ -63,7 +60,6 @@ class GetJobRes {
         "hiring": hiring,
         "requirement": List<dynamic>.from(requirement.map((x) => x)),
         "imageUrl": imageUrl,
-        "companyId": companyId,
         "__v": v,
     };
 }
