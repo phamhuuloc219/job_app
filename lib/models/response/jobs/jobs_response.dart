@@ -16,8 +16,6 @@ class JobsResponse {
     final bool hiring;
     final List<String> requirement;
     final String imageUrl;
-    // final DateTime createdAt;
-    // final DateTime updatedAt;
     final int v;
     final String? companyId;
 
@@ -33,8 +31,6 @@ class JobsResponse {
         required this.hiring,
         required this.requirement,
         required this.imageUrl,
-        // required this.createdAt,
-        // required this.updatedAt,
         required this.v,
         this.companyId,
     });
@@ -51,8 +47,6 @@ class JobsResponse {
         hiring: json["hiring"],
         requirement: List<String>.from(json["requirement"].map((x) => x)),
         imageUrl: json["imageUrl"],
-        // createdAt: DateTime.parse(json["createdAt"]),
-        // updatedAt: DateTime.parse(json["updatedAt"]),
         v: json["__v"],
         companyId: json["companyId"],
     );
