@@ -4,6 +4,7 @@ import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
 import 'package:job_app/controllers/login_provider.dart';
 import 'package:job_app/controllers/zoom_provider.dart';
+import 'package:job_app/models/request/auth/login_model.dart';
 import 'package:job_app/views/common/app_bar.dart';
 import 'package:job_app/views/common/custom_btn.dart';
 import 'package:job_app/views/common/custom_textfield.dart';
@@ -29,6 +30,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Consumer<LoginNotifier>(
       builder: (context, loginNotifier, child) {
+        loginNotifier.getPref();
         return Scaffold(
           appBar: PreferredSize(
             preferredSize: Size.fromHeight(50),
@@ -137,7 +139,20 @@ class _LoginScreenState extends State<LoginScreen> {
                         builder: (context, zoomNotifier, child) {
                           return CustomButton(
                               text: 'Login',
-                            onTap: () {},
+                            onTap: () async{
+                              loginNotifier.loader = true;
+
+                                LoginModel model = LoginModel(
+                                    email: email.text,
+                                    password: password.text
+                                );
+
+                                String newModel = loginModelToJson(model);
+
+                                loginNotifier.login(newModel, zoomNotifier);
+                              await Future.delayed(Duration(seconds: 1));
+                              loginNotifier.loader = false;
+                            },
                           );
                         },
                     ),

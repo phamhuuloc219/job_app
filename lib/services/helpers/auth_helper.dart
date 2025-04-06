@@ -32,8 +32,7 @@ class AuthHelper {
     }
   }
 
-  static Future<bool> login(model) async{
-    try{
+  static Future<bool> login(String model) async{
       Map<String, String> requestHeaders = {
         'Content-Type' : 'application/json',
       };
@@ -48,6 +47,7 @@ class AuthHelper {
 
         await prefs.setString('token', user.userToken);
         await prefs.setString('userId', user.id);
+        await prefs.setString('uid', user.uid);
         await prefs.setString('profile', user.profile);
         await prefs.setString('username', user.username);
         await prefs.setBool('loggedIn', true);
@@ -56,8 +56,5 @@ class AuthHelper {
       } else{
         return false;
       }
-    } catch(e){
-      return false;
-    }
   }
 }

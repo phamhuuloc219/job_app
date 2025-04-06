@@ -37,9 +37,16 @@ class SignUpNotifier extends ChangeNotifier {
   }
 
   signUp(String model){
-    AuthHelper.signup(model).then((response){
+    AuthHelper.signup(model).then((response) {
       if(response == true){
         loader == false;
+        Get.snackbar(
+            "Sign up successfully",
+            "Login and apply now",
+            colorText: Color(kLight.value),
+            backgroundColor: Color(kGreen.value),
+            icon: const Icon(Icons.add_alert)
+        );
         Get.offAll(()=> const LoginScreen());
 
       } else{
