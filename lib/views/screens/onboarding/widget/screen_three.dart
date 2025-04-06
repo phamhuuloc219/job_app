@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:job_app/constants/app_constants.dart';
 import 'package:job_app/views/common/exports.dart';
 import 'package:job_app/views/screens/main_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class PageThree extends StatelessWidget {
   const PageThree({super.key});
@@ -57,7 +58,10 @@ class PageThree extends StatelessWidget {
                   child: Column(
                     children: [
                       GestureDetector(
-                        onTap: () {
+                        onTap: () async{
+                          final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+                          prefs.setBool('entrypoint', true);
                           Get.to(() => Mainscreen());
                         },
                         child: Container(

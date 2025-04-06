@@ -13,12 +13,18 @@ import 'package:job_app/controllers/zoom_provider.dart';
 import 'package:job_app/views/screens/main_screen.dart';
 import 'package:job_app/views/screens/onboarding/onboarding_screen.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 Widget defaultHome = const OnboardingScreen();
-// Widget defaultHome = const Mainscreen();
-///TODO: Hook the app to firebase using firebase cli
 void main() async {
- 
+  WidgetsFlutterBinding.ensureInitialized();
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+  final entrypoint = prefs.getBool('entrypoint') ?? false;
+
+  if(entrypoint == true){
+    defaultHome = const Mainscreen();
+  }
 
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (context) => OnBoardNotifier()),

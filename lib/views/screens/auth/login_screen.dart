@@ -9,6 +9,7 @@ import 'package:job_app/views/common/custom_btn.dart';
 import 'package:job_app/views/common/custom_textfield.dart';
 import 'package:job_app/views/common/exports.dart';
 import 'package:job_app/views/common/height_spacer.dart';
+import 'package:job_app/views/common/pages_loader.dart';
 import 'package:job_app/views/common/styled_container.dart';
 import 'package:job_app/views/screens/auth/register_screen.dart';
 import 'package:job_app/views/screens/main_screen.dart';
@@ -41,7 +42,9 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ),
           ),
-          body: buildStyleContainer(
+          body: loginNotifier.loader
+          ? const PageLoader()
+          : buildStyleContainer(
             context,
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.w),

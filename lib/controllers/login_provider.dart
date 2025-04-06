@@ -9,4 +9,13 @@ class LoginNotifier extends ChangeNotifier {
     _obscureText = newState;
     notifyListeners();
   }
+
+  bool _loader = false;
+
+  bool get loader => _loader;
+
+  set loader(bool newState){
+    _loader = newState;
+    notifyListeners();
+  }
 }
