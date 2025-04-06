@@ -37,7 +37,7 @@ class AuthHelper {
         'Content-Type' : 'application/json',
       };
 
-      var url = Uri.https(Config.apiUrl, Config.signupUrl);
+      var url = Uri.https(Config.apiUrl, Config.loginUrl);
 
       var response = await client.post(url, headers: requestHeaders, body: model);
       if(response.statusCode == 200){

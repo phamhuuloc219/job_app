@@ -150,8 +150,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                 String newModel = loginModelToJson(model);
 
                                 loginNotifier.login(newModel, zoomNotifier);
-                              await Future.delayed(Duration(seconds: 1));
-                              loginNotifier.loader = false;
                             },
                           );
                         },
