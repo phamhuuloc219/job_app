@@ -18,9 +18,9 @@ class LoginNotifier extends ChangeNotifier {
   }
 
   // entrypoint
-  bool _entrypoint = true;
+  bool? _entrypoint;
 
-  bool get entrypoint => _entrypoint;
+  bool get entrypoint => _entrypoint?? false;
 
   set entrypoint(bool newState){
     _entrypoint = newState;
@@ -28,9 +28,9 @@ class LoginNotifier extends ChangeNotifier {
   }
 
   // loggedIn
-  bool _loggedIn = true;
+  bool? _loggedIn;
 
-  bool get loggedIn => _loggedIn;
+  bool get loggedIn => _loggedIn?? false;
 
   set loggedIn(bool newState){
     _loggedIn = newState;
@@ -52,7 +52,7 @@ class LoginNotifier extends ChangeNotifier {
       if(response == true){
         loader == false;
         zoomNotifier.currentIndex = 0;
-        Get.to(()=> const Mainscreen());
+        Get.offAll(()=> const Mainscreen());
 
       } else{
         loader == false;
@@ -75,5 +75,11 @@ class LoginNotifier extends ChangeNotifier {
     username = prefs.getString('username') ?? '';
     userUid = prefs.getString('uid') ?? '';
     profile = prefs.getString('profile') ?? '';
+  }
+
+  logout() async{
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('loggedIn', false);
+    await prefs.remove('token');
   }
 }

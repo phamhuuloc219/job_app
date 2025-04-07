@@ -140,8 +140,6 @@ class _LoginScreenState extends State<LoginScreen> {
                           return CustomButton(
                               text: 'Login',
                             onTap: () async{
-                              loginNotifier.loader = true;
-
                                 LoginModel model = LoginModel(
                                     email: email.text,
                                     password: password.text

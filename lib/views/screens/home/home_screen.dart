@@ -34,8 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 padding: EdgeInsets.all(12.0.h),
                 child: GestureDetector(
                   onTap: () {
-                    Get.to(()=> LoginScreen());
-                    // Get.to(()=> ProfileScreen(drawer: false));
+                    Get.to(()=> ProfileScreen(drawer: false));
                   },
                   child: ClipRRect(
                     borderRadius: BorderRadius.all(Radius.circular(50)),

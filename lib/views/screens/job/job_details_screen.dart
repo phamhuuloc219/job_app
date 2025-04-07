@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:job_app/constants/app_constants.dart';
 import 'package:job_app/controllers/jobs_provider.dart';
+import 'package:job_app/controllers/login_provider.dart';
 import 'package:job_app/models/response/jobs/get_job.dart';
 import 'package:job_app/views/common/BackBtn.dart';
 import 'package:job_app/views/common/app_bar.dart';
@@ -28,6 +29,7 @@ class JobDetailsScreen extends StatefulWidget {
 class _JobDetailsScreenState extends State<JobDetailsScreen> {
   @override
   Widget build(BuildContext context) {
+    var loginNotifier = Provider.of<LoginNotifier>(context);
     return Consumer<JobsNotifier>(
       builder: (context, jobsNotifier, child) {
         jobsNotifier.getJob(widget.id);
@@ -219,7 +221,9 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                 padding: EdgeInsets.only(bottom: 20.0.w),
                                 child: CustomOutlineBtn(
                                   onTap: () {},
-                                  text: "Please Login",
+                                  text: !loginNotifier.loggedIn
+                                      ? "Please Login"
+                                      : "Apply",
                                   height: height * 0.06,
                                   color: Color(kLight.value),
                                   color2: Color(kOrange.value),

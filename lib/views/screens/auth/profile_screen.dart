@@ -3,13 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
+import 'package:job_app/controllers/login_provider.dart';
+import 'package:job_app/controllers/zoom_provider.dart';
 import 'package:job_app/views/common/BackBtn.dart';
 import 'package:job_app/views/common/app_bar.dart';
+import 'package:job_app/views/common/custom_outline_btn.dart';
 import 'package:job_app/views/common/drawer/drawer_widget.dart';
 import 'package:job_app/views/common/exports.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:job_app/views/common/height_spacer.dart';
 import 'package:job_app/views/common/width_spacer.dart';
+import 'package:job_app/views/screens/auth/login_screen.dart';
+import 'package:job_app/views/screens/auth/non_user.dart';
+import 'package:provider/provider.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key, required this.drawer});
@@ -23,6 +29,8 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
+    var zoomNotifier = Provider.of<ZoomNotifier>(context);
+    var loginNotifier = Provider.of<LoginNotifier>(context);
     return Scaffold(
       appBar:PreferredSize(
         preferredSize: Size.fromHeight(50.h),
@@ -34,7 +42,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
             )
         ),
       ),
-      body: Padding(
+      body: loginNotifier.loggedIn == false
+          ? const NonUser()
+          : Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: ListView(
           padding: EdgeInsets.zero,
@@ -51,9 +61,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ClipRRect(
                         borderRadius: BorderRadius.all(Radius.circular(20)),
                         child: CachedNetworkImage(
-                          width: 80.w,
-                          height: 100.h,
-                          imageUrl: 'https://raw.githubusercontent.com/phamhuuloc219/job_app/refs/heads/main/assets/images/user.png'
+                            width: 80.w,
+                            height: 100.h,
+                            imageUrl: 'https://raw.githubusercontent.com/phamhuuloc219/job_app/refs/heads/main/assets/images/user.png'
                         ),
                       ),
                       const WidthSpacer(width: 10),
@@ -117,12 +127,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           ReusableText(
-                              text: 'Resume from NTU Job',
-                              style: appStyle(
-                                  18,
-                                  Color(kDark.value),
-                                  FontWeight.w500
-                              ),
+                            text: 'Resume from NTU Job',
+                            style: appStyle(
+                                18,
+                                Color(kDark.value),
+                                FontWeight.w500
+                            ),
                           ),
                           ReusableText(
                             text: 'NTU Job Resume',
@@ -139,21 +149,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                 ),
                 Positioned(
-                  top: 2.h,
-                  right: 5.w,
-                  child: GestureDetector(
-                    onTap: () {
+                    top: 2.h,
+                    right: 5.w,
+                    child: GestureDetector(
+                      onTap: () {
 
-                    },
-                    child: ReusableText(
-                      text: 'Edit',
-                      style: appStyle(
-                          18,
-                          Color(kOrange.value),
-                          FontWeight.w500
+                      },
+                      child: ReusableText(
+                        text: 'Edit',
+                        style: appStyle(
+                            18,
+                            Color(kOrange.value),
+                            FontWeight.w500
+                        ),
                       ),
-                    ),
-                  )
+                    )
                 ),
               ],
             ),
@@ -200,7 +210,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
             const HeightSpacer(size: 20),
-            
+
             Container(
               width: width,
               color: Color(kLightGrey.value),
@@ -251,6 +261,33 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   )
                 ],
               ),
+            ),
+            Container(
+                width: width,
+                color: Color(kLightGrey.value),
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                          padding: EdgeInsets.all(8.h),
+                          child: Consumer<LoginNotifier>(
+                            builder:(context, loginNotifier, child) {
+                              return CustomOutlineBtn(
+                                height: 40.h,
+                                width: width,
+                                text: "Proceed to Logout",
+                                color: Color(kOrange.value),
+                                onTap: () {
+                                  zoomNotifier.currentIndex = 0;
+                                  loginNotifier.logout();
+                                  Get.offAll(()=> LoginScreen());
+                                },
+                              );
+                            },
+                          )
+                      ),
+                    ]
+                )
             )
           ],
         ),
