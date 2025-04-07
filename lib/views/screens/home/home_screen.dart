@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:job_app/constants/app_constants.dart';
+import 'package:job_app/controllers/login_provider.dart';
 import 'package:job_app/views/common/app_bar.dart';
 import 'package:job_app/views/common/app_style.dart';
 import 'package:job_app/views/common/drawer/drawer_widget.dart';
@@ -14,6 +15,7 @@ import 'package:job_app/views/screens/job/job_list_screen.dart';
 import 'package:job_app/views/screens/job/widgets/popular_jobs.dart';
 import 'package:job_app/views/screens/job/widgets/recentlist.dart';
 import 'package:job_app/views/screens/search/search_screen.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -25,6 +27,8 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
+    var loginNotifier = Provider.of<LoginNotifier>(context);
+    loginNotifier.getPref();
     return Scaffold(
       appBar:PreferredSize(
           preferredSize: Size.fromHeight(50.h),

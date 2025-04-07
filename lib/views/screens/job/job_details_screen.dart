@@ -2,15 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:job_app/constants/app_constants.dart';
+import 'package:job_app/controllers/bookmark_provider.dart';
 import 'package:job_app/controllers/jobs_provider.dart';
 import 'package:job_app/controllers/login_provider.dart';
+import 'package:job_app/models/request/bookmarks/bookmarks_model.dart';
+import 'package:job_app/models/response/bookmarks/book_res.dart';
 import 'package:job_app/models/response/jobs/get_job.dart';
+import 'package:job_app/services/helpers/jobs_helper.dart';
 import 'package:job_app/views/common/BackBtn.dart';
 import 'package:job_app/views/common/app_bar.dart';
 import 'package:job_app/views/common/custom_outline_btn.dart';
 import 'package:job_app/views/common/exports.dart';
 import 'package:job_app/views/common/height_spacer.dart';
-import 'package:job_app/views/common/loader.dart';
 import 'package:job_app/views/common/pages_loader.dart';
 import 'package:job_app/views/common/styled_container.dart';
 import 'package:provider/provider.dart';
@@ -27,6 +30,19 @@ class JobDetailsScreen extends StatefulWidget {
 }
 
 class _JobDetailsScreenState extends State<JobDetailsScreen> {
+  late Future<GetJobRes> job;
+
+
+  @override
+  void initState() {
+    getJob();
+    super.initState();
+  }
+
+  getJob(){
+    job = JobsHelper.getJob(widget.id);
+  }
+
   @override
   Widget build(BuildContext context) {
     var loginNotifier = Provider.of<LoginNotifier>(context);
@@ -38,15 +54,30 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
             preferredSize: const Size.fromHeight(50),
             child: CustomAppBar(
                 actions: [
-                  GestureDetector(
-                    onTap: () {
-
-                    },
-                    child: Padding(
-                      padding: EdgeInsets.only(right: 12.w),
-                      child: const Icon(Fontisto.bookmark),
-                    ),
-                  ),
+                  loginNotifier.loggedIn != false
+                  ? Consumer<BookNotifier>(
+                      builder: (context, bookNotifier, child) {
+                        bookNotifier.getBookMark(widget.id);
+                        return GestureDetector(
+                          onTap: () {
+                            if(bookNotifier.bookmark == true){
+                              bookNotifier.deteleBookMark(bookNotifier.bookmarkId);
+                            } else{
+                              BookMarkReqRes model = BookMarkReqRes(job: widget.id);
+                              var newModel = bookMarkReqResToJson(model);
+                              bookNotifier.addBookMark(newModel);
+                            }
+                          },
+                          child: Padding(
+                            padding: EdgeInsets.only(right: 12.w),
+                            child: Icon(bookNotifier.bookmark == false
+                                ? Fontisto.bookmark
+                                : Fontisto.bookmark_alt
+                            ),
+                          ),
+                        );
+                      },
+                  ) : const SizedBox.shrink(),
                 ],
                 child: const BackBtn()
             ),
@@ -54,7 +85,7 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
           body: buildStyleContainer(
               context,
               FutureBuilder<GetJobRes>(
-                future: jobsNotifier.job,
+                future: job,
                 builder:(context, snapshot) {
                   if(snapshot.connectionState == ConnectionState.waiting){
                     return const PageLoader();
@@ -241,5 +272,4 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
       },
     );
   }
-
 }

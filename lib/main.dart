@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:job_app/constants/app_constants.dart';
+import 'package:job_app/controllers/bookmark_provider.dart';
 import 'package:job_app/controllers/image_provider.dart';
 import 'package:job_app/controllers/jobs_provider.dart';
 import 'package:job_app/controllers/login_provider.dart';
@@ -34,6 +35,7 @@ void main() async {
     ChangeNotifierProvider(create: (context) => JobsNotifier()),
     ChangeNotifierProvider(create: (context) => ImageUpoader()),
     ChangeNotifierProvider(create: (context) => ProfileNotifier()),
+    ChangeNotifierProvider(create: (context) => BookNotifier()),
   ], child: const MyApp()));
 }
 class MyApp extends StatelessWidget {
