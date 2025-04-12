@@ -63,8 +63,10 @@ class BookNotifier extends ChangeNotifier{
     },);
   }
 
-  getBookMarks(){
+  Future<List<AllBookMarks>> getBookMarks(){
     bookmarks = BookMarkHelper.getAllBookMark();
+    return bookmarks;
+
   }
 }
 
