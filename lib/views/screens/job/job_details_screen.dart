@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
+import 'package:get/get.dart';
 import 'package:job_app/constants/app_constants.dart';
 import 'package:job_app/controllers/bookmark_provider.dart';
 import 'package:job_app/controllers/jobs_provider.dart';
@@ -56,27 +57,34 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                 actions: [
                   loginNotifier.loggedIn != false
                   ? Consumer<BookNotifier>(
-                      builder: (context, bookNotifier, child) {
-                        bookNotifier.getBookMark(widget.id);
-                        return GestureDetector(
-                          onTap: () {
-                            if(bookNotifier.bookmark == true){
-                              bookNotifier.deteleBookMark(bookNotifier.bookmarkId);
-                            } else{
-                              BookMarkReqRes model = BookMarkReqRes(job: widget.id);
-                              var newModel = bookMarkReqResToJson(model);
-                              bookNotifier.addBookMark(newModel);
-                            }
-                          },
-                          child: Padding(
-                            padding: EdgeInsets.only(right: 12.w),
-                            child: Icon(bookNotifier.bookmark == false
-                                ? Fontisto.bookmark
-                                : Fontisto.bookmark_alt
-                            ),
+                    builder: (context, bookNotifier, child) {
+                      bookNotifier.getBookMark(widget.id);
+
+                      return GestureDetector(
+                        onTap: () {
+                          if (bookNotifier.bookmark == true) {
+                            bookNotifier.deleteBookMark(bookNotifier.bookmarkId);
+                          } else {
+                            BookMarkReqRes model = BookMarkReqRes(job: widget.id);
+                            var newModel = bookMarkReqResToJson(model);
+                            bookNotifier.addBookMark(newModel);
+                            Get.snackbar(
+                                'Bookmark added',
+                                'Job has been bookmarked',
+                                colorText: Color(kLight.value),
+                                backgroundColor: Colors.green,
+                                icon: const Icon(Icons.bookmark_added)
+                            );
+                          }
+                        },
+                        child: Padding(
+                          padding: EdgeInsets.only(right: 12.w),
+                          child: Icon(
+                            bookNotifier.bookmark == false ? Fontisto.bookmark : Fontisto.bookmark_alt,
                           ),
-                        );
-                      },
+                        ),
+                      );
+                    },
                   ) : const SizedBox.shrink(),
                 ],
                 child: const BackBtn()
