@@ -19,6 +19,8 @@ import 'package:job_app/views/common/styled_container.dart';
 import 'package:job_app/views/common/width_spacer.dart';
 import 'package:job_app/views/screens/auth/login_screen.dart';
 import 'package:job_app/views/screens/auth/non_user.dart';
+import 'package:job_app/views/screens/auth/widgets/circular_avatar.dart';
+import 'package:job_app/views/screens/auth/widgets/edit_button.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -257,57 +259,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
               );
             }
           },
-      ),
-    );
-  }
-}
-
-class CircularAvatar extends StatelessWidget {
-  const CircularAvatar({super.key, required this.image, required this.w, required this.h});
-  final String image;
-  final double w;
-  final double h;
-
-  @override
-  Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.all(Radius.circular(99.w)),
-      child: CachedNetworkImage(
-        imageUrl: image,
-        width: w,
-        height: h,
-        fit: BoxFit.cover,
-        placeholder: (context, url) => const Center(
-          child: CircularProgressIndicator.adaptive(),
-        ),
-        errorWidget: (context, url, error) => const Icon(Icons.error),
-      ),
-    );
-  }
-}
-
-class EditButton extends StatelessWidget {
-  const EditButton({super.key, this.onTap});
-
-  final void Function()? onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.all(2),
-        decoration: BoxDecoration(
-          color: Color(kOrange.value),
-          borderRadius: BorderRadius.only(
-            topRight: Radius.circular(9),
-            bottomLeft: Radius.circular(9)
-          )
-        ),
-        child: ReusableText(
-            text: "  Edit  ",
-            style: appStyle(12, Color(kLight.value), FontWeight.w500)
-        ),
       ),
     );
   }
