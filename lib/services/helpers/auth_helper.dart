@@ -57,4 +57,34 @@ class AuthHelper {
         return false;
       }
   }
+
+  static Future<ProfileRes> getProfile() async{
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    String? token = prefs.getString('token');
+
+    if(token == null){
+      throw Exception("No authentication token provided");
+    }
+
+    Map<String, String> requestHeaders = {
+      'Content-Type' : 'application/json',
+      'authorization' : 'Bearer $token'
+    };
+
+    var url = Uri.https(Config.apiUrl, Config.profileUrl);
+
+    try{
+      var response = await client.get(url, headers: requestHeaders);
+
+      if (response.statusCode == 200){
+        var profile = profileResFromJson(response.body);
+        return profile;
+      } else{
+        throw Exception("Failed to get profile");
+      }
+    } catch (e) {
+      throw Exception("Failed to get profile: ${e.toString()}");
+    }
+  }
 }
