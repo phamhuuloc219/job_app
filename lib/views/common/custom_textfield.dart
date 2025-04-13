@@ -3,11 +3,11 @@ import 'package:job_app/constants/app_constants.dart';
 import 'package:job_app/views/common/app_style.dart';
 
 class CustomTextField extends StatelessWidget {
-  const CustomTextField({super.key, required this.controller, required this.hintText, required this.keyboardType, this.validator, this.suffixIcon, this.obscureText});
+  const CustomTextField({super.key, required this.controller, required this.hintText, this.keyboardType, this.validator, this.suffixIcon, this.obscureText});
 
   final TextEditingController controller;
   final String hintText;
-  final TextInputType keyboardType;
+  final TextInputType? keyboardType;
   final String? Function(String?)? validator;
   final Widget? suffixIcon;
   final bool? obscureText;
