@@ -79,8 +79,9 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                         },
                         child: Padding(
                           padding: EdgeInsets.only(right: 12.w),
-                          child: Icon(
-                            bookNotifier.bookmark == false ? Fontisto.bookmark : Fontisto.bookmark_alt,
+                          child: Icon(bookNotifier.bookmark == false
+                              ? Fontisto.bookmark
+                              : Fontisto.bookmark_alt,
                           ),
                         ),
                       );

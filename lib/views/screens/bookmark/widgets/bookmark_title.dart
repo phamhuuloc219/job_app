@@ -19,7 +19,7 @@ class BookmarkTitle extends StatelessWidget {
     return FittedBox(
       child: GestureDetector(
         onTap: () {
-          // Get.to(()=> JobDetailsScreen(id: job.id, title: job.title, companyName:  job.companyName));
+          Get.to(()=> JobDetailsScreen(id: bookmark.job.id, title: bookmark.job.title, companyName:  bookmark.job.companyName));
         },
         child: Padding(
           padding: const EdgeInsets.only(bottom: 8.0),
