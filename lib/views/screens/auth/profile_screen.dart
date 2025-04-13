@@ -21,6 +21,7 @@ import 'package:job_app/views/screens/auth/login_screen.dart';
 import 'package:job_app/views/screens/auth/non_user.dart';
 import 'package:job_app/views/screens/auth/widgets/circular_avatar.dart';
 import 'package:job_app/views/screens/auth/widgets/edit_button.dart';
+import 'package:job_app/views/screens/auth/widgets/skill_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -204,6 +205,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         )
                       ],
                     ),
+                    const HeightSpacer(size: 20),
+
+                    SkillWidget(),
                     const HeightSpacer(size: 20),
 
                     !profile.isCompany

@@ -6,6 +6,7 @@ import 'package:job_app/models/request/auth/profile_update_model.dart';
 import 'package:job_app/models/request/auth/signup_model.dart';
 import 'package:job_app/models/response/auth/login_res_model.dart';
 import 'package:job_app/models/response/auth/profile_model.dart';
+import 'package:job_app/models/response/auth/skills.dart';
 import 'package:job_app/services/config.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
@@ -85,6 +86,36 @@ class AuthHelper {
       }
     } catch (e) {
       throw Exception("Failed to get profile: ${e.toString()}");
+    }
+  }
+
+  static Future<List<Skills>> getSkills() async{
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    String? token = prefs.getString('token');
+
+    if(token == null){
+      throw Exception("No authentication token provided");
+    }
+
+    Map<String, String> requestHeaders = {
+      'Content-Type' : 'application/json',
+      'authorization' : 'Bearer $token'
+    };
+
+    var url = Uri.https(Config.apiUrl, Config.skillsUrl);
+
+    try{
+      var response = await client.get(url, headers: requestHeaders);
+
+      if (response.statusCode == 200){
+        var skills = skillsFromJson(response.body);
+        return skills;
+      } else{
+        throw Exception("Failed to get skills");
+      }
+    } catch (e) {
+      throw Exception("Failed to get skills: ${e.toString()}");
     }
   }
 }

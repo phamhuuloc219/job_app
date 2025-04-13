@@ -10,6 +10,7 @@ import 'package:job_app/controllers/login_provider.dart';
 import 'package:job_app/controllers/onboarding_provider.dart';
 import 'package:job_app/controllers/profile_provider.dart';
 import 'package:job_app/controllers/signup_provider.dart';
+import 'package:job_app/controllers/skills_provider.dart';
 import 'package:job_app/controllers/zoom_provider.dart';
 import 'package:job_app/views/screens/main_screen.dart';
 import 'package:job_app/views/screens/onboarding/onboarding_screen.dart';
@@ -36,6 +37,7 @@ void main() async {
     ChangeNotifierProvider(create: (context) => ImageUpoader()),
     ChangeNotifierProvider(create: (context) => ProfileNotifier()),
     ChangeNotifierProvider(create: (context) => BookNotifier()),
+    ChangeNotifierProvider(create: (context) => SkillsNotifier()),
   ], child: const MyApp()));
 }
 class MyApp extends StatelessWidget {
