@@ -118,4 +118,62 @@ class AuthHelper {
       throw Exception("Failed to get skills: ${e.toString()}");
     }
   }
+
+  static Future<bool> deleteSkill(String id) async{
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    String? token = prefs.getString('token');
+
+    if(token == null){
+      throw Exception("No authentication token provided");
+    }
+
+    Map<String, String> requestHeaders = {
+      'Content-Type' : 'application/json',
+      'authorization' : 'Bearer $token'
+    };
+
+    var url = Uri.https(Config.apiUrl, '${Config.skillsUrl}/$id');
+
+    try{
+      var response = await client.delete(url, headers: requestHeaders);
+
+      if (response.statusCode == 200){
+        return true;
+      } else{
+        return false;
+      }
+    } catch (e) {
+      throw Exception("Failed to delete skills: ${e.toString()}");
+    }
+  }
+
+  static Future<bool> addSkill(String model) async{
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    String? token = prefs.getString('token');
+
+    if(token == null){
+      throw Exception("No authentication token provided");
+    }
+
+    Map<String, String> requestHeaders = {
+      'Content-Type' : 'application/json',
+      'authorization' : 'Bearer $token'
+    };
+
+    var url = Uri.https(Config.apiUrl, Config.skillsUrl);
+
+    try{
+      var response = await client.post(url, headers: requestHeaders, body: model);
+
+      if (response.statusCode == 200){
+        return true;
+      } else{
+        return false;
+      }
+    } catch (e) {
+      return false;
+    }
+  }
 }

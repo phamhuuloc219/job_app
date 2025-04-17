@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:job_app/controllers/skills_provider.dart';
 import 'package:job_app/controllers/zoom_provider.dart';
+import 'package:job_app/models/request/skills/add_skill.dart';
 import 'package:job_app/models/response/auth/skills.dart';
 import 'package:job_app/services/helpers/auth_helper.dart';
 import 'package:job_app/views/common/exports.dart';
@@ -75,7 +76,14 @@ class _SkillWidgetState extends State<SkillWidget> {
         skillsNotifier.addSkills == true
         ? AddSkillsWidget(
             skill: userskills,
-            onTap: (){},
+            onTap: (){
+              AddSkill rawModel = AddSkill(skill: userskills.text);
+              var model = addSkillToJson(rawModel);
+              AuthHelper.addSkill(model);
+              userSkills = getSkills();
+              userskills.clear();
+              skillsNotifier.setSkills = !skillsNotifier.addSkills;
+            },
         ) : SizedBox(
           height: 40.w,
           child: FutureBuilder(
@@ -119,9 +127,12 @@ class _SkillWidgetState extends State<SkillWidget> {
                               skillsNotifier.addSkillsId == skill.id ?
                               GestureDetector(
                                 onTap: () {
-                                  print("skill");
+                                  AuthHelper.deleteSkill(
+                                      skillsNotifier.addSkillsId);
+                                  skillsNotifier.setSkillsId = '';
+                                  userSkills = getSkills();
                                 },
-                                child: Icon(AntDesign.closecircleo, size: 14, color: Color(kDark.value),),
+                                child: Icon(AntDesign.delete, size: 14, color: Color(kDark.value),),
                               ): SizedBox.shrink()
                             ],
                           ),
