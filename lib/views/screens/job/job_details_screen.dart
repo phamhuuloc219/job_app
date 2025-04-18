@@ -6,7 +6,6 @@ import 'package:job_app/constants/app_constants.dart';
 import 'package:job_app/controllers/bookmark_provider.dart';
 import 'package:job_app/controllers/jobs_provider.dart';
 import 'package:job_app/controllers/login_provider.dart';
-import 'package:job_app/models/request/bookmarks/bookmarks_model.dart';
 import 'package:job_app/models/response/bookmarks/book_res.dart';
 import 'package:job_app/models/response/jobs/get_job.dart';
 import 'package:job_app/services/helpers/jobs_helper.dart';
@@ -15,7 +14,7 @@ import 'package:job_app/views/common/app_bar.dart';
 import 'package:job_app/views/common/custom_outline_btn.dart';
 import 'package:job_app/views/common/exports.dart';
 import 'package:job_app/views/common/height_spacer.dart';
-import 'package:job_app/views/common/pages_loader.dart';
+import 'package:job_app/views/common/page_load.dart';
 import 'package:job_app/views/common/styled_container.dart';
 import 'package:provider/provider.dart';
 
@@ -97,7 +96,7 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                 future: job,
                 builder:(context, snapshot) {
                   if(snapshot.connectionState == ConnectionState.waiting){
-                    return const PageLoader();
+                    return const PageLoad();
                   } else if(snapshot.hasError){
                     return Text("Error: ${snapshot.error}");
                   } else{
@@ -115,13 +114,13 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                   height: height * 0.27,
                                   decoration: BoxDecoration(
                                     color: Color(kLightGrey.value),
-                                    image: const DecorationImage(
-                                        image: AssetImage(
-                                            'assets/images/jobs.png',
-
-                                        ),
-                                        opacity: 0.35
-                                    ),
+                                    // image: const DecorationImage(
+                                    //     image: AssetImage(
+                                    //         'assets/images/jobs.png',
+                                    //
+                                    //     ),
+                                    //     opacity: 0.35
+                                    // ),
                                     borderRadius: BorderRadius.all(Radius.circular(9.w))
                                   ),
                                   child: Column(

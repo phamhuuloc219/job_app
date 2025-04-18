@@ -6,16 +6,13 @@ import 'package:job_app/controllers/bookmark_provider.dart';
 import 'package:job_app/controllers/login_provider.dart';
 import 'package:job_app/models/response/bookmarks/all_bookmarks.dart';
 import 'package:job_app/views/common/app_bar.dart';
-import 'package:job_app/views/common/app_style.dart';
 import 'package:job_app/views/common/drawer/drawer_widget.dart';
-import 'package:job_app/views/common/pages_loader.dart';
-import 'package:job_app/views/common/reusable_text.dart';
+import 'package:job_app/views/common/page_load.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:job_app/views/common/styled_container.dart';
 import 'package:job_app/views/screens/auth/non_user.dart';
 import 'package:job_app/views/screens/auth/profile_screen.dart';
 import 'package:job_app/views/screens/bookmark/widgets/bookmark_title.dart';
-import 'package:job_app/views/screens/job/widgets/uploaded_title.dart';
 import 'package:provider/provider.dart';
 
 class BookmarksScreen extends StatefulWidget {
@@ -91,7 +88,7 @@ class _BookmarksScreenState extends State<BookmarksScreen> {
                             future: bookmarks,
                             builder: (context, snapshot) {
                               if(snapshot.connectionState == ConnectionState.waiting){
-                                return const PageLoader();
+                                return const PageLoad();
                               } else if (snapshot.hasError){
                                 return Text("Error: ${snapshot.error}");
                               } else{

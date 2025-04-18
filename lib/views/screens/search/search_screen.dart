@@ -4,7 +4,7 @@ import 'package:job_app/constants/app_constants.dart';
 import 'package:job_app/models/response/jobs/jobs_response.dart';
 import 'package:job_app/services/helpers/jobs_helper.dart';
 import 'package:job_app/views/common/loader.dart';
-import 'package:job_app/views/common/pages_loader.dart';
+import 'package:job_app/views/common/page_load.dart';
 import 'package:job_app/views/screens/job/widgets/job_vertical_title.dart';
 import 'package:job_app/views/screens/search/widget/custom_field.dart';
 
@@ -44,7 +44,7 @@ class _SearchScreenState extends State<SearchScreen> {
           future: JobsHelper.searchJobs(controller.text),
           builder:(context, snapshot) {
             if(snapshot.connectionState == ConnectionState.waiting){
-              return Center(child: PageLoader());
+              return Center(child: PageLoad());
             } else if(snapshot.hasError){
               return Text("Error: ${snapshot.error}");
             } else if(snapshot.data!.isEmpty){

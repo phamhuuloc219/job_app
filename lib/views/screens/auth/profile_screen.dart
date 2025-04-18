@@ -1,6 +1,4 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
 import 'package:job_app/controllers/login_provider.dart';
@@ -14,7 +12,7 @@ import 'package:job_app/views/common/drawer/drawer_widget.dart';
 import 'package:job_app/views/common/exports.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:job_app/views/common/height_spacer.dart';
-import 'package:job_app/views/common/pages_loader.dart';
+import 'package:job_app/views/common/page_load.dart';
 import 'package:job_app/views/common/styled_container.dart';
 import 'package:job_app/views/common/width_spacer.dart';
 import 'package:job_app/views/screens/auth/login_screen.dart';
@@ -87,7 +85,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           future: userProfile,
           builder: (context, snapshot) {
             if(snapshot.connectionState == ConnectionState.waiting){
-              return const PageLoader();
+              return const PageLoad();
             } else if(snapshot.hasError){
               return Text("Error: ${snapshot.error}");
             } else{

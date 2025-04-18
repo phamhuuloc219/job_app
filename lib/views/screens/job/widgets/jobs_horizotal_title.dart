@@ -26,11 +26,11 @@ class JobsHorizotalTitle extends StatelessWidget {
             width:  width * 0.7,
             // padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.w),
             decoration: BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage("assets/images/jobs.png"),
-                  fit: BoxFit.contain,
-                  opacity: 0.5
-              ),
+              // image: DecorationImage(
+              //     image: AssetImage("assets/images/jobs.png"),
+              //     fit: BoxFit.contain,
+              //     opacity: 0.5
+              // ),
               color: Color(kLightGrey.value),
             ),
             child: Padding(

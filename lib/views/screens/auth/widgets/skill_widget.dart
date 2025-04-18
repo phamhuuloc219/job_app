@@ -83,6 +83,7 @@ class _SkillWidgetState extends State<SkillWidget> {
               userSkills = getSkills();
               userskills.clear();
               skillsNotifier.setSkills = !skillsNotifier.addSkills;
+              userSkills = getSkills();
             },
         ) : SizedBox(
           height: 40.w,
