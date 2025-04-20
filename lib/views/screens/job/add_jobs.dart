@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:job_app/constants/app_constants.dart';
+import 'package:job_app/controllers/skills_provider.dart';
 import 'package:job_app/views/common/BackBtn.dart';
 import 'package:job_app/views/common/app_bar.dart';
 import 'package:job_app/views/common/custom_outline_btn.dart';
@@ -8,6 +10,7 @@ import 'package:job_app/views/common/custom_textfield.dart';
 import 'package:job_app/views/common/exports.dart';
 import 'package:job_app/views/common/height_spacer.dart';
 import 'package:job_app/views/common/styled_container.dart';
+import 'package:provider/provider.dart';
 
 class AddJobs extends StatefulWidget {
   const AddJobs({super.key});
@@ -182,6 +185,56 @@ class _AddJobsState extends State<AddJobs> {
                               ),
                             ),
                           ),
+                        ),
+
+                        // ImageUrl
+                        Consumer<SkillsNotifier>(
+                            builder: (context, skillsNotifier, child) {
+                              return Padding(
+                                padding: const EdgeInsets.only(bottom: 20.0),
+                                child: SizedBox(
+                                  width: width,
+                                  height: 60,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      SizedBox(
+                                        width: width * 0.8,
+                                        height: 60,
+                                        child: TextFormField(
+                                          controller: imageUrl,
+                                          decoration: InputDecoration(
+                                            label: Text('Image Url',style: TextStyle(fontSize: 12 ),),
+                                            hintText: "Image Url",
+                                            hintStyle: TextStyle(color: Color(kDarkGrey.value), fontSize: 13),
+                                            border: OutlineInputBorder(),
+                                            focusedBorder: OutlineInputBorder(
+                                              borderSide: BorderSide(color: Colors.blue, width: 2),
+                                            ),
+                                          ),
+                                          onChanged: (value) {
+                                            skillsNotifier.setLogoUrl(imageUrl.text);
+                                          },
+                                          validator: (value) {
+                                            if (value == null || value.isEmpty) {
+                                              return "Please fill the field";
+                                            }
+                                            return null;
+                                          },
+                                        ),
+                                      ),
+
+                                      GestureDetector(
+                                        onTap: () {
+                                          skillsNotifier.setLogoUrl(imageUrl.text);
+                                        },
+                                        child: Icon(Entypo.upload_to_cloud, size: 35, color: Color(kNewBlue.value),),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
                         ),
 
                         // Description

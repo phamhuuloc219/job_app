@@ -18,4 +18,13 @@ class SkillsNotifier extends ChangeNotifier{
     _addSkillsId = newState;
     notifyListeners();
   }
+
+  String _logoUrl = '';
+
+  String get logoUrl => _logoUrl;
+
+  void setLogoUrl(String newState){
+    _logoUrl = newState;
+    notifyListeners();
+  }
 }
