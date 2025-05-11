@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
+import 'package:get/get.dart';
 import 'package:job_app/constants/app_constants.dart';
 import 'package:job_app/controllers/skills_provider.dart';
 import 'package:job_app/views/common/BackBtn.dart';
@@ -42,7 +43,12 @@ class _AddJobsState extends State<AddJobs> {
           child: CustomAppBar(
             color: Color(kNewBlue.value),
               text: 'Upload Jobs',
-              child: BackBtn(),
+              child: GestureDetector(
+                onTap: () {
+                  Get.back();
+                },
+                child: const Icon(AntDesign.leftcircleo, color: Color(0xFFFFFFFF),),
+              ),
           ),
       ),
       body: Stack(

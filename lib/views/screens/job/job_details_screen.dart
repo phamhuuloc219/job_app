@@ -16,6 +16,7 @@ import 'package:job_app/views/common/exports.dart';
 import 'package:job_app/views/common/height_spacer.dart';
 import 'package:job_app/views/common/page_load.dart';
 import 'package:job_app/views/common/styled_container.dart';
+import 'package:job_app/views/screens/auth/login_screen.dart';
 import 'package:provider/provider.dart';
 
 class JobDetailsScreen extends StatefulWidget {
@@ -258,11 +259,19 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                               alignment: Alignment.bottomCenter,
                               child: Padding(
                                 padding: EdgeInsets.only(bottom: 20.0.w),
-                                child: CustomOutlineBtn(
+                                child: loginNotifier.loggedIn == false
+                                ? CustomOutlineBtn(
+                                  onTap: () {
+                                    Get.to(()=> LoginScreen());
+                                  },
+                                  text: "Please Login",
+                                  height: height * 0.06,
+                                  color: Color(kLight.value),
+                                  color2: Color(kOrange.value),
+                                )
+                                : CustomOutlineBtn(
                                   onTap: () {},
-                                  text: !loginNotifier.loggedIn
-                                      ? "Please Login"
-                                      : "Apply",
+                                  text: "Apply",
                                   height: height * 0.06,
                                   color: Color(kLight.value),
                                   color2: Color(kOrange.value),

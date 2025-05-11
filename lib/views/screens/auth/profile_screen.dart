@@ -79,7 +79,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
             text: loginNotifier.loggedIn ? username.toUpperCase() : '',
             child: Padding(
               padding: EdgeInsets.all(12.0.h),
-              child: widget.drawer == false ? BackBtn() : DrawerWidget(color: Color(kDark.value)),
+              child: widget.drawer == false
+                  ? GestureDetector(
+                    onTap: () {
+                      Get.back();
+                    },
+                    child: const Icon(AntDesign.leftcircleo, color: Color(0xFFFFFFFF),),
+                  )
+                  : DrawerWidget(color: Color(kLight.value)),
             )
         ),
       ),
@@ -144,7 +151,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                               softWrap: true,
                                               maxLines: null,
                                               overflow: TextOverflow.visible,
-                                              style: TextStyle(fontSize: 12, color: Color(kDarkGrey.value), fontWeight:  FontWeight.w400),
+                                              style: TextStyle(fontSize: 12, color: Color(kDarkGrey.value), fontWeight:  FontWeight.bold),
                                             ),
                                             Text(
                                               profile.email ?? 'User Email',

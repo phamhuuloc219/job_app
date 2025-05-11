@@ -33,25 +33,6 @@ class _BookmarksScreenState extends State<BookmarksScreen> {
         child: CustomAppBar(
           color: Color(kNewBlue.value),
           text: !loginNotifier.loggedIn ? "" : "Bookmarks",
-            actions: [
-              Padding(
-                padding: EdgeInsets.all(12.0.h),
-                child: GestureDetector(
-                  onTap: () {
-                    Get.to(()=> ProfileScreen(drawer: false));
-                  },
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.all(Radius.circular(50)),
-                    child: CachedNetworkImage(
-                      height: 30.w,
-                      width: 30.w,
-                      imageUrl: 'https://raw.githubusercontent.com/phamhuuloc219/job_app/refs/heads/main/assets/images/user.png',
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-              )
-            ],
             child: Padding(
               padding: EdgeInsets.all(12.0.h),
               child: DrawerWidget(color: Color(kLight.value)),

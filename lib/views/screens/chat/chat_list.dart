@@ -22,31 +22,15 @@ class _ChatListState extends State<ChatList> {
   Widget build(BuildContext context) {
     var loginNotifier = Provider.of<LoginNotifier>(context);
     return Scaffold(
+      backgroundColor: Color(kNewBlue.value),
       appBar:PreferredSize(
         preferredSize: Size.fromHeight(50.h),
         child: CustomAppBar(
-            actions: [
-              Padding(
-                padding: EdgeInsets.all(12.0.h),
-                child: GestureDetector(
-                  onTap: () {
-                    Get.to(()=> ProfileScreen(drawer: false));
-                  },
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.all(Radius.circular(50)),
-                    child: CachedNetworkImage(
-                      height: 30.w,
-                      width: 30.w,
-                      imageUrl: 'https://raw.githubusercontent.com/phamhuuloc219/job_app/refs/heads/main/assets/images/user.png',
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-              )
-            ],
+            color: Color(kNewBlue.value),
+            text: !loginNotifier.loggedIn ? "" : "Chat",
             child: Padding(
               padding: EdgeInsets.all(12.0.h),
-              child: DrawerWidget(color: Color(kDark.value)),
+              child: DrawerWidget(color: Color(kLight.value)),
             )
         ),
       ),
@@ -55,7 +39,7 @@ class _ChatListState extends State<ChatList> {
           : Center(
             child: ReusableText(
                 text: "Chat Screen",
-                style: appStyle(30, Color(kDark.value), FontWeight.bold)
+                style: appStyle(30, Color(kLight.value), FontWeight.bold)
             ),
           ),
     );

@@ -19,24 +19,13 @@ class NonUser extends StatelessWidget {
     return buildStyleContainer(
       context,
       Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          ClipRRect(
-            borderRadius: BorderRadius.all(Radius.circular(99.w)),
-            child: CachedNetworkImage(
-              imageUrl: imageUrl,
-              fit: BoxFit.cover,
-              width: 70.w,
-              height: 70.w,
-            ),
-          ),
-
-          const HeightSpacer(size: 20),
-
           ReusableText(
               text: "To access content please login",
-              style: appStyle(12, Color(kDarkGrey.value), FontWeight.normal)
+              style: appStyle(16, Color(kLight.value), FontWeight.normal)
           ),
-
+          HeightSpacer(size: 50),
           Padding(
               padding: EdgeInsets.symmetric(
                   horizontal: 20.w,
@@ -46,7 +35,7 @@ class NonUser extends StatelessWidget {
               height: 40.h,
               width: width,
               text: "Proceed to Login",
-              color: Color(kOrange.value),
+              color: Color(kLight.value),
               onTap: () {
                 Get.to(()=> LoginScreen());
               },
