@@ -18,6 +18,7 @@ class GetJobRes {
     final String imageUrl;
     final String companyId;
     final int v;
+    final CategoryId categoryId;
 
     GetJobRes({
         required this.id,
@@ -33,6 +34,7 @@ class GetJobRes {
         required this.imageUrl,
         required this.companyId,
         required this.v,
+        required this.categoryId,
     });
 
     factory GetJobRes.fromJson(Map<String, dynamic> json) => GetJobRes(
@@ -49,6 +51,7 @@ class GetJobRes {
         imageUrl: json["imageUrl"],
         companyId: json["companyId"],
         v: json["__v"],
+        categoryId: CategoryId.fromJson(json["categoryId"]),
     );
 
     Map<String, dynamic> toJson() => {
@@ -65,5 +68,26 @@ class GetJobRes {
         "imageUrl": imageUrl,
         "companyId": companyId,
         "__v": v,
+        "categoryId": categoryId.toJson(),
+    };
+}
+
+class CategoryId {
+    final String id;
+    final String title;
+
+    CategoryId({
+        required this.id,
+        required this.title,
+    });
+
+    factory CategoryId.fromJson(Map<String, dynamic> json) => CategoryId(
+        id: json["_id"],
+        title: json["title"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "_id": id,
+        "title": title,
     };
 }

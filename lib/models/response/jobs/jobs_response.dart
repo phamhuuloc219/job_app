@@ -17,7 +17,8 @@ class JobsResponse {
     final List<String> requirement;
     final String imageUrl;
     final int v;
-    final String? companyId;
+    final String companyId;
+    final String categoryId;
 
     JobsResponse({
         required this.id,
@@ -31,8 +32,9 @@ class JobsResponse {
         required this.hiring,
         required this.requirement,
         required this.imageUrl,
+        required this.companyId,
         required this.v,
-        this.companyId,
+        required this.categoryId,
     });
 
     factory JobsResponse.fromJson(Map<String, dynamic> json) => JobsResponse(
@@ -47,8 +49,9 @@ class JobsResponse {
         hiring: json["hiring"],
         requirement: List<String>.from(json["requirement"].map((x) => x)),
         imageUrl: json["imageUrl"],
-        v: json["__v"],
         companyId: json["companyId"],
+        v: json["__v"],
+        categoryId: json["categoryId"],
     );
 
     Map<String, dynamic> toJson() => {
@@ -63,7 +66,8 @@ class JobsResponse {
         "hiring": hiring,
         "requirement": List<dynamic>.from(requirement.map((x) => x)),
         "imageUrl": imageUrl,
-        "__v": v,
         "companyId": companyId,
+        "__v": v,
+        "categoryId": categoryId,
     };
 }
