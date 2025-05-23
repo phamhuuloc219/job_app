@@ -7,7 +7,7 @@ class PageLoader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Center(child: Image.asset("assets/images/jobLoader.gif")),
+      body: Center(child: Image.asset("assets/images/loader.gif")),
     );
   }
 }

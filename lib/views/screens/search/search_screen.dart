@@ -18,6 +18,11 @@ class SearchScreen extends StatefulWidget {
 
 class _SearchScreenState extends State<SearchScreen> {
   final TextEditingController controller = TextEditingController();
+
+  void _performSearch() {
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,32 +34,28 @@ class _SearchScreenState extends State<SearchScreen> {
           borderRadius: BorderRadius.all(Radius.circular(25.w)),
           child: CustomField(
             controller: controller,
-            onTap: () {
-              setState(() {
-
-              });
-            },
+            onSearch: _performSearch,
           ),
         ),
       ),
-      body: controller.text.isNotEmpty ?
-      Padding(
+      body: controller.text.isNotEmpty
+          ? Padding(
         padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.w),
         child: FutureBuilder<List<JobsResponse>>(
           future: JobsHelper.searchJobs(controller.text),
-          builder:(context, snapshot) {
-            if(snapshot.connectionState == ConnectionState.waiting){
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(child: PageLoad());
-            } else if(snapshot.hasError){
+            } else if (snapshot.hasError) {
               return Text("Error: ${snapshot.error}");
-            } else if(snapshot.data!.isEmpty){
+            } else if (snapshot.data!.isEmpty) {
               return NoSearchResults(text: "No Jobs Available");
-            } else{
+            } else {
               final jobs = snapshot.data;
 
               return ListView.builder(
                 itemCount: jobs!.length,
-                scrollDirection:  Axis.vertical,
+                scrollDirection: Axis.vertical,
                 itemBuilder: (context, index) {
                   var job = jobs[index];
                   return JobVerticalTitle(job: job);
@@ -62,8 +63,9 @@ class _SearchScreenState extends State<SearchScreen> {
               );
             }
           },
-        ),)
-      : NoSearchResults(text: 'Start Searching...'),
+        ),
+      )
+          : NoSearchResults(text: 'Start Searching...'),
     );
   }
 }

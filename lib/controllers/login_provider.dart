@@ -56,6 +56,13 @@ class LoginNotifier extends ChangeNotifier {
 
       } else{
         loader == false;
+        // ScaffoldMessenger.of(Get.context!).showSnackBar(
+        //   SnackBar(
+        //     content: const Text('Failed to login, please check your credentials'),
+        //     backgroundColor: Color(kDark.value),
+        //     behavior: SnackBarBehavior.floating,
+        //   ),
+        // );
         Get.snackbar(
             "Failed to Login",
             "Please check your credentials",

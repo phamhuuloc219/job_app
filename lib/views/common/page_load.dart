@@ -7,7 +7,8 @@ class PageLoad extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Center(child: Image.asset("assets/images/loader.gif")),
+      body: //Center(child: CircularProgressIndicator()),
+      Center(child: Image.asset("assets/images/loader.gif")),
     );
   }
 }

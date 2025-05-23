@@ -33,7 +33,8 @@ class _JobCategoryState extends State<JobCategory> {
 
   Future<void> fetchCategoriesFromAPI() async {
     try {
-      List<JobCategoriesResponse> fetchedCategories = await JobsHelper.getJobCategories();
+      List<JobCategoriesResponse> fetchedCategories =
+          await JobsHelper.getJobCategories();
       setState(() {
         categories = [
           JobCategoriesResponse(id: "All", title: "All", description: "", v: 1),
@@ -63,13 +64,13 @@ class _JobCategoryState extends State<JobCategory> {
     }
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const SizedBox(height: 5,),
+        const SizedBox(
+          height: 5,
+        ),
         SizedBox(
           height: 30.h,
           child: ListView.builder(
@@ -83,105 +84,126 @@ class _JobCategoryState extends State<JobCategory> {
                     setState(() {
                       selectedCategoryId = categories[index].id;
                     });
-                    fetchJobsFromAPI(); // Gọi API ngay sau khi cập nhật danh mục
+                    fetchJobsFromAPI();
                   },
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(
-                      selectedCategoryId == categories[index].id ? Color(kDarkPurple.value) : Color(kDarkGrey.value),
+                      selectedCategoryId == categories[index].id
+                          ? Color(kDarkPurple.value)
+                          : Color(kLightGrey.value),
                     ),
                   ),
-                  child: Text(categories[index].title, style: TextStyle(color: Color(kLight.value))),
+                  child: Text(categories[index].title,
+                      style: TextStyle(color: Color(kLight.value))),
                 ),
-
               );
             },
           ),
         ),
-
-        const SizedBox(height: 5,),
-
+        const SizedBox(
+          height: 5,
+        ),
         Expanded(
           child: isLoading
               ? const PageLoad()
               : ListView.builder(
-            itemCount: jobs.length,
-            itemBuilder: (context, index) {
-              JobsResponse job = jobs[index];
-              return FittedBox(
-                child: GestureDetector(
-                  onTap: () {
-                    Get.to(() => JobDetailsScreen(id: job.id, title: job.title, companyName: job.companyName));
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.only(bottom: 8.0),
-                    child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.w),
-                      height: height * 0.11,
-                      width: width,
-                      decoration: BoxDecoration(
-                        color: const Color(0x09000000),
-                        borderRadius: BorderRadius.all(Radius.circular(9.w)),
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                children: [
-                                  CircleAvatar(
-                                    radius: 30,
-                                    backgroundImage: NetworkImage(job.imageUrl),
-                                  ),
-                                  SizedBox(width: 10.w),
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      ReusableText(
-                                        text: job.companyName,
-                                        style: appStyle(12.5, Color(kDark.value), FontWeight.w500),
-                                      ),
-                                      SizedBox(
-                                        width: width * 0.5,
-                                        child: ReusableText(
-                                          text: job.title,
-                                          style: appStyle(12.5, Color(kDarkGrey.value), FontWeight.w500),
+                  itemCount: jobs.length,
+                  itemBuilder: (context, index) {
+                    JobsResponse job = jobs[index];
+                    return FittedBox(
+                      child: GestureDetector(
+                        onTap: () {
+                          Get.to(() => JobDetailsScreen(
+                              id: job.id,
+                              title: job.title,
+                              companyName: job.companyName));
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.only(bottom: 8.0),
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 10.w, vertical: 10.w),
+                            height: height * 0.11,
+                            width: width,
+                            decoration: BoxDecoration(
+                              color: const Color(0x09000000),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(9.w)),
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        CircleAvatar(
+                                          radius: 30,
+                                          backgroundImage:
+                                              NetworkImage(job.imageUrl),
                                         ),
-                                      ),
-                                      ReusableText(
-                                        text: "${job.salary} per ${job.period}",
-                                        style: appStyle(12.5, Color(kDarkGrey.value), FontWeight.w500),
-                                      ),
-                                    ],
-                                  ),
-                                  job.hiring
-                                      ? CustomOutlineBtn(
-                                    width: 90.w,
-                                    height: 36.h,
-                                    text: "Apply",
-                                    color: Color(kLightBlue.value),
-                                  )
-                                      : CustomOutlineBtn(
-                                    width: 90.w,
-                                    height: 36.h,
-                                    text: "View",
-                                    color: Color(kLightBlue.value),
-                                  )
-                                ],
-                              ),
-                            ],
+                                        SizedBox(width: 10.w),
+                                        Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            ReusableText(
+                                              text: job.companyName,
+                                              style: appStyle(
+                                                  12.5,
+                                                  Color(kDark.value),
+                                                  FontWeight.w500),
+                                            ),
+                                            SizedBox(
+                                              width: width * 0.5,
+                                              child: ReusableText(
+                                                text: job.title,
+                                                style: appStyle(
+                                                    12.5,
+                                                    Color(kDarkGrey.value),
+                                                    FontWeight.w500),
+                                              ),
+                                            ),
+                                            ReusableText(
+                                              text:
+                                                  "${job.salary} per ${job.period}",
+                                              style: appStyle(
+                                                  12.5,
+                                                  Color(kDarkGrey.value),
+                                                  FontWeight.w500),
+                                            ),
+                                          ],
+                                        ),
+                                        job.hiring
+                                            ? CustomOutlineBtn(
+                                                width: 90.w,
+                                                height: 36.h,
+                                                text: "Apply",
+                                                color: Color(kLightBlue.value),
+                                              )
+                                            : CustomOutlineBtn(
+                                                width: 90.w,
+                                                height: 36.h,
+                                                text: "View",
+                                                color: Color(kLightBlue.value),
+                                              )
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
-                        ],
+                        ),
                       ),
-                    ),
-                  ),
+                    );
+                  },
                 ),
-              );
-            },
-          ),
         ),
       ],
     );

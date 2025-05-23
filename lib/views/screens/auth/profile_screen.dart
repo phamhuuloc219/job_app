@@ -36,7 +36,8 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   late Future<ProfileRes> userProfile;
   String username = '';
-  String imageUrl = 'https://github.com/phamhuuloc219/job_app/blob/main/assets/images/user.png';
+  String imageUrl =
+      'https://github.com/phamhuuloc219/job_app/blob/main/assets/images/user.png';
 
   @override
   void initState() {
@@ -45,25 +46,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
     getName();
   }
 
-  getProfile() async{
+  getProfile() async {
     var loginNotifier = Provider.of<LoginNotifier>(context, listen: false);
-    if(widget.drawer == false && loginNotifier.loggedIn == true){
+    if (widget.drawer == false && loginNotifier.loggedIn == true) {
       userProfile = AuthHelper.getProfile();
-    } else if(widget.drawer == true && loginNotifier.loggedIn == true){
+    } else if (widget.drawer == true && loginNotifier.loggedIn == true) {
       userProfile = AuthHelper.getProfile();
-    } else{}
+    } else {}
   }
 
   getName() async {
     var loginNotifier = Provider.of<LoginNotifier>(context, listen: false);
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    if(widget.drawer == false && loginNotifier.loggedIn == true){
+    if (widget.drawer == false && loginNotifier.loggedIn == true) {
       username = prefs.getString('username') ?? "";
       userProfile = AuthHelper.getProfile();
-    } else if(widget.drawer == true && loginNotifier.loggedIn == true){
+    } else if (widget.drawer == true && loginNotifier.loggedIn == true) {
       username = prefs.getString('username') ?? "";
       userProfile = AuthHelper.getProfile();
-    } else{}
+    } else {}
   }
 
   @override
@@ -72,235 +73,208 @@ class _ProfileScreenState extends State<ProfileScreen> {
     var loginNotifier = Provider.of<LoginNotifier>(context);
     return Scaffold(
       backgroundColor: Color(kNewBlue.value),
-      appBar:PreferredSize(
+      appBar: PreferredSize(
         preferredSize: Size.fromHeight(50.h),
         child: CustomAppBar(
-          color: Color(kNewBlue.value),
+            color: Color(kNewBlue.value),
             text: loginNotifier.loggedIn ? username.toUpperCase() : '',
             child: Padding(
               padding: EdgeInsets.all(12.0.h),
               child: widget.drawer == false
                   ? GestureDetector(
-                    onTap: () {
-                      Get.back();
-                    },
-                    child: const Icon(AntDesign.leftcircleo, color: Color(0xFFFFFFFF),),
-                  )
+                      onTap: () {
+                        Get.back();
+                      },
+                      child: const Icon(
+                        AntDesign.leftcircleo,
+                        color: Color(0xFFFFFFFF),
+                      ),
+                    )
                   : DrawerWidget(color: Color(kLight.value)),
-            )
-        ),
+            )),
       ),
       body: loginNotifier.loggedIn == false
           ? const NonUser()
           : Stack(
-            children: [
-              Positioned(
-                top: 0,
-                left: 0,
-                bottom: 0,
-                right: 0,
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20),
+              children: [
+                Positioned(
+                  top: 0,
+                  left: 0,
+                  bottom: 0,
+                  right: 0,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(20),
+                        topRight: Radius.circular(20),
+                      ),
+                      color: Color(kLight.value),
                     ),
-                    color: Color(kLight.value),
-                  ),
-                  child: FutureBuilder(
-                    future: userProfile,
-                    builder: (context, snapshot) {
-                      if(snapshot.connectionState == ConnectionState.waiting){
-                        return const PageLoad();
-                      } else if(snapshot.hasError){
-                        return Text("Error: ${snapshot.error}");
-                      } else{
-                        var profile = snapshot.data;
-                        return buildStyleContainer(
-                          context,
-                          ListView(
-                            padding: EdgeInsets.symmetric(horizontal: 20.w),
-                            children: [
-                              HeightSpacer(size: 20),
-                              Container(
-                                padding: EdgeInsets.symmetric(horizontal: 12.w),
-                                width: width,
-                                height: height * 0.07,
-                                decoration: BoxDecoration(
-                                  color: Color(0xFFEFFFFC),
-                                  borderRadius: BorderRadius.all(Radius.circular(12.w)),
-                                ),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        CircularAvatar(
-                                          image: profile!.profile ?? imageUrl,
-                                          w: 50,
-                                          h: 50,
-                                        ),
-                                        const WidthSpacer(width: 5),
-
-                                        Column(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              profile.username ?? 'Username',
-                                              softWrap: true,
-                                              maxLines: null,
-                                              overflow: TextOverflow.visible,
-                                              style: TextStyle(fontSize: 12, color: Color(kDarkGrey.value), fontWeight:  FontWeight.bold),
-                                            ),
-                                            Text(
-                                              profile.email ?? 'User Email',
-                                              softWrap: true,
-                                              maxLines: null,
-                                              overflow: TextOverflow.visible,
-                                              style: TextStyle(fontSize: 12, color: Color(kDarkGrey.value), fontWeight:  FontWeight.w400),
-                                            ),
-                                          ],
-                                        ),
-                                        const WidthSpacer(width: 10),
-
-                                        GestureDetector(
-                                          onTap: () {},
-                                          child: const Icon(Feather.edit),
-                                        ),
-
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              const HeightSpacer(size: 20),
-
-                              ReusableText(
-                                  text: 'Profile',
-                                  style: appStyle(14, Color(kDark.value), FontWeight.w600)
-                              ),
-                              const HeightSpacer(size: 20),
-
-                              Stack(
-                                children: [
-                                  Container(
-                                    width: width,
-                                    height: height * 0.12,
-                                    color: Color(kLightGrey.value),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Container(
-                                          margin: EdgeInsets.only(left: 12.w),
-                                          width: 60.w,
-                                          height: 70.h,
-                                          color: Color(kLight.value),
-                                          child: Icon(
-                                            FontAwesome5Regular.file_pdf,
-                                            color: Colors.red,
-                                            size: 40,
+                    child: FutureBuilder(
+                      future: userProfile,
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const PageLoad();
+                        } else if (snapshot.hasError) {
+                          return Text("Error: ${snapshot.error}");
+                        } else {
+                          var profile = snapshot.data;
+                          return buildStyleContainer(
+                            context,
+                            ListView(
+                              padding: EdgeInsets.symmetric(horizontal: 20.w),
+                              children: [
+                                HeightSpacer(size: 20),
+                                Container(
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 12.w),
+                                  width: width,
+                                  height: height * 0.07,
+                                  decoration: BoxDecoration(
+                                    color: Color(0xFFEFFFFC),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(12.w)),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          CircularAvatar(
+                                            image: profile!.profile ?? imageUrl,
+                                            w: 50,
+                                            h: 50,
                                           ),
-                                        ),
-                                        Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          children: [
-                                            ReusableText(
-                                              text: 'Upload Your Resume',
-                                              style: appStyle(
-                                                  16,
-                                                  Color(kDark.value),
-                                                  FontWeight.w500
+                                          const WidthSpacer(width: 5),
+                                          Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                profile.username ?? 'Username',
+                                                softWrap: true,
+                                                maxLines: null,
+                                                overflow: TextOverflow.visible,
+                                                style: TextStyle(
+                                                    fontSize: 12,
+                                                    color:
+                                                        Color(kDarkGrey.value),
+                                                    fontWeight:
+                                                        FontWeight.bold),
                                               ),
-                                            ),
-                                            ReusableText(
-                                              text: 'Please make sure to upload your resume in PDF format',
-                                              style: appStyle(
-                                                  8,
-                                                  Color(kDarkGrey.value),
-                                                  FontWeight.w500
+                                              Text(
+                                                profile.email ?? 'User Email',
+                                                softWrap: true,
+                                                maxLines: null,
+                                                overflow: TextOverflow.visible,
+                                                style: TextStyle(
+                                                    fontSize: 12,
+                                                    color:
+                                                        Color(kDarkGrey.value),
+                                                    fontWeight:
+                                                        FontWeight.w400),
                                               ),
-                                            ),
-                                          ],
-                                        ),
-                                        const WidthSpacer(width: 1)
-                                      ],
-                                    ),
+                                            ],
+                                          ),
+                                          const WidthSpacer(width: 10),
+                                          GestureDetector(
+                                            onTap: () {},
+                                            child: const Icon(Feather.edit),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
                                   ),
-                                  Positioned(
-                                    right: 0.w,
-                                    child: EditButton(
-                                        onTap: () {}
-                                    ),
-                                  )
-                                ],
-                              ),
-                              const HeightSpacer(size: 20),
-
-                              SkillWidget(),
-                              const HeightSpacer(size: 20),
-
-                              !profile.isCompany
-                                  ? Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  ReusableText(
-                                      text: 'Company Section',
-                                      style: appStyle(14, Color(kDark.value), FontWeight.w600)
-                                  ),
-                                  HeightSpacer(size: 20),
-
-                                  CustomOutlineBtn(
-                                    height: 40.h,
-                                    width: width,
-                                    text: "Add Jobs",
-                                    color: Color(kOrange.value),
-                                    onTap: () {
-                                      Get.to(()=> const AddJobs());
-                                    },
-                                  ),
-                                  HeightSpacer(size: 20),
-
-                                  CustomOutlineBtn(
-                                    height: 40.h,
-                                    width: width,
-                                    text: "Update Information",
-                                    color: Color(kOrange.value),
-                                    onTap: () {},
-                                  ),
-                                ],
-                              )
-                                  : CustomOutlineBtn(
-                                height: 40.h,
-                                width: width,
-                                text: "Apply to become an company",
-                                color: Color(kOrange.value),
-                                onTap: () {},
-                              ),
-                              HeightSpacer(size: 20),
-
-                              CustomOutlineBtn(
-                                height: 40.h,
-                                width: width,
-                                text: "Proceed to Logout",
-                                color: Color(kOrange.value),
-                                onTap: () {
-                                  zoomNotifier.currentIndex = 0;
-                                  loginNotifier.logout();
-                                  Get.offAll(()=> LoginScreen());
-                                },
-                              ),
-                            ],
-                          ),
-                        );
-                      }
-                    },
+                                ),
+                                const HeightSpacer(size: 20),
+                                // ReusableText(
+                                //     text: 'Profile',
+                                //     style: appStyle(14, Color(kDark.value),
+                                //         FontWeight.w600)),
+                                 const HeightSpacer(size: 20),
+                                // Stack(
+                                //   children: [
+                                //     Container(
+                                //       width: width,
+                                //       height: height * 0.12,
+                                //       color: Color(kLightGrey.value),
+                                //       child: Row(
+                                //         mainAxisAlignment:
+                                //             MainAxisAlignment.spaceBetween,
+                                //         children: [
+                                //           Container(
+                                //             margin: EdgeInsets.only(left: 12.w),
+                                //             width: 60.w,
+                                //             height: 70.h,
+                                //             color: Color(kLight.value),
+                                //             child: Icon(
+                                //               FontAwesome5Regular.file_pdf,
+                                //               color: Colors.red,
+                                //               size: 40,
+                                //             ),
+                                //           ),
+                                //           Column(
+                                //             crossAxisAlignment:
+                                //                 CrossAxisAlignment.start,
+                                //             mainAxisAlignment:
+                                //                 MainAxisAlignment.center,
+                                //             children: [
+                                //               ReusableText(
+                                //                 text: 'Upload Your Resume',
+                                //                 style: appStyle(
+                                //                     16,
+                                //                     Color(kDark.value),
+                                //                     FontWeight.w500),
+                                //               ),
+                                //               ReusableText(
+                                //                 text:
+                                //                     'Please make sure to upload your resume in PDF format',
+                                //                 style: appStyle(
+                                //                     8,
+                                //                     Color(kDarkGrey.value),
+                                //                     FontWeight.w500),
+                                //               ),
+                                //             ],
+                                //           ),
+                                //           const WidthSpacer(width: 1)
+                                //         ],
+                                //       ),
+                                //     ),
+                                //     Positioned(
+                                //       right: 0.w,
+                                //       child: EditButton(onTap: () {}),
+                                //     )
+                                //   ],
+                                // ),
+                                // const HeightSpacer(size: 20),
+                                SkillWidget(),
+                                const HeightSpacer(size: 20),
+                                HeightSpacer(size: 440),
+                                CustomOutlineBtn(
+                                  height: 40.h,
+                                  width: width,
+                                  text: "Proceed to Logout",
+                                  color: Color(kOrange.value),
+                                  onTap: () {
+                                    zoomNotifier.currentIndex = 0;
+                                    loginNotifier.logout();
+                                    Get.offAll(() => LoginScreen());
+                                  },
+                                ),
+                              ],
+                            ),
+                          );
+                        }
+                      },
+                    ),
                   ),
                 ),
-              ),
-            ],
-          ),
+              ],
+            ),
     );
   }
 }

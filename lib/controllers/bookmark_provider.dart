@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:job_app/constants/app_constants.dart';
 import 'package:job_app/models/response/bookmarks/all_bookmarks.dart';
 import 'package:job_app/services/helpers/book_helper.dart';
+import 'package:job_app/views/screens/bookmark/bookmarks_screen.dart';
 
 class BookNotifier extends ChangeNotifier{
   late Future<List<AllBookMarks>> bookmarks;
@@ -51,12 +52,19 @@ class BookNotifier extends ChangeNotifier{
   deleteBookMark(String jobId) {
     BookMarkHelper.deleteBookMark(jobId).then((value) {
       if(value){
-        Get.snackbar(
-          'Bookmark successfully deleted',
-          'Visit the bookmarks screen to see the changes',
-          colorText: Color(kLight.value),
-          backgroundColor: Color(kOrange.value),
-          icon: const Icon(Icons.bookmark_remove_outlined)
+        ScaffoldMessenger.of(Get.context!).showSnackBar(
+          SnackBar(
+            content: const Text('Bookmark deleted successfully'),
+            backgroundColor: Color(kDark.value),
+            behavior: SnackBarBehavior.floating,
+            action: SnackBarAction(
+              label: 'View',
+              textColor: Color(kLight.value),
+              onPressed: () {
+                Get.to(()=> BookmarksScreen());
+              },
+            ),
+          ),
         );
       }
       isBookmark = false;
@@ -69,72 +77,3 @@ class BookNotifier extends ChangeNotifier{
 
   }
 }
-
-// class BookNotifier extends ChangeNotifier {
-//   late Future<List<AllBookMarks>> bookmarks;
-//   final Map<String, bool> _bookmarksStatus = {}; // Lưu trạng thái bookmark theo jobId
-//   final Map<String, String> _bookmarksIds = {};   // Lưu bookmarkId theo jobId
-//
-//   bool isBookmarked(String jobId) => _bookmarksStatus[jobId] ?? false;
-//   String getBookmarkId(String jobId) => _bookmarksIds[jobId] ?? '';
-//
-//   Future<void> addBookMark(String jobId, String model) async {
-//     try {
-//       // Cập nhật trạng thái ngay lập tức
-//       _bookmarksStatus[jobId] = true;
-//       notifyListeners();
-//
-//       final bookmark = await BookMarkHelper.addBookMark(model);
-//       _bookmarksIds[jobId] = bookmark.bookmarkId;
-//       notifyListeners();
-//     } catch (e) {
-//       // Revert nếu có lỗi
-//       _bookmarksStatus.remove(jobId);
-//       _bookmarksIds.remove(jobId);
-//       notifyListeners();
-//       rethrow;
-//     }
-//   }
-//
-//   Future<void> deleteBookMark(String jobId) async {
-//     final bookmarkId = _bookmarksIds[jobId];
-//     if (bookmarkId == null) return;
-//
-//     try {
-//       // Cập nhật ngay lập tức
-//       _bookmarksStatus.remove(jobId);
-//       _bookmarksIds.remove(jobId);
-//       notifyListeners();
-//
-//       await BookMarkHelper.deleteBookMark(bookmarkId);
-//     } catch (e) {
-//       // Khôi phục nếu có lỗi
-//       _bookmarksStatus[jobId] = true;
-//       _bookmarksIds[jobId] = bookmarkId;
-//       notifyListeners();
-//       rethrow;
-//     }
-//   }
-//
-//   Future<void> getBookMark(String jobId) async {
-//     try {
-//       final bookmark = await BookMarkHelper.getBookMark(jobId);
-//       if (bookmark != null) {
-//         _bookmarksStatus[jobId] = true;
-//         _bookmarksIds[jobId] = bookmark.bookmarkId;
-//       } else {
-//         _bookmarksStatus.remove(jobId);
-//         _bookmarksIds.remove(jobId);
-//       }
-//       notifyListeners();
-//     } catch (e) {
-//       // Xử lý lỗi nếu cần
-//       debugPrint('Error checking bookmark: $e');
-//     }
-//   }
-//
-//   getBookMarks() {
-//     bookmarks = BookMarkHelper.getAllBookMark();
-//   }
-//
-// }
