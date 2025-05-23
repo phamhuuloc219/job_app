@@ -5,6 +5,8 @@ class Config {
   static const String jobs = "/api/jobs";
   static const String search = "/api/jobs/search";
   static const String job = "/api/jobs";
+  static const String jobCategory = "/api/jobs/category";
+  static const String jobCategories = "/api/jobcategories";
   static const String profileUrl = "/api/users";
   static const String skillsUrl = "/api/users/skills";
   static const String getProfileUrl = "/api/users";

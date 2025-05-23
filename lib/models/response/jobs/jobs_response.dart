@@ -51,7 +51,7 @@ class JobsResponse {
         imageUrl: json["imageUrl"],
         companyId: json["companyId"],
         v: json["__v"],
-        categoryId: json["categoryId"],
+        categoryId: json["categoryId"] is Map<String, dynamic> ? json["categoryId"]["_id"] : json["categoryId"],
     );
 
     Map<String, dynamic> toJson() => {

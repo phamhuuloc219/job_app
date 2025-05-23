@@ -59,7 +59,7 @@ class JobsHorizotalTitle extends StatelessWidget {
                       )
                     ],
                   ),
-                  HeightSpacer(size: 15),
+                  HeightSpacer(size: 10),
                   ReusableText(
                       text: job.title,
                       style: appStyle(18, Color(kDark.value), FontWeight.w600)

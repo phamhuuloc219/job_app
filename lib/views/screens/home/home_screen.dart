@@ -66,8 +66,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Search \n Find & Apply",
-                    style: appStyle(38, Color(kDark.value), FontWeight.bold),),
+                    "NTU Student Job Market",
+                    style: appStyle(24, Color(kDark.value), FontWeight.bold),),
                   SizedBox(height: 20.h,),
                   SearchWidget(
                     onTap: () {
