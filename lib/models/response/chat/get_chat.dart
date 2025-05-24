@@ -8,7 +8,6 @@ List<GetChats> getChatsFromJson(String str) {
 String getChatsToJson(List<GetChats> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-
 class GetChats {
     final String id;
     final String chatName;
@@ -32,10 +31,13 @@ class GetChats {
         id: json["_id"],
         chatName: json["chatName"],
         isGroupChat: json["isGroupChat"],
-        users: List<Sender>.from(json["users"].map((x) => Sender.fromJson(x))),
+        users: List<Sender>.from(
+            json["users"].map((x) => Sender.fromJson(x))),
         createdAt: DateTime.parse(json["createdAt"]),
         updatedAt: DateTime.parse(json["updatedAt"]),
-        latestMessage: LatestMessage.fromJson(json["latestMessage"]),
+        latestMessage: (json["latestMessage"] is Map<String, dynamic>)
+            ? LatestMessage.fromJson(json["latestMessage"])
+            : LatestMessage.empty(),
     );
 
     Map<String, dynamic> toJson() => {
@@ -65,11 +67,21 @@ class LatestMessage {
     });
 
     factory LatestMessage.fromJson(Map<String, dynamic> json) => LatestMessage(
-        id: json["_id"],
-        sender: Sender.fromJson(json["sender"]),
-        content: json["content"],
-        receiver: json["receiver"],
-        chat: json["chat"],
+        id: json["_id"] ?? '',
+        sender: (json["sender"] is Map<String, dynamic>)
+            ? Sender.fromJson(json["sender"])
+            : Sender.empty(),
+        content: json["content"] ?? '',
+        receiver: json["receiver"] ?? '',
+        chat: json["chat"] ?? '',
+    );
+
+    factory LatestMessage.empty() => LatestMessage(
+        id: '',
+        sender: Sender.empty(),
+        content: '',
+        receiver: '',
+        chat: '',
     );
 
     Map<String, dynamic> toJson() => {
@@ -95,10 +107,17 @@ class Sender {
     });
 
     factory Sender.fromJson(Map<String, dynamic> json) => Sender(
-        id: json["_id"],
-        username: json["username"],
-        email: json["email"],
-        profile: json["profile"],
+        id: json["_id"] ?? '',
+        username: json["username"] ?? '',
+        email: json["email"] ?? '',
+        profile: json["profile"] ?? '',
+    );
+
+    factory Sender.empty() => Sender(
+        id: '',
+        username: '',
+        email: '',
+        profile: '',
     );
 
     Map<String, dynamic> toJson() => {
