@@ -180,11 +180,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                               ),
                                             ],
                                           ),
-                                          const WidthSpacer(width: 10),
-                                          GestureDetector(
-                                            onTap: () {},
-                                            child: const Icon(Feather.edit),
-                                          ),
+                                          // const WidthSpacer(width: 10),
+                                          // GestureDetector(
+                                          //   onTap: () {},
+                                          //   child: const Icon(Feather.edit),
+                                          // ),
                                         ],
                                       ),
                                     ],

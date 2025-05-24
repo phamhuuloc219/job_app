@@ -1,8 +1,13 @@
 import 'dart:convert';
 
-GetChats getChatsFromJson(String str) => GetChats.fromJson(json.decode(str));
+List<GetChats> getChatsFromJson(String str) {
+    final jsonData = json.decode(str) as List;
+    return jsonData.map((x) => GetChats.fromJson(x)).toList();
+}
 
-String getChatsToJson(GetChats data) => json.encode(data.toJson());
+String getChatsToJson(List<GetChats> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+
 
 class GetChats {
     final String id;
