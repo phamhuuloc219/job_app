@@ -5,6 +5,7 @@ import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
 import 'package:job_app/constants/app_constants.dart';
 import 'package:job_app/controllers/chat_provider.dart';
+import 'package:job_app/models/request/messaging/send_message.dart';
 import 'package:job_app/models/response/chat/get_chat.dart';
 import 'package:job_app/models/response/messaging/messaging_res.dart';
 import 'package:job_app/services/helpers/chat_helper.dart';
@@ -17,6 +18,7 @@ import 'package:job_app/views/common/loader.dart';
 import 'package:job_app/views/common/page_load.dart';
 import 'package:job_app/views/common/reusable_text.dart';
 import 'package:job_app/views/screens/chat/widget/text_field_chat.dart';
+import 'package:job_app/views/screens/main_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
@@ -42,95 +44,152 @@ class _ChatScreenState extends State<ChatScreen> {
   IO.Socket? socket;
   late Future<List<ReceivedMessage>> msgList;
   TextEditingController messageController = TextEditingController();
+  late List<ReceivedMessage> messages;
+  String receiver = '';
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
-    getMessages();
+    getMessages(offset);
     connect();
     joinChat();
+    handlerNext();
     super.initState();
   }
 
-  void getMessages() {
+  void getMessages(int offset) {
     msgList = MessagingHelper.getMessages(widget.id, offset);
   }
 
-  void connect(){
+  void handlerNext() {
+    _scrollController.addListener(
+      () async {
+        if (_scrollController.hasClients) {
+          if (_scrollController.position.maxScrollExtent ==
+              _scrollController.position.pixels) {
+            if (messages.length >= 12) {
+              getMessages(offset++);
+              setState(() {
+
+              });
+            }
+          }
+        }
+      },
+    );
+  }
+
+  void connect() {
     var chatNotifier = Provider.of<ChatNotifier>(context, listen: false);
-    socket = IO.io('https://job-app-production-a950.up.railway.app', <String, dynamic>{
-      "transports" : ['websocket'],
-      "autoConnect" : false
+    socket = IO
+        .io('https://job-app-production-a950.up.railway.app', <String, dynamic>{
+      "transports": ['websocket'],
+      "autoConnect": false
     });
     socket!.emit("setup", chatNotifier.userId);
     socket!.connect();
     socket!.onConnect((_) {
-      socket!.on('online-users', (userId){
-        chatNotifier.online.replaceRange(0, chatNotifier.online.length, [userId]);
+      socket!.on('online-users', (userId) {
+        chatNotifier.online
+            .replaceRange(0, chatNotifier.online.length, [userId]);
       });
       socket!.on('typing', (status) {
-        chatNotifier.typingStatus = true;
+        chatNotifier.typingStatus = false;
       });
       socket!.on('stop typing', (status) {
         chatNotifier.typingStatus = true;
       });
       socket!.on('message received', (newMessageReceived) {
-        chatNotifier.typingStatus = true;
+        sendStopTypingEvent(widget.id);
+        ReceivedMessage receivedMessage =
+            ReceivedMessage.fromJson(newMessageReceived);
+
+        if (receivedMessage.sender.id != chatNotifier.userId) {
+          setState(() {
+            messages.insert(0, receivedMessage);
+          });
+        }
       });
     });
   }
 
-  void sendTypingEvent(String status){
+  void sendMessage(String content, String chatId, String receiver) {
+    SendMessage model =
+        SendMessage(content: content, chatId: chatId, receiver: receiver);
+
+    MessagingHelper.sendMessage(model).then((response) {
+      var emmission = response[2];
+      socket!.emit('new message', emmission);
+      sendStopTypingEvent(widget.id);
+      setState(() {
+        messageController.clear();
+        messages.insert(0, response[1]);
+      });
+    });
+  }
+
+  void sendTypingEvent(String status) {
     socket!.emit('typing', status);
   }
 
-  void joinChat(){
+  void sendStopTypingEvent(String status) {
+    socket!.emit('stop typing', status);
+  }
+
+  void joinChat() {
     socket!.emit('join chat', widget.id);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Color(kLight.value),
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(50.h),
-        child: CustomAppBar(
-          color: Color(kNewBlue.value),
-          text: widget.title,
-          actions: [
-            Padding(
-              padding: EdgeInsets.all(8),
-              child: Stack(
-                children: [
-                  CircleAvatar(
-                    backgroundImage: NetworkImage(widget.profile),
+    return Consumer<ChatNotifier>(
+      builder: (context, chatNotifier, child) {
+        receiver = widget.user.firstWhere(
+          (id) => id != chatNotifier.userId,
+        );
+        return Scaffold(
+          backgroundColor: Color(kLight.value),
+          appBar: PreferredSize(
+            preferredSize: Size.fromHeight(50.h),
+            child: CustomAppBar(
+              color: Color(kNewBlue.value),
+              text: !chatNotifier.typing ? widget.title : "typing...",
+              actions: [
+                Padding(
+                  padding: EdgeInsets.all(8),
+                  child: Stack(
+                    children: [
+                      CircleAvatar(
+                        backgroundImage: NetworkImage(widget.profile),
+                      ),
+                      Positioned(
+                          right: 3,
+                          child: CircleAvatar(
+                            radius: 5,
+                            backgroundColor:
+                                chatNotifier.online.contains(receiver)
+                                    ? Colors.green
+                                    : Colors.grey,
+                          ))
+                    ],
                   ),
-                  Positioned(
-                      right: 3,
-                      child: CircleAvatar(
-                        radius: 5,
-                        backgroundColor: Colors.green,
-                      ))
-                ],
-              ),
-            ),
-          ],
-          child: Padding(
-            padding: EdgeInsets.all(12.0.h),
-            child: GestureDetector(
-              onTap: () {
-                Get.back();
-              },
-              child: Icon(
-                MaterialCommunityIcons.arrow_left,
-                color: Color(kLight.value),
+                ),
+              ],
+              child: Padding(
+                padding: EdgeInsets.all(12.0.h),
+                child: GestureDetector(
+                  onTap: () {
+                    Get.to(() => const Mainscreen());
+                  },
+                  child: Icon(
+                    MaterialCommunityIcons.arrow_left,
+                    color: Color(kLight.value),
+                  ),
+                ),
               ),
             ),
           ),
-        ),
-      ),
-      body: Consumer<ChatNotifier>(
-        builder: (context, chatNotifier, child) {
-          return SafeArea(
+          body: SafeArea(
               child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 12.h),
             child: Column(
@@ -147,12 +206,15 @@ class _ChatScreenState extends State<ChatScreen> {
                           snapshot.data!.isEmpty) {
                         return NoSearchResults(text: "You do not have messgae");
                       } else {
-                        final chats = snapshot.data!;
+                        final msgList = snapshot.data;
+                        messages = messages + msgList!;
                         return ListView.builder(
                           padding: EdgeInsets.fromLTRB(10.w, 5.h, 10.w, 0),
-                          itemCount: chats.length,
+                          itemCount: messages.length,
+                          reverse: true,
+                          controller: _scrollController,
                           itemBuilder: (context, index) {
-                            final data = chats[index];
+                            final data = messages[index];
                             return Padding(
                               padding: EdgeInsets.only(top: 8, bottom: 12.h),
                               child: Column(
@@ -204,21 +266,38 @@ class _ChatScreenState extends State<ChatScreen> {
                   padding: EdgeInsets.all(12.h),
                   alignment: Alignment.bottomCenter,
                   child: TextFieldChat(
+                      onSubmitted: (_) {
+                        String msg = messageController.text;
+                        sendMessage(msg, widget.id, receiver);
+                      },
                       suffixIcon: GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          String msg = messageController.text;
+                          sendMessage(msg, widget.id, receiver);
+                        },
                         child: Icon(
                           Icons.send,
                           size: 24,
                           color: Color(kLightBlue.value),
                         ),
                       ),
+                      onChanged: (_) {
+                        sendTypingEvent(widget.id);
+                      },
+                      onEditingComplete: () {
+                        String msg = messageController.text;
+                        sendMessage(msg, widget.id, receiver);
+                      },
+                      onTapOutside: (_) {
+                        sendStopTypingEvent(widget.id);
+                      },
                       messageController: messageController),
                 )
               ],
             ),
-          ));
-        },
-      ),
+          )),
+        );
+      },
     );
   }
 }
