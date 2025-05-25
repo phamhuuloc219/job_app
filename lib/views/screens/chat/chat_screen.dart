@@ -150,7 +150,7 @@ class _ChatScreenState extends State<ChatScreen> {
                         final chats = snapshot.data!;
                         return ListView.builder(
                           padding: EdgeInsets.fromLTRB(10.w, 5.h, 10.w, 0),
-                          itemCount: chats!.length,
+                          itemCount: chats.length,
                           itemBuilder: (context, index) {
                             final data = chats[index];
                             return Padding(
