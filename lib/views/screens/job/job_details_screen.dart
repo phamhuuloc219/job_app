@@ -218,7 +218,7 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                   return Padding(
                                     padding: EdgeInsets.only(bottom: 12.w),
                                     child: Text(
-                                      '$bullet ${requirement}',
+                                      '$bullet $requirement',
                                       style: appStyle(
                                           12,
                                           Color(kDarkGrey.value),
@@ -247,13 +247,13 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                 : CustomOutlineBtn(
                               onTap: () {
                                 CreateChat model = CreateChat(
-                                    userId: job.companyId);
+                                    userId: job.companyId.userId);
                                 ChatHelper.apply(model).then((response) {
                                   if (response[0]) {
                                     SendMessage model = SendMessage(
                                         content: "Hello, Im interested in ${job.title} job in ${job.location} ",
                                         chatId: response[1],
-                                        receiver: job.companyId);
+                                        receiver: job.companyId.userId);
                                     MessagingHelper.sendMessage(model).whenComplete(() {
                                       Get.to(()=> const Mainscreen());
                                     },);

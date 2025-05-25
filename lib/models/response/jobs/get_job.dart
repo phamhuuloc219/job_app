@@ -16,7 +16,9 @@ class GetJobRes {
     final bool hiring;
     final List<String> requirement;
     final String imageUrl;
-    final String companyId;
+    final CompanyId companyId;
+    final DateTime createdAt;
+    final DateTime updatedAt;
     final int v;
     final CategoryId categoryId;
 
@@ -33,6 +35,8 @@ class GetJobRes {
         required this.requirement,
         required this.imageUrl,
         required this.companyId,
+        required this.createdAt,
+        required this.updatedAt,
         required this.v,
         required this.categoryId,
     });
@@ -49,7 +53,9 @@ class GetJobRes {
         hiring: json["hiring"],
         requirement: List<String>.from(json["requirement"].map((x) => x)),
         imageUrl: json["imageUrl"],
-        companyId: json["companyId"],
+        companyId: CompanyId.fromJson(json["companyId"]),
+        createdAt: DateTime.parse(json["createdAt"]),
+        updatedAt: DateTime.parse(json["updatedAt"]),
         v: json["__v"],
         categoryId: CategoryId.fromJson(json["categoryId"]),
     );
@@ -66,7 +72,9 @@ class GetJobRes {
         "hiring": hiring,
         "requirement": List<dynamic>.from(requirement.map((x) => x)),
         "imageUrl": imageUrl,
-        "companyId": companyId,
+        "companyId": companyId.toJson(),
+        "createdAt": createdAt.toIso8601String(),
+        "updatedAt": updatedAt.toIso8601String(),
         "__v": v,
         "categoryId": categoryId.toJson(),
     };
@@ -89,5 +97,29 @@ class CategoryId {
     Map<String, dynamic> toJson() => {
         "_id": id,
         "title": title,
+    };
+}
+
+class CompanyId {
+    final String id;
+    final String userId;
+    final String company;
+
+    CompanyId({
+        required this.id,
+        required this.userId,
+        required this.company,
+    });
+
+    factory CompanyId.fromJson(Map<String, dynamic> json) => CompanyId(
+        id: json["_id"],
+        userId: json["userId"],
+        company: json["company"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "_id": id,
+        "userId": userId,
+        "company": company,
     };
 }

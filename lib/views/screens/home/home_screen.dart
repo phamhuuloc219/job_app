@@ -2,20 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:job_app/constants/app_constants.dart';
 import 'package:job_app/controllers/login_provider.dart';
+import 'package:job_app/models/response/auth/profile_model.dart';
+import 'package:job_app/services/helpers/auth_helper.dart';
 import 'package:job_app/views/common/app_bar.dart';
 import 'package:job_app/views/common/app_style.dart';
 import 'package:job_app/views/common/drawer/drawer_widget.dart';
 import 'package:job_app/views/common/heading_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:job_app/views/common/page_load.dart';
 import 'package:job_app/views/common/search.dart';
 import 'package:job_app/views/screens/auth/login_screen.dart';
 import 'package:job_app/views/screens/auth/profile_screen.dart';
+import 'package:job_app/views/screens/auth/widgets/circular_avatar.dart';
 import 'package:job_app/views/screens/job/job_list_screen.dart';
 import 'package:job_app/views/screens/job/widgets/popular_jobs.dart';
 import 'package:job_app/views/screens/job/widgets/recentlist.dart';
 import 'package:job_app/views/screens/search/search_screen.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -25,43 +30,84 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  late Future<ProfileRes> userProfile = AuthHelper.getProfile();
+  String username = '';
+  String imageUrl =
+      'https://github.com/phamhuuloc219/job_app/blob/main/assets/images/user.png';
+
+  @override
+  void initState() {
+    super.initState();
+    getProfile();
+    getName();
+  }
+
+  getProfile() async {
+    var loginNotifier = Provider.of<LoginNotifier>(context, listen: false);
+    if (loginNotifier.loggedIn == true) {
+      userProfile = AuthHelper.getProfile();
+    } else if (loginNotifier.loggedIn == true) {
+      userProfile = AuthHelper.getProfile();
+    } else {}
+  }
+
+  getName() async {
+    var loginNotifier = Provider.of<LoginNotifier>(context, listen: false);
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (loginNotifier.loggedIn == true) {
+      username = prefs.getString('username') ?? "";
+      userProfile = AuthHelper.getProfile();
+    } else if (loginNotifier.loggedIn == true) {
+      username = prefs.getString('username') ?? "";
+      userProfile = AuthHelper.getProfile();
+    } else {}
+  }
+
   @override
   Widget build(BuildContext context) {
     var loginNotifier = Provider.of<LoginNotifier>(context);
     loginNotifier.getPref();
     return Scaffold(
-      appBar:PreferredSize(
-          preferredSize: Size.fromHeight(50.h),
-          child: CustomAppBar(
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(50.h),
+        child: CustomAppBar(
             actions: [
               Padding(
-                padding: EdgeInsets.all(12.0.h),
+                padding: EdgeInsets.all(10.0.h),
                 child: GestureDetector(
-                  onTap: () {
-                    Get.to(()=> ProfileScreen(drawer: false));
-                  },
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.all(Radius.circular(50)),
-                    child: CachedNetworkImage(
-                      height: 30.w,
-                      width: 30.w,
-                      imageUrl: 'https://raw.githubusercontent.com/phamhuuloc219/job_app/refs/heads/main/assets/images/user.png',
-                      fit: BoxFit.cover,
-                    ),
-                  ),
+                    onTap: () {
+                      Get.to(() => ProfileScreen(drawer: false));
+                    },
+                    child: FutureBuilder(
+                        future: userProfile,
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const PageLoad();
+                          } else if (snapshot.hasError) {
+                            return Text("Error: ${snapshot.error}");
+                          } else {
+                            var profile = snapshot.data;
+                            return CircularAvatar(
+                              image: profile!.profile ?? imageUrl,
+                              w: 28.w,
+                              h: 28.w,
+                            );
+                          }
+                        })
                 ),
               )
             ],
-              child: Padding(
-                padding: EdgeInsets.all(12.0.h),
-                child: DrawerWidget(color: Color(kDark.value)),
-              )
-          ),
+            child: Padding(
+              padding: EdgeInsets.all(12.0.h),
+              child: DrawerWidget(color: Color(kDark.value)),
+            )
+        ),
       ),
       body: SafeArea(
           child: SingleChildScrollView(
             child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20),
+              padding: EdgeInsets.symmetric(horizontal: 20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -71,19 +117,19 @@ class _HomeScreenState extends State<HomeScreen> {
                   SizedBox(height: 20.h,),
                   SearchWidget(
                     onTap: () {
-                      Get.to(()=> const SearchScreen());
+                      Get.to(() => const SearchScreen());
                     },
                   ),
                   SizedBox(height: 30.h,),
                   HeadingWidget(
-                    text: "Popular Jobs", 
+                    text: "Popular Jobs",
                     onTap: () {
-                      Get.to(()=> const JobListScreen());
+                      Get.to(() => const JobListScreen());
                     },
                   ),
                   SizedBox(height: 15.h,),
                   ClipRRect(
-                    borderRadius: BorderRadius.all(Radius.circular(12.w)),
+                      borderRadius: BorderRadius.all(Radius.circular(12.w)),
                       child: const PopularJobs()
                   ),
 
@@ -91,7 +137,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   HeadingWidget(
                     text: "Recently Posted",
                     onTap: () {
-                      Get.to(()=> const JobListScreen());
+                      Get.to(() => const JobListScreen());
                     },
                   ),
                   SizedBox(height: 15.h,),

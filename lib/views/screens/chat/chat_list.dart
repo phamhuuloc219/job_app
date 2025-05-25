@@ -61,16 +61,24 @@ class _ChatListState extends State<ChatList> {
                         padding: EdgeInsets.fromLTRB(10.w, 5.h, 10.w, 0),
                         itemCount: chats!.length,
                         itemBuilder: (context, index) {
-                          final chat = chats[index];
-                           var user = chat.users.where((user) => user.id != chatNotifier.userId);
+                           final chat = chats[index];
+                          //  var user = chat.users.where((user) => user.id != chatNotifier.userId);
+                          final userList = chat.users.where((u) => u.id != chatNotifier.userId).toList();
+
+                          if (userList.isEmpty) {
+                            return SizedBox(); // hoặc ẩn đi tile đó, hoặc xử lý tùy bạn
+                          }
+
+                          final user = userList.first;
+
                           return Padding(
                             padding: const EdgeInsets.only(bottom: 8.0),
                             child: GestureDetector(
                               onTap: () {
                                 Get.to(()=> ChatScreen(
                                   id: chat.id,
-                                  title: user.first.username,
-                                  profile: user.first.profile,
+                                  title: user.username,
+                                  profile: user.profile,
                                   user: [chat.users[0].id,chat.users[1].id],
                                 ));
                               },
@@ -87,14 +95,14 @@ class _ChatListState extends State<ChatList> {
                                   minVerticalPadding: 0,
                                   leading: CircleAvatar(
                                     radius: 40,
-                                     backgroundImage: NetworkImage(user.first.profile),
+                                     backgroundImage: NetworkImage(user.profile),
                                   ),
                                    title: Column(
                                      mainAxisAlignment: MainAxisAlignment.center,
                                      crossAxisAlignment: CrossAxisAlignment.start,
                                      children: [
                                        ReusableText(
-                                           text: user.first.username,
+                                           text: user.username,
                                            style: appStyle(
                                                16,
                                                Color(kDark.value),
