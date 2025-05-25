@@ -69,7 +69,7 @@ class _HomeScreenState extends State<HomeScreen> {
     loginNotifier.getPref();
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(50.h),
+        preferredSize: Size.fromHeight(60.h),
         child: CustomAppBar(
             actions: [
               Padding(
@@ -78,23 +78,35 @@ class _HomeScreenState extends State<HomeScreen> {
                     onTap: () {
                       Get.to(() => ProfileScreen(drawer: false));
                     },
-                    child: FutureBuilder(
-                        future: userProfile,
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return const PageLoad();
-                          } else if (snapshot.hasError) {
-                            return Text("Error: ${snapshot.error}");
-                          } else {
-                            var profile = snapshot.data;
-                            return CircularAvatar(
-                              image: profile!.profile ?? imageUrl,
-                              w: 28.w,
-                              h: 28.w,
-                            );
-                          }
-                        })
+                    child: Padding(
+                      padding: EdgeInsets.only(right:8.0),
+                      child: FutureBuilder(
+                          future: userProfile,
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return const PageLoad();
+                            } else if (snapshot.hasError) {
+                              return Text("Error: ${snapshot.error}");
+                            } else {
+                              var profile = snapshot.data;
+                              return
+                                ClipRRect(
+                                  borderRadius: BorderRadius.all(Radius.circular(20.w)),
+                                  child: CachedNetworkImage(
+                                    imageUrl: profile!.profile ?? imageUrl,
+                                    width: 40.h,
+                                    height: 40.h,
+                                    fit: BoxFit.cover,
+                                    placeholder: (context, url) => const Center(
+                                      child: CircularProgressIndicator.adaptive(),
+                                    ),
+                                    errorWidget: (context, url, error) => const Icon(Icons.error),
+                                  ),
+                                );
+                            }
+                          }),
+                    )
                 ),
               )
             ],

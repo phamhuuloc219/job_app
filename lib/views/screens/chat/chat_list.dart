@@ -62,14 +62,14 @@ class _ChatListState extends State<ChatList> {
                         itemCount: chats!.length,
                         itemBuilder: (context, index) {
                            final chat = chats[index];
-                          //  var user = chat.users.where((user) => user.id != chatNotifier.userId);
-                          final userList = chat.users.where((u) => u.id != chatNotifier.userId).toList();
-
-                          if (userList.isEmpty) {
-                            return SizedBox(); // hoặc ẩn đi tile đó, hoặc xử lý tùy bạn
-                          }
-
-                          final user = userList.first;
+                           var user = chat.users.where((user) => user.id != chatNotifier.userId);
+                          // final userList = chat.users.where((u) => u.id != chatNotifier.userId).toList();
+                          //
+                          // if (userList.isEmpty) {
+                          //   return SizedBox();
+                          // }
+                          //
+                          // final user = userList.first;
 
                           return Padding(
                             padding: const EdgeInsets.only(bottom: 8.0),
@@ -77,8 +77,8 @@ class _ChatListState extends State<ChatList> {
                               onTap: () {
                                 Get.to(()=> ChatScreen(
                                   id: chat.id,
-                                  title: user.username,
-                                  profile: user.profile,
+                                  title: user.first.username,
+                                  profile: user.first.profile,
                                   user: [chat.users[0].id,chat.users[1].id],
                                 ));
                               },
@@ -95,14 +95,14 @@ class _ChatListState extends State<ChatList> {
                                   minVerticalPadding: 0,
                                   leading: CircleAvatar(
                                     radius: 40,
-                                     backgroundImage: NetworkImage(user.profile),
+                                     backgroundImage: NetworkImage(user.first.profile),
                                   ),
                                    title: Column(
                                      mainAxisAlignment: MainAxisAlignment.center,
                                      crossAxisAlignment: CrossAxisAlignment.start,
                                      children: [
                                        ReusableText(
-                                           text: user.username,
+                                           text: user.first.username,
                                            style: appStyle(
                                                16,
                                                Color(kDark.value),

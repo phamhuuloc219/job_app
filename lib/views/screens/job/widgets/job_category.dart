@@ -89,7 +89,7 @@ class _JobCategoryState extends State<JobCategory> {
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(
                       selectedCategoryId == categories[index].id
-                          ? Color(kDarkPurple.value)
+                          ? Color(kLightBlue.value)
                           : Color(kLightGrey.value),
                     ),
                   ),
