@@ -7,6 +7,23 @@ import 'package:shared_preferences/shared_preferences.dart';
 class ChatNotifier extends ChangeNotifier {
   late Future<List<GetChats>> chats;
   String? userId;
+  bool _typing = false;
+
+  bool get typing => _typing;
+
+  set typingStatus(bool newState){
+    _typing = newState;
+    notifyListeners();
+  }
+
+  List<String> _online = [];
+
+  List<String> get online => _online;
+
+  set onlineUser(List<String> newList){
+    _online = newList;
+    notifyListeners();
+  }
 
   ChatNotifier() {
     _init();

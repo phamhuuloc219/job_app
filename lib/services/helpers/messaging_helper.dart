@@ -44,15 +44,15 @@ class MessagingHelper{
       'authorization' : 'Bearer $token'
     };
 
-    var url = Uri.https(Config.apiUrl, Config.messagingUrl);
+    var url = Uri.https(Config.apiUrl, "${Config.messagingUrl}/$chatId", {"page": offset.toString()});
 
-    var response = await client.post(
+    var response = await client.get(
         url,
         headers: requestHeaders
     );
 
     if (response.statusCode == 200){
-      var messages = receivedMessgeFromJson(response.body);
+      var messages = receivedMessageFromJson(response.body);
       return messages;
     } else{
       throw Exception("Failed to load message");
