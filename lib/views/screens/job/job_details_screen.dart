@@ -6,9 +6,13 @@ import 'package:job_app/constants/app_constants.dart';
 import 'package:job_app/controllers/bookmark_provider.dart';
 import 'package:job_app/controllers/jobs_provider.dart';
 import 'package:job_app/controllers/login_provider.dart';
+import 'package:job_app/models/request/chat/create_chat.dart';
+import 'package:job_app/models/request/messaging/send_message.dart';
 import 'package:job_app/models/response/bookmarks/book_res.dart';
 import 'package:job_app/models/response/jobs/get_job.dart';
+import 'package:job_app/services/helpers/chat_helper.dart';
 import 'package:job_app/services/helpers/jobs_helper.dart';
+import 'package:job_app/services/helpers/messaging_helper.dart';
 import 'package:job_app/views/common/BackBtn.dart';
 import 'package:job_app/views/common/app_bar.dart';
 import 'package:job_app/views/common/custom_outline_btn.dart';
@@ -18,14 +22,14 @@ import 'package:job_app/views/common/page_load.dart';
 import 'package:job_app/views/common/styled_container.dart';
 import 'package:job_app/views/screens/auth/login_screen.dart';
 import 'package:job_app/views/screens/bookmark/bookmarks_screen.dart';
+import 'package:job_app/views/screens/main_screen.dart';
 import 'package:provider/provider.dart';
 
 class JobDetailsScreen extends StatefulWidget {
-  const JobDetailsScreen(
-      {super.key,
-      required this.title,
-      required this.id,
-      required this.companyName});
+  const JobDetailsScreen({super.key,
+    required this.title,
+    required this.id,
+    required this.companyName});
 
   final String title;
   final String id;
@@ -60,46 +64,46 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
             child: CustomAppBar(actions: [
               loginNotifier.loggedIn != false
                   ? Consumer<BookNotifier>(
-                      builder: (context, bookNotifier, child) {
-                        bookNotifier.getBookMark(widget.id);
+                builder: (context, bookNotifier, child) {
+                  bookNotifier.getBookMark(widget.id);
 
-                        return GestureDetector(
-                          onTap: () {
-                            if (bookNotifier.bookmark == true) {
-                              bookNotifier
-                                  .deleteBookMark(bookNotifier.bookmarkId);
-                            } else {
-                              BookMarkReqRes model =
-                                  BookMarkReqRes(job: widget.id);
-                              var newModel = bookMarkReqResToJson(model);
-                              bookNotifier.addBookMark(newModel);
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: const Text('Bookmark added successfully'),
-                                  backgroundColor: Color(kDark.value),
-                                  behavior: SnackBarBehavior.floating,
-                                  action: SnackBarAction(
-                                    label: 'View',
-                                    textColor: Color(kLight.value),
-                                    onPressed: () {
-                                      Get.to(() => BookmarksScreen());
-                                    },
-                                  ),
-                                ),
-                              );
-                            }
-                          },
-                          child: Padding(
-                            padding: EdgeInsets.only(right: 12.w),
-                            child: Icon(
-                              bookNotifier.bookmark == false
-                                  ? Fontisto.bookmark
-                                  : Fontisto.bookmark_alt,
+                  return GestureDetector(
+                    onTap: () {
+                      if (bookNotifier.bookmark == true) {
+                        bookNotifier
+                            .deleteBookMark(bookNotifier.bookmarkId);
+                      } else {
+                        BookMarkReqRes model =
+                        BookMarkReqRes(job: widget.id);
+                        var newModel = bookMarkReqResToJson(model);
+                        bookNotifier.addBookMark(newModel);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: const Text('Bookmark added successfully'),
+                            backgroundColor: Color(kDark.value),
+                            behavior: SnackBarBehavior.floating,
+                            action: SnackBarAction(
+                              label: 'View',
+                              textColor: Color(kLight.value),
+                              onPressed: () {
+                                Get.to(() => BookmarksScreen());
+                              },
                             ),
                           ),
                         );
-                      },
-                    )
+                      }
+                    },
+                    child: Padding(
+                      padding: EdgeInsets.only(right: 12.w),
+                      child: Icon(
+                        bookNotifier.bookmark == false
+                            ? Fontisto.bookmark
+                            : Fontisto.bookmark_alt,
+                      ),
+                    ),
+                  );
+                },
+              )
                   : const SizedBox.shrink(),
             ], child: const BackBtn()),
           ),
@@ -128,14 +132,14 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                               decoration: BoxDecoration(
                                   color: Color(kLightGrey.value),
                                   borderRadius:
-                                      BorderRadius.all(Radius.circular(9.w))),
+                                  BorderRadius.all(Radius.circular(9.w))),
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   CircleAvatar(
                                     radius: 30.w,
                                     backgroundImage:
-                                        NetworkImage(job!.imageUrl),
+                                    NetworkImage(job!.imageUrl),
                                   ),
                                   const HeightSpacer(size: 10),
                                   ReusableText(
@@ -152,10 +156,10 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                   const HeightSpacer(size: 15),
                                   Padding(
                                     padding:
-                                        EdgeInsets.symmetric(horizontal: 50),
+                                    EdgeInsets.symmetric(horizontal: 50),
                                     child: Row(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                      MainAxisAlignment.spaceBetween,
                                       children: [
                                         CustomOutlineBtn(
                                             width: width * .26,
@@ -232,21 +236,35 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                             padding: EdgeInsets.only(bottom: 20.0.w),
                             child: loginNotifier.loggedIn == false
                                 ? CustomOutlineBtn(
-                                    onTap: () {
-                                      Get.to(() => LoginScreen());
-                                    },
-                                    text: "Please Login",
-                                    height: height * 0.06,
-                                    color: Color(kLight.value),
-                                    color2: Color(kOrange.value),
-                                  )
+                              onTap: () {
+                                Get.to(() => LoginScreen());
+                              },
+                              text: "Please Login",
+                              height: height * 0.06,
+                              color: Color(kLight.value),
+                              color2: Color(kOrange.value),
+                            )
                                 : CustomOutlineBtn(
-                                    onTap: () {},
-                                    text: "Apply",
-                                    height: height * 0.06,
-                                    color: Color(kLight.value),
-                                    color2: Color(kOrange.value),
-                                  ),
+                              onTap: () {
+                                CreateChat model = CreateChat(
+                                    userId: job.companyId);
+                                ChatHelper.apply(model).then((response) {
+                                  if (response[0]) {
+                                    SendMessage model = SendMessage(
+                                        content: "Hello, Im interested in ${job.title} job in ${job.location} ",
+                                        chatId: response[1],
+                                        receiver: job.companyId);
+                                    MessagingHelper.sendMessage(model).whenComplete(() {
+                                      Get.to(()=> const Mainscreen());
+                                    },);
+                                  }
+                                });
+                              },
+                              text: "Apply",
+                              height: height * 0.06,
+                              color: Color(kLight.value),
+                              color2: Color(kOrange.value),
+                            ),
                           ),
                         ),
                       ],
