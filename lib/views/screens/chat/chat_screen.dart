@@ -6,13 +6,10 @@ import 'package:get/get.dart';
 import 'package:job_app/constants/app_constants.dart';
 import 'package:job_app/controllers/chat_provider.dart';
 import 'package:job_app/models/request/messaging/send_message.dart';
-import 'package:job_app/models/response/chat/get_chat.dart';
 import 'package:job_app/models/response/messaging/messaging_res.dart';
-import 'package:job_app/services/helpers/chat_helper.dart';
 import 'package:job_app/services/helpers/messaging_helper.dart';
 import 'package:job_app/views/common/app_bar.dart';
 import 'package:job_app/views/common/app_style.dart';
-import 'package:job_app/views/common/drawer/drawer_widget.dart';
 import 'package:job_app/views/common/height_spacer.dart';
 import 'package:job_app/views/common/loader.dart';
 import 'package:job_app/views/common/page_load.dart';
@@ -246,8 +243,8 @@ class _ChatScreenState extends State<ChatScreen> {
                                       constraints: BoxConstraints(
                                         maxWidth: width * 0.8,
                                       ),
-                                      child: ReusableText(
-                                        text: data.content,
+                                      child: Text(
+                                        data.content,
                                         style: appStyle(14, Color(kLight.value),
                                             FontWeight.normal),
                                       ),

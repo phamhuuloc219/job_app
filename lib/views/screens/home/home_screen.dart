@@ -31,38 +31,22 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   late Future<ProfileRes> userProfile = AuthHelper.getProfile();
-  String username = '';
-  String imageUrl =
-      'https://github.com/phamhuuloc219/job_app/blob/main/assets/images/user.png';
+  String imageUrl = 'https://raw.githubusercontent.com/phamhuuloc219/job_app/refs/heads/main/assets/images/user.png';
 
   @override
   void initState() {
     super.initState();
     getProfile();
-    getName();
   }
 
   getProfile() async {
     var loginNotifier = Provider.of<LoginNotifier>(context, listen: false);
-    if (loginNotifier.loggedIn == true) {
-      userProfile = AuthHelper.getProfile();
-    } else if (loginNotifier.loggedIn == true) {
-      userProfile = AuthHelper.getProfile();
-    } else {}
-  }
-
-  getName() async {
-    var loginNotifier = Provider.of<LoginNotifier>(context, listen: false);
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (loginNotifier.loggedIn == true) {
-      username = prefs.getString('username') ?? "";
-      userProfile = AuthHelper.getProfile();
-    } else if (loginNotifier.loggedIn == true) {
-      username = prefs.getString('username') ?? "";
+      profile = prefs.getString('profile') ?? "";
       userProfile = AuthHelper.getProfile();
     } else {}
   }
-
   @override
   Widget build(BuildContext context) {
     var loginNotifier = Provider.of<LoginNotifier>(context);
@@ -73,40 +57,30 @@ class _HomeScreenState extends State<HomeScreen> {
         child: CustomAppBar(
             actions: [
               Padding(
-                padding: EdgeInsets.all(10.0.h),
+                padding: EdgeInsets.all(12.0.h),
                 child: GestureDetector(
-                    onTap: () {
-                      Get.to(() => ProfileScreen(drawer: false));
-                    },
-                    child: Padding(
-                      padding: EdgeInsets.only(right:8.0),
-                      child: FutureBuilder(
-                          future: userProfile,
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              return const PageLoad();
-                            } else if (snapshot.hasError) {
-                              return Text("Error: ${snapshot.error}");
-                            } else {
-                              var profile = snapshot.data;
-                              return
-                                ClipRRect(
-                                  borderRadius: BorderRadius.all(Radius.circular(20.w)),
-                                  child: CachedNetworkImage(
-                                    imageUrl: profile!.profile ?? imageUrl,
-                                    width: 40.h,
-                                    height: 40.h,
-                                    fit: BoxFit.cover,
-                                    placeholder: (context, url) => const Center(
-                                      child: CircularProgressIndicator.adaptive(),
-                                    ),
-                                    errorWidget: (context, url, error) => const Icon(Icons.error),
-                                  ),
-                                );
-                            }
-                          }),
-                    )
+                  onTap: () {
+                    Get.to(()=> ProfileScreen(drawer: false));
+                  },
+                  child: loginNotifier.loggedIn == false
+                  ? ClipRRect(
+                    borderRadius: BorderRadius.all(Radius.circular(99)),
+                    child: CachedNetworkImage(
+                      height: 35.w,
+                      width: 35.w,
+                      imageUrl: 'https://raw.githubusercontent.com/phamhuuloc219/job_app/refs/heads/main/assets/images/user.png',
+                      fit: BoxFit.cover,
+                    ),
+                  )
+                  : ClipRRect(
+                    borderRadius: BorderRadius.all(Radius.circular(99)),
+                    child: CachedNetworkImage(
+                      height: 35.w,
+                      width: 35.w,
+                      imageUrl: profile ?? imageUrl,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
                 ),
               )
             ],
