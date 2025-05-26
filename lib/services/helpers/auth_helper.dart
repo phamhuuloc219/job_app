@@ -176,4 +176,33 @@ class AuthHelper {
       return false;
     }
   }
+
+  static Future<bool> updatePassword(String model) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString('token');
+
+    if (token == null) {
+      throw Exception("No authentication token provided");
+    }
+
+    Map<String, String> requestHeaders = {
+      'Content-Type': 'application/json',
+      'authorization': 'Bearer $token',
+    };
+
+    var url = Uri.https(Config.apiUrl, Config.changePasswordUrl);
+
+    try {
+      var response = await client.put(url, headers: requestHeaders, body: model);
+
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      return false;
+    }
+  }
+
 }

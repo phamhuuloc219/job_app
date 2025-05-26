@@ -15,6 +15,7 @@ import 'package:job_app/views/common/height_spacer.dart';
 import 'package:job_app/views/common/page_load.dart';
 import 'package:job_app/views/common/styled_container.dart';
 import 'package:job_app/views/common/width_spacer.dart';
+import 'package:job_app/views/screens/auth/change_password_screen.dart';
 import 'package:job_app/views/screens/auth/login_screen.dart';
 import 'package:job_app/views/screens/auth/non_user.dart';
 import 'package:job_app/views/screens/auth/widgets/circular_avatar.dart';
@@ -253,7 +254,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 // const HeightSpacer(size: 20),
                                 SkillWidget(),
                                 const HeightSpacer(size: 20),
-                                HeightSpacer(size: 440),
+                                HeightSpacer(size: 400),
+                                CustomOutlineBtn(
+                                  height: 40.h,
+                                  width: width,
+                                  text: "Change password",
+                                  color: Color(kOrange.value),
+                                  onTap: () {
+                                    zoomNotifier.currentIndex = 0;
+                                    Get.to(() => ChangePasswordScreen());
+                                  },
+                                ),
+                                const HeightSpacer(size: 10),
                                 CustomOutlineBtn(
                                   height: 40.h,
                                   width: width,
