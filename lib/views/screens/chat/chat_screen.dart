@@ -44,7 +44,7 @@ class _ChatScreenState extends State<ChatScreen> {
   IO.Socket? socket;
   late Future<List<ReceivedMessage>> msgList;
   TextEditingController messageController = TextEditingController();
-  late List<ReceivedMessage> messages;
+  late List<ReceivedMessage> messages = [];
   String receiver = '';
   final ScrollController _scrollController = ScrollController();
 
@@ -69,9 +69,7 @@ class _ChatScreenState extends State<ChatScreen> {
               _scrollController.position.pixels) {
             if (messages.length >= 12) {
               getMessages(offset++);
-              setState(() {
-
-              });
+              setState(() {});
             }
           }
         }
@@ -206,8 +204,10 @@ class _ChatScreenState extends State<ChatScreen> {
                           snapshot.data!.isEmpty) {
                         return NoSearchResults(text: "You do not have messgae");
                       } else {
-                        final msgList = snapshot.data;
-                        messages = messages + msgList!;
+                        if (messages.isEmpty) {
+                          messages = List.from(snapshot.data!);
+                        }
+
                         return ListView.builder(
                           padding: EdgeInsets.fromLTRB(10.w, 5.h, 10.w, 0),
                           itemCount: messages.length,
