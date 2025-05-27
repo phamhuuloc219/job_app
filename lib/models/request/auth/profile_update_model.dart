@@ -5,29 +5,25 @@ ProfileUpdateReq profileUpdateReqFromJson(String str) => ProfileUpdateReq.fromJs
 String profileUpdateReqToJson(ProfileUpdateReq data) => json.encode(data.toJson());
 
 class ProfileUpdateReq {
-    ProfileUpdateReq({
-        required this.location,
-        required this.phone,
-        required this.profile,
-        required this.skills,
-    });
-
+    final String username;
     final String location;
     final String phone;
-    final String profile;
-    final List<String> skills;
+
+    ProfileUpdateReq({
+        required this.username,
+        required this.location,
+        required this.phone,
+    });
 
     factory ProfileUpdateReq.fromJson(Map<String, dynamic> json) => ProfileUpdateReq(
+        username: json["username"],
         location: json["location"],
         phone: json["phone"],
-        profile: json["profile"],
-        skills: List<String>.from(json["skills"].map((x) => x)),
     );
 
     Map<String, dynamic> toJson() => {
+        "username": username,
         "location": location,
         "phone": phone,
-        "profile": profile,
-        "skills": List<dynamic>.from(skills.map((x) => x)),
     };
 }

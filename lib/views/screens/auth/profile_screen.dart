@@ -18,6 +18,7 @@ import 'package:job_app/views/common/width_spacer.dart';
 import 'package:job_app/views/screens/auth/change_password_screen.dart';
 import 'package:job_app/views/screens/auth/login_screen.dart';
 import 'package:job_app/views/screens/auth/non_user.dart';
+import 'package:job_app/views/screens/auth/update_profile_screen.dart';
 import 'package:job_app/views/screens/auth/widgets/circular_avatar.dart';
 import 'package:job_app/views/screens/auth/widgets/edit_button.dart';
 import 'package:job_app/views/screens/auth/widgets/skill_widget.dart';
@@ -181,11 +182,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                               ),
                                             ],
                                           ),
-                                          // const WidthSpacer(width: 10),
-                                          // GestureDetector(
-                                          //   onTap: () {},
-                                          //   child: const Icon(Feather.edit),
-                                          // ),
+                                          const WidthSpacer(width: 10),
+                                          GestureDetector(
+                                            onTap: () {
+                                              Get.to(()=> UpdateProfileScreen());
+                                            },
+                                            child: const Icon(Feather.edit),
+                                          ),
                                         ],
                                       ),
                                     ],

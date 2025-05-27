@@ -6,6 +6,7 @@ import 'package:job_app/models/request/auth/profile_update_model.dart';
 import 'package:job_app/models/request/auth/signup_model.dart';
 import 'package:job_app/models/response/auth/login_res_model.dart';
 import 'package:job_app/models/response/auth/profile_model.dart';
+import 'package:job_app/models/response/auth/profile_res_model.dart';
 import 'package:job_app/models/response/auth/skills.dart';
 import 'package:job_app/services/config.dart';
 
@@ -202,6 +203,52 @@ class AuthHelper {
       }
     } catch (e) {
       return false;
+    }
+  }
+
+  static Future<UpdateProfileRes> fetchProfile() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token');
+    if (token == null) {
+      throw Exception("No authentication token provided");
+    }
+
+    final headers = {
+      'Content-Type': 'application/json',
+      'authorization': 'Bearer $token',
+    };
+
+    final url = Uri.https(Config.apiUrl, Config.updateProfileUrl);
+    final response = await client.get(url, headers: headers);
+
+    if (response.statusCode == 200) {
+      return updateProfileResFromJson(response.body);
+    } else {
+      throw Exception("Failed to fetch profile (status ${response.statusCode})");
+    }
+  }
+
+  static Future<UpdateProfileRes> updateProfile(ProfileUpdateReq reqModel) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token');
+    if (token == null) {
+      throw Exception("No authentication token provided");
+    }
+
+    final headers = {
+      'Content-Type': 'application/json',
+      'authorization': 'Bearer $token',
+    };
+
+    final url = Uri.https(Config.apiUrl, Config.updateProfileUrl);
+    final body = jsonEncode(reqModel.toJson());
+
+    final response = await client.put(url, headers: headers, body: body);
+
+    if (response.statusCode == 200) {
+      return updateProfileResFromJson(response.body);
+    } else {
+      throw Exception("Failed to update profile (status ${response.statusCode})");
     }
   }
 

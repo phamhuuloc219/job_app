@@ -74,23 +74,39 @@ class ChangePasswordNotifier extends ChangeNotifier {
     loader = false;
 
     if (success) {
-      Get.snackbar(
-        'Success',
-        'Password changed successfully',
-        snackPosition: SnackPosition.TOP,
-        backgroundColor: Colors.green,
-        colorText: Colors.white,
-          icon: const Icon(Icons.add_alert)
+      ScaffoldMessenger.of(Get.context!).showSnackBar(
+        SnackBar(
+          content: const Text('Password changed successfully'),
+          backgroundColor: Color(kDark.value),
+          behavior: SnackBarBehavior.floating,
+          duration: const Duration(seconds: 2),
+        ),
       );
+      // Get.snackbar(
+      //   'Success',
+      //   'Password changed successfully',
+      //   snackPosition: SnackPosition.TOP,
+      //   backgroundColor: Colors.green,
+      //   colorText: Colors.white,
+      //     icon: const Icon(Icons.add_alert)
+      // );
     } else {
-      Get.snackbar(
-        'Failed',
-        'Failed to change password. Please try again.',
-        snackPosition: SnackPosition.TOP,
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
-          icon: const Icon(Icons.add_alert)
+      ScaffoldMessenger.of(Get.context!).showSnackBar(
+        SnackBar(
+          content: const Text('Failed to change password. Please try again.'),
+          backgroundColor: Color(kDark.value),
+          behavior: SnackBarBehavior.floating,
+          duration: const Duration(seconds: 2),
+        ),
       );
+      // Get.snackbar(
+      //   'Failed',
+      //   'Failed to change password. Please try again.',
+      //   snackPosition: SnackPosition.TOP,
+      //   backgroundColor: Colors.red,
+      //   colorText: Colors.white,
+      //     icon: const Icon(Icons.add_alert)
+      // );
     }
   }
 }

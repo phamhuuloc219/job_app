@@ -15,4 +15,5 @@ class Config {
   static const String chatsUrl = "/api/chats";
   static const String messagingUrl = "/api/messages";
   static const String changePasswordUrl = "/api/users/changepassword";
+  static const String updateProfileUrl = "/api/users/updateprofile";
 }

@@ -82,6 +82,7 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                             content: const Text('Bookmark added successfully'),
                             backgroundColor: Color(kDark.value),
                             behavior: SnackBarBehavior.floating,
+                            duration: const Duration(seconds: 3),
                             action: SnackBarAction(
                               label: 'View',
                               textColor: Color(kLight.value),
