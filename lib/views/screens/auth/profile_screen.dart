@@ -37,9 +37,26 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   late Future<ProfileRes> userProfile;
-  String username = '';
+  // String username = '';
   String imageUrl =
       'https://github.com/phamhuuloc219/job_app/blob/main/assets/images/user.png';
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    checkProfileUpdated();
+  }
+
+  void checkProfileUpdated() async {
+    final prefs = await SharedPreferences.getInstance();
+    final updated = prefs.getBool('profile_updated') ?? false;
+
+    if (updated) {
+      setState(() {
+        userProfile = AuthHelper.getProfile();
+      });
+      prefs.setBool('profile_updated', false);
+    }
+  }
 
   @override
   void initState() {
@@ -61,10 +78,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
     var loginNotifier = Provider.of<LoginNotifier>(context, listen: false);
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (widget.drawer == false && loginNotifier.loggedIn == true) {
-      username = prefs.getString('username') ?? "";
+      //username = prefs.getString('username') ?? "";
       userProfile = AuthHelper.getProfile();
     } else if (widget.drawer == true && loginNotifier.loggedIn == true) {
-      username = prefs.getString('username') ?? "";
+      //username = prefs.getString('username') ?? "";
       userProfile = AuthHelper.getProfile();
     } else {}
   }
@@ -79,7 +96,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
         preferredSize: Size.fromHeight(50.h),
         child: CustomAppBar(
             color: Color(kNewBlue.value),
-            text: loginNotifier.loggedIn ? username.toUpperCase() : '',
+            // text: loginNotifier.loggedIn ? username.toUpperCase() : '',
+            text: "Profile",
             child: Padding(
               padding: EdgeInsets.all(12.0.h),
               child: widget.drawer == false
@@ -185,7 +203,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           const WidthSpacer(width: 10),
                                           GestureDetector(
                                             onTap: () {
-                                              Get.to(()=> UpdateProfileScreen());
+                                              Get.to(
+                                                  () => UpdateProfileScreen());
                                             },
                                             child: const Icon(Feather.edit),
                                           ),
@@ -195,66 +214,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   ),
                                 ),
                                 const HeightSpacer(size: 20),
-                                // ReusableText(
-                                //     text: 'Profile',
-                                //     style: appStyle(14, Color(kDark.value),
-                                //         FontWeight.w600)),
-                                 const HeightSpacer(size: 20),
-                                // Stack(
-                                //   children: [
-                                //     Container(
-                                //       width: width,
-                                //       height: height * 0.12,
-                                //       color: Color(kLightGrey.value),
-                                //       child: Row(
-                                //         mainAxisAlignment:
-                                //             MainAxisAlignment.spaceBetween,
-                                //         children: [
-                                //           Container(
-                                //             margin: EdgeInsets.only(left: 12.w),
-                                //             width: 60.w,
-                                //             height: 70.h,
-                                //             color: Color(kLight.value),
-                                //             child: Icon(
-                                //               FontAwesome5Regular.file_pdf,
-                                //               color: Colors.red,
-                                //               size: 40,
-                                //             ),
-                                //           ),
-                                //           Column(
-                                //             crossAxisAlignment:
-                                //                 CrossAxisAlignment.start,
-                                //             mainAxisAlignment:
-                                //                 MainAxisAlignment.center,
-                                //             children: [
-                                //               ReusableText(
-                                //                 text: 'Upload Your Resume',
-                                //                 style: appStyle(
-                                //                     16,
-                                //                     Color(kDark.value),
-                                //                     FontWeight.w500),
-                                //               ),
-                                //               ReusableText(
-                                //                 text:
-                                //                     'Please make sure to upload your resume in PDF format',
-                                //                 style: appStyle(
-                                //                     8,
-                                //                     Color(kDarkGrey.value),
-                                //                     FontWeight.w500),
-                                //               ),
-                                //             ],
-                                //           ),
-                                //           const WidthSpacer(width: 1)
-                                //         ],
-                                //       ),
-                                //     ),
-                                //     Positioned(
-                                //       right: 0.w,
-                                //       child: EditButton(onTap: () {}),
-                                //     )
-                                //   ],
-                                // ),
-                                // const HeightSpacer(size: 20),
+                                const HeightSpacer(size: 20),
                                 SkillWidget(),
                                 const HeightSpacer(size: 20),
                                 HeightSpacer(size: 400),

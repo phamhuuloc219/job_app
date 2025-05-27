@@ -218,7 +218,7 @@ class AuthHelper {
       'authorization': 'Bearer $token',
     };
 
-    final url = Uri.https(Config.apiUrl, Config.updateProfileUrl);
+    final url = Uri.https(Config.apiUrl, Config.profileUrl);
     final response = await client.get(url, headers: headers);
 
     if (response.statusCode == 200) {

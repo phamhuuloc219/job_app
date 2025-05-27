@@ -29,7 +29,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
 
-
   @override
   void dispose() {
     email.dispose();
@@ -49,140 +48,136 @@ class _RegisterScreenState extends State<RegisterScreen> {
               text: 'Sign Up',
               child: GestureDetector(
                 onTap: () {
-                  Get.offAll(()=> LoginScreen());
+                  Get.offAll(() => LoginScreen());
                 },
-                child: const Icon(AntDesign.leftcircleo,),
+                child: const Icon(
+                  AntDesign.leftcircleo,
+                ),
               ),
             ),
           ),
           body: signupNotifier.loader
               ? const PageLoader()
               : buildStyleContainer(
-                context,
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20.w),
-                  child: Form(
-                    child: ListView(
-                      padding: EdgeInsets.zero,
-                      children: [
-                        const HeightSpacer(size: 50),
-                        ReusableText(
-                            text: "Welcome",
-                            style: appStyle(
-                                30,
-                                Color(kDark.value),
-                                FontWeight.w600)
-                        ),
-                        ReusableText(
-                            text: "Fill in the Details to sign up for an new account",
-                            style: appStyle(
-                                12,
-                                Color(kDarkGrey.value),
-                                FontWeight.w400)
-                        ),
-                        const HeightSpacer(size: 30),
-                        CustomTextField(
-                          controller: username,
-                          hintText: 'Enter your full name',
-                          keyboardType: TextInputType.text,
-                          validator: (username) {
-                            if(username!.isEmpty){
-                              return 'Please enter your email';
-                            }
-                            return null;
-                          },
-                        ),
-                        const HeightSpacer(size: 20),
-                        CustomTextField(
-                          controller: email,
-                          hintText: 'Enter your Email',
-                          keyboardType: TextInputType.emailAddress,
-                          validator: (email) {
-                            if(email!.isEmpty || !email.contains('@')){
-                              return 'Please enter your email';
-                            }
-                            return null;
-                          },
-                        ),
-                        const HeightSpacer(size: 20),
-                        CustomTextField(
-                          controller: password,
-                          obscureText: signupNotifier.obscureText,
-                          hintText: 'Enter your Password',
-                          keyboardType: TextInputType.text,
-                          suffixIcon: GestureDetector(
-                            onTap: () {
-                              signupNotifier.obscureText = !signupNotifier.obscureText;
-                            },
-                            child: Icon(
-                                signupNotifier.obscureText
-                                    ? Icons.visibility
-                                    : Icons.visibility_off
-                            ),
-                          ),
-                          validator: (password) {
-                            if(password!.isEmpty || password.length < 8){
-                              return 'Please enter valid password';
-                            }
-                            return null;
-                          },
-                        ),
-                        const HeightSpacer(size: 10),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            ReusableText(
-                              text: 'Already have an account? ',
+                  context,
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20.w),
+                    child: Form(
+                      key: signupNotifier.signupFormKey,
+                      child: ListView(
+                        padding: EdgeInsets.zero,
+                        children: [
+                          const HeightSpacer(size: 50),
+                          ReusableText(
+                              text: "Welcome",
                               style: appStyle(
-                                  12,
-                                  Color(kDarkGrey.value),
-                                  FontWeight.w400
-                              ),
+                                  30, Color(kDark.value), FontWeight.w600)),
+                          ReusableText(
+                              text:
+                                  "Fill in the Details to sign up for an new account",
+                              style: appStyle(
+                                  12, Color(kDarkGrey.value), FontWeight.w400)),
+                          const HeightSpacer(size: 30),
+                          CustomTextField(
+                            controller: username,
+                            hintText: 'Enter your full name',
+                            keyboardType: TextInputType.text,
+                            validator: (username) {
+                              if (username!.isEmpty) {
+                                return 'Please enter your email';
+                              }
+                              return null;
+                            },
+                          ),
+                          const HeightSpacer(size: 20),
+                          CustomTextField(
+                            controller: email,
+                            hintText: 'Enter your Email',
+                            keyboardType: TextInputType.emailAddress,
+                            validator: (email) {
+                              if (email!.isEmpty) {
+                                return 'Please enter your email';
+                              }
+                              if (!email.contains('@')) {
+                                return 'Email is not in correct format. \n eg: example@gmail.com';
+                              }
+                              return null;
+                            },
+                          ),
+                          const HeightSpacer(size: 20),
+                          CustomTextField(
+                            controller: password,
+                            obscureText: signupNotifier.obscureText,
+                            hintText: 'Enter your Password',
+                            keyboardType: TextInputType.text,
+                            suffixIcon: GestureDetector(
+                              onTap: () {
+                                signupNotifier.obscureText =
+                                    !signupNotifier.obscureText;
+                              },
+                              child: Icon(signupNotifier.obscureText
+                                  ? Icons.visibility
+                                  : Icons.visibility_off),
                             ),
-                            Align(
-                              alignment: Alignment.centerRight,
-                              child: GestureDetector(
-                                onTap: () {
-                                  Get.offAll(()=> LoginScreen());
-                                },
-                                child: ReusableText(
-                                  text: 'Login',
-                                  style: appStyle(
-                                      12,
-                                      Color(kLightBlue.value),
-                                      FontWeight.w400
+                            validator: (password) {
+                              if (password!.isEmpty || password.length < 8) {
+                                return 'Please enter valid password';
+                              }
+                              return null;
+                            },
+                          ),
+                          const HeightSpacer(size: 10),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              ReusableText(
+                                text: 'Already have an account? ',
+                                style: appStyle(12, Color(kDarkGrey.value),
+                                    FontWeight.w400),
+                              ),
+                              Align(
+                                alignment: Alignment.centerRight,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Get.offAll(() => LoginScreen());
+                                  },
+                                  child: ReusableText(
+                                    text: 'Login',
+                                    style: appStyle(12, Color(kLightBlue.value),
+                                        FontWeight.w400),
                                   ),
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-                        const HeightSpacer(size: 50),
-                        Consumer<ZoomNotifier>(
-                          builder: (context, zoomNotifier, child) {
-                            return CustomButton(
-                              text: 'Sign Up',
-                              onTap: () {
-                                signupNotifier.loader = true;
+                            ],
+                          ),
+                          const HeightSpacer(size: 50),
+                          Consumer<ZoomNotifier>(
+                            builder: (context, zoomNotifier, child) {
+                              return CustomButton(
+                                text: 'Sign Up',
+                                onTap: () {
+                                  if (signupNotifier.signupFormKey.currentState!
+                                      .validate()) {
+                                    signupNotifier.loader = true;
 
-                                SignupModel model = SignupModel(
-                                    username: username.text,
-                                    email: email.text,
-                                    password: password.text
-                                );
+                                    SignupModel model = SignupModel(
+                                        username: username.text,
+                                        email: email.text,
+                                        password: password.text);
 
-                                String newModel = signupModelToJson(model);
+                                    String newModel = signupModelToJson(model);
 
-                                signupNotifier.signUp(newModel);
-                              },
-                            );
-                          },
-                        ),
-                      ],
+                                    signupNotifier.signUp(newModel);
+                                  }
+                                },
+                              );
+                            },
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
         );
       },
     );

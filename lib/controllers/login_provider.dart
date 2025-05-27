@@ -47,6 +47,19 @@ class LoginNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
+  final signupFormKey = GlobalKey<FormState>();
+
+  bool validateAndSave(){
+    final form = signupFormKey.currentState;
+
+    if(form!.validate()){
+      form.save();
+      return true;
+    } else{
+      return false;
+    }
+  }
+
   login(String model, ZoomNotifier zoomNotifier){
     AuthHelper.login(model).then((response){
       if(response == true){
