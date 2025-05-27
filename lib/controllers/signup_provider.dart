@@ -36,33 +36,6 @@ class SignUpNotifier extends ChangeNotifier {
     }
   }
 
-  // signUp(String model){
-  //   AuthHelper.signup(model).then((response) {
-  //     if(response == true){
-  //       loader == false;
-  //       ScaffoldMessenger.of(Get.context!).showSnackBar(
-  //         SnackBar(
-  //           content: const Text('Sign up successfully'),
-  //           backgroundColor: Color(kDark.value),
-  //           behavior: SnackBarBehavior.floating,
-  //         ),
-  //       );
-  //       Get.offAll(()=> const LoginScreen());
-  //
-  //     } else{
-  //       loader == false;
-  //       ScaffoldMessenger.of(Get.context!).showSnackBar(
-  //         SnackBar(
-  //           content: const Text('Failed to Sign up'),
-  //           backgroundColor: Color(kDark.value),
-  //           behavior: SnackBarBehavior.floating,
-  //         ),
-  //       );
-  //       Get.offAll(()=> const LoginScreen());
-  //     }
-  //   });
-  // }
-
   signUp(String model){
     AuthHelper.signup(model).then((response) {
       if(response == true){

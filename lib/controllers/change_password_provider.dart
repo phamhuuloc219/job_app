@@ -7,14 +7,36 @@ import 'package:job_app/views/screens/auth/login_screen.dart';
 
 class ChangePasswordNotifier extends ChangeNotifier {
   bool _obscureText = true;
+
   bool get obscureText => _obscureText;
+
   set obscureText(bool newState) {
     _obscureText = newState;
     notifyListeners();
   }
 
+  bool _obscureTextNewPassword = true;
+
+  bool get obscureTextNewPassword => _obscureTextNewPassword;
+
+  set obscureTextNewPassword(bool newState) {
+    _obscureTextNewPassword = newState;
+    notifyListeners();
+  }
+
+  bool _obscureTextConfirmNewPassword = true;
+
+  bool get obscureTextConfirmNewPassword => _obscureTextConfirmNewPassword;
+
+  set obscureTextConfirmNewPassword(bool newState) {
+    _obscureTextConfirmNewPassword = newState;
+    notifyListeners();
+  }
+
   bool _loader = false;
+
   bool get loader => _loader;
+
   set loader(bool newState) {
     _loader = newState;
     notifyListeners();
@@ -40,43 +62,34 @@ class ChangePasswordNotifier extends ChangeNotifier {
 
     loader = true;
 
-    try {
-      final changePassModel = ChangePasswordModel(
-        oldPassword: oldPassword,
-        newPassword: newPassword,
-      );
+    final changePassModel = ChangePasswordModel(
+      oldPassword: oldPassword,
+      newPassword: newPassword,
+    );
 
-      final jsonBody = changePasswordModelToJson(changePassModel);
+    final jsonBody = changePasswordModelToJson(changePassModel);
 
-      final success = await AuthHelper.updatePassword(jsonBody);
+    final success = await AuthHelper.updatePassword(jsonBody);
 
-      loader = false;
+    loader = false;
 
-      if (success) {
-        Get.snackbar(
-          'Success',
-          'Password changed successfully',
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.green,
-          colorText: Colors.white,
-        );
-      } else {
-        Get.snackbar(
-          'Failed',
-          'Failed to change password. Please try again.',
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.red,
-          colorText: Colors.white,
-        );
-      }
-    } catch (e) {
-      loader = false;
+    if (success) {
       Get.snackbar(
-        'Error',
-        e.toString(),
-        snackPosition: SnackPosition.BOTTOM,
+        'Success',
+        'Password changed successfully',
+        snackPosition: SnackPosition.TOP,
+        backgroundColor: Colors.green,
+        colorText: Colors.white,
+          icon: const Icon(Icons.add_alert)
+      );
+    } else {
+      Get.snackbar(
+        'Failed',
+        'Failed to change password. Please try again.',
+        snackPosition: SnackPosition.TOP,
         backgroundColor: Colors.red,
         colorText: Colors.white,
+          icon: const Icon(Icons.add_alert)
       );
     }
   }
