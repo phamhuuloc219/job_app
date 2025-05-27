@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
@@ -12,6 +13,7 @@ import 'package:job_app/views/common/height_spacer.dart';
 import 'package:job_app/views/common/pages_loader.dart';
 import 'package:job_app/views/common/styled_container.dart';
 import 'package:job_app/views/screens/auth/profile_screen.dart';
+import 'package:job_app/views/screens/auth/widgets/circular_avatar.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -29,6 +31,8 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   final TextEditingController location = TextEditingController();
   final TextEditingController phone = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  String imageUrl =
+      'https://github.com/phamhuuloc219/job_app/blob/main/assets/images/user.png';
 
   @override
   void initState() {
@@ -98,7 +102,16 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                       child: ListView(
                         padding: EdgeInsets.zero,
                         children: [
-                          const HeightSpacer(size: 50),
+                          const HeightSpacer(size: 40),
+                          Center(
+                            child: CircleAvatar(
+                              radius: 75,
+                              backgroundImage: NetworkImage(profile!.profile ?? imageUrl),
+                              backgroundColor: Colors.transparent,
+                            ),
+                          ),
+                          const HeightSpacer(size: 20),
+                          Text("Full Name"),
                           CustomTextField(
                             controller: username,
                             hintText: 'Enter your full name',
@@ -111,6 +124,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                             },
                           ),
                           const HeightSpacer(size: 20),
+                          Text("Location"),
                           CustomTextField(
                             controller: location,
                             hintText: 'Enter your location',
@@ -123,6 +137,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                             // },
                           ),
                           const HeightSpacer(size: 20),
+                          Text("Phone number"),
                           CustomTextField(
                             controller: phone,
                             hintText: 'Enter your phone',
