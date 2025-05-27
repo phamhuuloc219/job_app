@@ -49,8 +49,8 @@ class _MainscreenState extends State<Mainscreen> {
         return ChatList();
       case 2:
         return BookmarksScreen();
-      case 3:
-        return AppliedJobs();
+      // case 3:
+      //   return AppliedJobs();
       case 4:
         return ProfileScreen(drawer: true,);
       default:

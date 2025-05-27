@@ -29,9 +29,9 @@ class _ChatListState extends State<ChatList> {
   Widget build(BuildContext context) {
     var loginNotifier = Provider.of<LoginNotifier>(context);
     return Scaffold(
-      backgroundColor: Color(kLight.value),
+      backgroundColor: Color(kNewBlue.value),
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(50.h),
+        preferredSize: Size.fromHeight(60.h),
         child: CustomAppBar(
           color: Color(kNewBlue.value),
           text: !loginNotifier.loggedIn ? "" : "Chat",

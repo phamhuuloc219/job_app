@@ -7,6 +7,7 @@ import 'package:job_app/controllers/profile_provider.dart';
 import 'package:job_app/views/common/app_bar.dart';
 import 'package:job_app/views/common/custom_btn.dart';
 import 'package:job_app/views/common/custom_textfield.dart';
+import 'package:job_app/views/common/drawer/drawer_widget.dart';
 import 'package:job_app/views/common/height_spacer.dart';
 import 'package:job_app/views/common/pages_loader.dart';
 import 'package:job_app/views/common/styled_container.dart';
@@ -15,7 +16,9 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UpdateProfileScreen extends StatefulWidget {
-  const UpdateProfileScreen({super.key});
+  const UpdateProfileScreen({super.key, required this.drawer});
+
+  final bool drawer;
 
   @override
   State<UpdateProfileScreen> createState() => _UpdateProfileScreenState();
@@ -56,21 +59,39 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
         }
 
         return Scaffold(
+          backgroundColor: Color(kNewBlue.value),
           appBar: PreferredSize(
-            preferredSize: Size.fromHeight(50),
+            preferredSize: Size.fromHeight(60.h),
             child: CustomAppBar(
-              text: 'Update Profile',
-              child: GestureDetector(
-                onTap: () => Get.back(),
-                child: const Icon(AntDesign.leftcircleo),
-              ),
-            ),
+                color: Color(kNewBlue.value),
+                text: 'Update Profile',
+                child: Padding(
+                  padding: EdgeInsets.all(12.0.h),
+                  child: widget.drawer == false
+                      ? GestureDetector(
+                          onTap: () {
+                            Get.back();
+                          },
+                          child: const Icon(
+                            AntDesign.leftcircleo,
+                            color: Color(0xFFFFFFFF),
+                            size: 30,
+                          ),
+                        )
+                      : DrawerWidget(color: Color(kLight.value)),
+                )),
           ),
           body: notifier.isLoading
               ? const PageLoader()
-              : buildStyleContainer(
-                  context,
-                  Padding(
+              : Container(
+                  padding: EdgeInsets.symmetric(horizontal: 12.w),
+                  width: width,
+                  height: height,
+                  decoration: BoxDecoration(
+                    color: Color(kLight.value),
+                    borderRadius: BorderRadius.all(Radius.circular(12.w)),
+                  ),
+                  child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 20.w),
                     child: Form(
                       key: _formKey,
@@ -137,7 +158,8 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                                     ),
                                   );
                                 } else {
-                                  final prefs = await SharedPreferences.getInstance();
+                                  final prefs =
+                                      await SharedPreferences.getInstance();
                                   await prefs.setBool('profile_updated', true);
                                   await notifier.loadProfile();
                                   final profile = notifier.profile;

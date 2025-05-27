@@ -34,7 +34,7 @@ class _LoginScreenState extends State<LoginScreen> {
         loginNotifier.getPref();
         return Scaffold(
           appBar: PreferredSize(
-            preferredSize: Size.fromHeight(50),
+            preferredSize: Size.fromHeight(60.h),
             child: CustomAppBar(
               text: 'Login',
               child: GestureDetector(
@@ -43,6 +43,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 },
                 child: const Icon(
                   AntDesign.leftcircleo,
+                  size: 30,
                 ),
               ),
             ),

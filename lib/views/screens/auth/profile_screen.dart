@@ -37,9 +37,11 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   late Future<ProfileRes> userProfile;
+
   // String username = '';
   String imageUrl =
       'https://github.com/phamhuuloc219/job_app/blob/main/assets/images/user.png';
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -93,11 +95,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Scaffold(
       backgroundColor: Color(kNewBlue.value),
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(50.h),
+        preferredSize: Size.fromHeight(60.h),
         child: CustomAppBar(
             color: Color(kNewBlue.value),
             // text: loginNotifier.loggedIn ? username.toUpperCase() : '',
-            text: "Profile",
+            text: !loginNotifier.loggedIn ? "" : "Profile",
             child: Padding(
               padding: EdgeInsets.all(12.0.h),
               child: widget.drawer == false
@@ -108,6 +110,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       child: const Icon(
                         AntDesign.leftcircleo,
                         color: Color(0xFFFFFFFF),
+                        size: 30,
                       ),
                     )
                   : DrawerWidget(color: Color(kLight.value)),
@@ -142,103 +145,116 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           var profile = snapshot.data;
                           return buildStyleContainer(
                             context,
-                            ListView(
-                              padding: EdgeInsets.symmetric(horizontal: 20.w),
+                            Column(
                               children: [
-                                HeightSpacer(size: 20),
-                                Container(
-                                  padding:
-                                      EdgeInsets.symmetric(horizontal: 12.w),
-                                  width: width,
-                                  height: height * 0.07,
-                                  decoration: BoxDecoration(
-                                    color: Color(0xFFEFFFFC),
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(12.w)),
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                Expanded(
+                                  child: ListView(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 20.w),
                                     children: [
-                                      Row(
-                                        children: [
-                                          CircularAvatar(
-                                            image: profile!.profile ?? imageUrl,
-                                            w: 50,
-                                            h: 50,
-                                          ),
-                                          const WidthSpacer(width: 5),
-                                          Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                profile.username ?? 'Username',
-                                                softWrap: true,
-                                                maxLines: null,
-                                                overflow: TextOverflow.visible,
-                                                style: TextStyle(
-                                                    fontSize: 12,
-                                                    color:
-                                                        Color(kDarkGrey.value),
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                              Text(
-                                                profile.email ?? 'User Email',
-                                                softWrap: true,
-                                                maxLines: null,
-                                                overflow: TextOverflow.visible,
-                                                style: TextStyle(
-                                                    fontSize: 12,
-                                                    color:
-                                                        Color(kDarkGrey.value),
-                                                    fontWeight:
-                                                        FontWeight.w400),
-                                              ),
-                                            ],
-                                          ),
-                                          const WidthSpacer(width: 10),
-                                          GestureDetector(
-                                            onTap: () {
-                                              Get.to(
-                                                  () => UpdateProfileScreen());
-                                            },
-                                            child: const Icon(Feather.edit),
-                                          ),
-                                        ],
+                                      const HeightSpacer(size: 20),
+                                      // Avatar + Username + Email + Edit Button
+                                      Container(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 12.w),
+                                        width: width,
+                                        height: height * 0.1,
+                                        decoration: BoxDecoration(
+                                          color: const Color(0xFFEFFFFC),
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(12.w)),
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                CircularAvatar(
+                                                  image: profile!.profile ??
+                                                      imageUrl,
+                                                  w: 50,
+                                                  h: 50,
+                                                ),
+                                                const WidthSpacer(width: 10),
+                                                Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      profile.username ??
+                                                          'Username',
+                                                      style: TextStyle(
+                                                        fontSize: 12,
+                                                        color: Color(
+                                                            kDarkGrey.value),
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      profile.email ??
+                                                          'User Email',
+                                                      style: TextStyle(
+                                                        fontSize: 12,
+                                                        color: Color(
+                                                            kDarkGrey.value),
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                            GestureDetector(
+                                              onTap: () {
+                                                Get.to(() =>
+                                                    UpdateProfileScreen(
+                                                        drawer: false));
+                                              },
+                                              child: const Icon(Feather.edit),
+                                            ),
+                                          ],
+                                        ),
                                       ),
+                                      const HeightSpacer(size: 40),
+                                      SkillWidget(),
                                     ],
                                   ),
                                 ),
-                                const HeightSpacer(size: 20),
-                                const HeightSpacer(size: 20),
-                                SkillWidget(),
-                                const HeightSpacer(size: 20),
-                                HeightSpacer(size: 400),
-                                CustomOutlineBtn(
-                                  height: 40.h,
-                                  width: width,
-                                  text: "Change password",
-                                  color: Color(kOrange.value),
-                                  onTap: () {
-                                    zoomNotifier.currentIndex = 0;
-                                    Get.to(() => ChangePasswordScreen());
-                                  },
-                                ),
-                                const HeightSpacer(size: 10),
-                                CustomOutlineBtn(
-                                  height: 40.h,
-                                  width: width,
-                                  text: "Proceed to Logout",
-                                  color: Color(kOrange.value),
-                                  onTap: () {
-                                    zoomNotifier.currentIndex = 0;
-                                    loginNotifier.logout();
-                                    Get.offAll(() => LoginScreen());
-                                  },
+                                Padding(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 20.w, vertical: 20.h),
+                                  child: Column(
+                                    children: [
+                                      CustomOutlineBtn(
+                                        height: 40.h,
+                                        width: width,
+                                        text: "Change password",
+                                        color: Color(kOrange.value),
+                                        onTap: () {
+                                          zoomNotifier.currentIndex = 0;
+                                          Get.to(() => ChangePasswordScreen(
+                                              drawer: false));
+                                        },
+                                      ),
+                                      const HeightSpacer(size: 15),
+                                      CustomOutlineBtn(
+                                        height: 40.h,
+                                        width: width,
+                                        text: "Proceed to Logout",
+                                        color: Color(kOrange.value),
+                                        onTap: () {
+                                          zoomNotifier.currentIndex = 0;
+                                          loginNotifier.logout();
+                                          Get.offAll(() => LoginScreen());
+                                        },
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ],
                             ),

@@ -43,7 +43,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       builder: (context, signupNotifier, child) {
         return Scaffold(
           appBar: PreferredSize(
-            preferredSize: Size.fromHeight(50),
+            preferredSize: Size.fromHeight(60),
             child: CustomAppBar(
               text: 'Sign Up',
               child: GestureDetector(
@@ -52,6 +52,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 },
                 child: const Icon(
                   AntDesign.leftcircleo,
+                  size: 30,
                 ),
               ),
             ),

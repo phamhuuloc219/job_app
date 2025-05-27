@@ -53,13 +53,13 @@ class _DrawerScreenState extends State<DrawerScreen> {
                     zoomNotifier.currentIndex == 2
                         ? Color(kLight.value)
                         : Color(kLightGrey.value)),
-              drawerItem(
-                        Ionicons.ios_file_tray_full_outline,
-                        "Applications",
-                        3,
-                        zoomNotifier.currentIndex == 3
-                            ? Color(kLight.value)
-                            : Color(kLightGrey.value)),
+              // drawerItem(
+              //           Ionicons.ios_file_tray_full_outline,
+              //           "Applications",
+              //           3,
+              //           zoomNotifier.currentIndex == 3
+              //               ? Color(kLight.value)
+              //               : Color(kLightGrey.value)),
               
                drawerItem(
                         FontAwesome5Regular.user_circle,

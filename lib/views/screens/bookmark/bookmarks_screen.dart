@@ -29,7 +29,7 @@ class _BookmarksScreenState extends State<BookmarksScreen> {
     return Scaffold(
       backgroundColor: Color(kNewBlue.value),
       appBar:PreferredSize(
-        preferredSize: Size.fromHeight(50.h),
+        preferredSize: Size.fromHeight(60.h),
         child: CustomAppBar(
           color: Color(kNewBlue.value),
           text: !loginNotifier.loggedIn ? "" : "Bookmarks",
@@ -59,7 +59,8 @@ class _BookmarksScreenState extends State<BookmarksScreen> {
                         topRight: Radius.circular(20.w),
                         topLeft: Radius.circular(20.w),
                       ),
-                      color: const Color(0xFFEFFFFC)
+                      // color: const Color(0xFFEFFFFC)
+                      color: Color(kLight.value)
                     ),
                     child: buildStyleContainer(
                         context,
