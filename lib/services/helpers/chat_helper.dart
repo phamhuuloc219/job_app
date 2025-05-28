@@ -7,57 +7,30 @@ import 'package:job_app/models/response/chat/intitial_msg.dart';
 import 'package:job_app/services/config.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class ChatHelper{
+class ChatHelper {
   static var client = https.Client();
 
-  static Future<List<dynamic>> apply(CreateChat model) async{
+  static Future<List<dynamic>> apply(CreateChat model) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
     String? token = prefs.getString('token');
     Map<String, String> requestHeaders = {
-      'Content-Type' : 'application/json',
-      'authorization' : 'Bearer $token'
+      'Content-Type': 'application/json',
+      'authorization': 'Bearer $token'
     };
 
     var url = Uri.https(Config.apiUrl, Config.chatsUrl);
 
-    var response = await client.post(
-        url,
-        headers: requestHeaders,
-      body: jsonEncode(model.toJson())
-    );
+    var response = await client.post(url,
+        headers: requestHeaders, body: jsonEncode(model.toJson()));
 
-    if (response.statusCode == 200){
+    if (response.statusCode == 200) {
       var first = initialChatFromJson(response.body).id;
       return [true, first];
-    } else{
+    } else {
       return [false];
     }
   }
-
-  // static Future<List<GetChats>> getConversations() async{
-  //   final SharedPreferences prefs = await SharedPreferences.getInstance();
-  //
-  //   String? token = prefs.getString('token');
-  //   Map<String, String> requestHeaders = {
-  //     'Content-Type' : 'application/json',
-  //     'authorization' : 'Bearer $token'
-  //   };
-  //
-  //   var url = Uri.https(Config.apiUrl, Config.chatsUrl);
-  //
-  //   var response = await client.post(
-  //       url,
-  //       headers: requestHeaders
-  //   );
-  //
-  //   if (response.statusCode == 200){
-  //     var chats = getChatsFromJson(response.body);
-  //     return chats;
-  //   } else{
-  //     throw Exception("Couldn't load chat");
-  //   }
-  // }
 
   static Future<List<GetChats>> getConversations() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -75,10 +48,7 @@ class ChatHelper{
     var url = Uri.https(Config.apiUrl, Config.chatsUrl);
 
     try {
-      var response = await client.get(
-        url,
-        headers: requestHeaders
-      );
+      var response = await client.get(url, headers: requestHeaders);
 
       if (response.statusCode == 200) {
         var chats = getChatsFromJson(response.body);
@@ -90,5 +60,4 @@ class ChatHelper{
       throw Exception("Network error: $e");
     }
   }
-
 }

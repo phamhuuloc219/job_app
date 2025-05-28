@@ -13,7 +13,6 @@ import 'package:job_app/views/common/height_spacer.dart';
 import 'package:job_app/views/common/loader.dart';
 import 'package:job_app/views/common/page_load.dart';
 import 'package:job_app/views/screens/auth/non_user.dart';
-import 'package:job_app/views/screens/auth/profile_screen.dart';
 import 'package:job_app/views/screens/chat/chat_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -25,6 +24,19 @@ class ChatList extends StatefulWidget {
 }
 
 class _ChatListState extends State<ChatList> {
+  late Future<List<GetChats>> _futureChats;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadChats();
+  }
+
+  void _loadChats() {
+    final chatNotifier = Provider.of<ChatNotifier>(context, listen: false);
+    _futureChats = chatNotifier.fetchChats();
+  }
+
   @override
   Widget build(BuildContext context) {
     var loginNotifier = Provider.of<LoginNotifier>(context);
@@ -46,7 +58,7 @@ class _ChatListState extends State<ChatList> {
           : Consumer<ChatNotifier>(
               builder: (context, chatNotifier, child) {
                 return FutureBuilder<List<GetChats>>(
-                  future: chatNotifier.chats,
+                  future: _futureChats,
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const PageLoad();
@@ -57,97 +69,107 @@ class _ChatListState extends State<ChatList> {
                       return NoSearchResults(text: "No Chat Available");
                     } else {
                       final chats = snapshot.data!;
-                      return ListView.builder(
-                        padding: EdgeInsets.fromLTRB(10.w, 5.h, 10.w, 0),
-                        itemCount: chats!.length,
-                        itemBuilder: (context, index) {
-                           final chat = chats[index];
-                           var user = chat.users.where((user) => user.id != chatNotifier.userId);
-                          // final userList = chat.users.where((u) => u.id != chatNotifier.userId).toList();
-                          //
-                          // if (userList.isEmpty) {
-                          //   return SizedBox();
-                          // }
-                          //
-                          // final user = userList.first;
-
-                          return Padding(
-                            padding: const EdgeInsets.only(bottom: 8.0),
-                            child: GestureDetector(
-                              onTap: () {
-                                Get.to(()=> ChatScreen(
-                                  id: chat.id,
-                                  title: user.first.username,
-                                  profile: user.first.profile,
-                                  user: [chat.users[0].id,chat.users[1].id],
-                                ));
-                              },
-                              child: Container(
-                                height: 0.11 * MediaQuery.of(context).size.height,
-                                width: MediaQuery.of(context).size.width,
-                                decoration: BoxDecoration(
-                                  color: Color(kLightGrey.value),
-                                  borderRadius: const BorderRadius.all(Radius.circular(12))
-                                ),
-                                child: ListTile(
-                                  contentPadding: EdgeInsets.symmetric(horizontal: 4.w),
-                                  minLeadingWidth: 0,
-                                  minVerticalPadding: 0,
-                                  leading: CircleAvatar(
-                                    radius: 40,
-                                     backgroundImage: NetworkImage(user.first.profile),
-                                  ),
-                                   title: Column(
-                                     mainAxisAlignment: MainAxisAlignment.center,
-                                     crossAxisAlignment: CrossAxisAlignment.start,
-                                     children: [
-                                       ReusableText(
-                                           text: user.first.username,
-                                           style: appStyle(
-                                               16,
-                                               Color(kDark.value),
-                                               FontWeight.w600
-                                           ),
-                                       ),
-                                       const HeightSpacer(size: 5),
-                                       ReusableText(
-                                         text: chat.latestMessage.content,
-                                         style: appStyle(
-                                             16,
-                                             Color(kDarkGrey.value),
-                                             FontWeight.normal
-                                         ),
-                                       ),
-                                     ],
-                                   ),
-                                  trailing: Padding(
-                                    padding: EdgeInsets.only(right: 4.h),
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      crossAxisAlignment: CrossAxisAlignment.end,
+                      return Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                              topRight: Radius.circular(20.w),
+                              topLeft: Radius.circular(20.w),
+                            ),
+                            // color: const Color(0xFFEFFFFC)
+                            color: Color(kLight.value)),
+                        child: ListView.builder(
+                          padding: EdgeInsets.fromLTRB(10.w, 5.h, 10.w, 0),
+                          itemCount: chats!.length,
+                          itemBuilder: (context, index) {
+                            final chat = chats[index];
+                            var user = chat.users.where(
+                                (user) => user.id != chatNotifier.userId);
+                            return Padding(
+                              padding: const EdgeInsets.only(bottom: 8.0),
+                              child: GestureDetector(
+                                onTap: () {
+                                  Get.to(() => ChatScreen(
+                                        id: chat.id,
+                                        title: user.first.username,
+                                        profile: user.first.profile,
+                                        user: [
+                                          chat.users[0].id,
+                                          chat.users[1].id
+                                        ],
+                                      ));
+                                },
+                                child: Container(
+                                  height:
+                                      0.11 * MediaQuery.of(context).size.height,
+                                  width: MediaQuery.of(context).size.width,
+                                  decoration: BoxDecoration(
+                                      color: Color(kLightGrey.value),
+                                      borderRadius: const BorderRadius.all(
+                                          Radius.circular(12))),
+                                  child: ListTile(
+                                    contentPadding:
+                                        EdgeInsets.symmetric(horizontal: 4.w),
+                                    minLeadingWidth: 0,
+                                    minVerticalPadding: 0,
+                                    leading: CircleAvatar(
+                                      radius: 40,
+                                      backgroundImage:
+                                          NetworkImage(user.first.profile),
+                                    ),
+                                    title: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         ReusableText(
-                                          text: chatNotifier.msgTime(chat.updatedAt.toString()),
+                                          text: user.first.username,
                                           style: appStyle(
-                                              12,
+                                              16,
                                               Color(kDark.value),
-                                              FontWeight.normal
-                                          ),
+                                              FontWeight.w600),
                                         ),
-                                        Icon(
-                                          chat.chatName == chatNotifier.userId
-                                              ?
-                                            Ionicons.arrow_forward_circle_outline
-                                              :
-                                            Ionicons.arrow_back_circle_outline)
+                                        const HeightSpacer(size: 5),
+                                        ReusableText(
+                                          text: chat.latestMessage.content,
+                                          style: appStyle(
+                                              16,
+                                              Color(kDarkGrey.value),
+                                              FontWeight.normal),
+                                        ),
                                       ],
+                                    ),
+                                    trailing: Padding(
+                                      padding: EdgeInsets.only(right: 4.h),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.end,
+                                        children: [
+                                          ReusableText(
+                                            text: chatNotifier.msgTime(
+                                                chat.updatedAt.toString()),
+                                            style: appStyle(
+                                                12,
+                                                Color(kDark.value),
+                                                FontWeight.normal),
+                                          ),
+                                          Icon(chat.chatName ==
+                                                  chatNotifier.userId
+                                              ? Ionicons
+                                                  .arrow_forward_circle_outline
+                                              : Ionicons
+                                                  .arrow_back_circle_outline)
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
-                            ),
-                          );
-                        },
+                            );
+                          },
+                        ),
                       );
                     }
                   },

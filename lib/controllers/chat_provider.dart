@@ -11,7 +11,7 @@ class ChatNotifier extends ChangeNotifier {
 
   bool get typing => _typing;
 
-  set typingStatus(bool newState){
+  set typingStatus(bool newState) {
     _typing = newState;
     notifyListeners();
   }
@@ -20,7 +20,7 @@ class ChatNotifier extends ChangeNotifier {
 
   List<String> get online => _online;
 
-  set onlineUser(List<String> newList){
+  set onlineUser(List<String> newList) {
     _online = newList;
     notifyListeners();
   }
@@ -40,14 +40,22 @@ class ChatNotifier extends ChangeNotifier {
     userId = prefs.getString('userId');
   }
 
-  String msgTime(String timestamp){
+  Future<List<GetChats>> fetchChats() {
+    return ChatHelper.getConversations();
+  }
+
+  String msgTime(String timestamp) {
     DateTime now = DateTime.now();
     DateTime messageTime = DateTime.parse(timestamp);
-    if(now.year == messageTime.year && now.month == messageTime.month && now.day == messageTime.day){
+
+    if (now.year == messageTime.year &&
+        now.month == messageTime.month &&
+        now.day == messageTime.day) {
       return DateFormat.Hm().format(messageTime);
-    } else if(now.year == messageTime.year && now.month == messageTime.month && now.day - messageTime.day == 1){
+    } else if (now.difference(messageTime).inDays == 1 &&
+        now.day != messageTime.day) {
       return "Yesterday";
-    } else{
+    } else {
       return DateFormat.yMd().format(messageTime);
     }
   }

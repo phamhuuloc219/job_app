@@ -11,9 +11,6 @@ import 'package:job_app/views/common/custom_textfield.dart';
 import 'package:job_app/views/common/drawer/drawer_widget.dart';
 import 'package:job_app/views/common/height_spacer.dart';
 import 'package:job_app/views/common/pages_loader.dart';
-import 'package:job_app/views/common/styled_container.dart';
-import 'package:job_app/views/screens/auth/profile_screen.dart';
-import 'package:job_app/views/screens/auth/widgets/circular_avatar.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -31,8 +28,11 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   final TextEditingController location = TextEditingController();
   final TextEditingController phone = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  String imageUrl =
-      'https://github.com/phamhuuloc219/job_app/blob/main/assets/images/user.png';
+
+  final String imageUrl =
+      'https://raw.githubusercontent.com/phamhuuloc219/job_app/main/assets/images/user.png';
+
+  bool _initialized = false;
 
   @override
   void initState() {
@@ -56,10 +56,11 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
       builder: (context, notifier, child) {
         final profile = notifier.profile;
 
-        if (profile != null) {
+        if (profile != null && !_initialized) {
           username.text = profile.username;
           location.text = profile.location;
           phone.text = profile.phone;
+          _initialized = true;
         }
 
         return Scaffold(
@@ -67,33 +68,31 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
           appBar: PreferredSize(
             preferredSize: Size.fromHeight(60.h),
             child: CustomAppBar(
-                color: Color(kNewBlue.value),
-                text: 'Update Profile',
-                child: Padding(
-                  padding: EdgeInsets.all(12.0.h),
-                  child: widget.drawer == false
-                      ? GestureDetector(
-                          onTap: () {
-                            Get.back();
-                          },
-                          child: const Icon(
-                            AntDesign.leftcircleo,
-                            color: Color(0xFFFFFFFF),
-                            size: 30,
-                          ),
-                        )
-                      : DrawerWidget(color: Color(kLight.value)),
-                )),
+              color: Color(kNewBlue.value),
+              text: 'Update Profile',
+              child: Padding(
+                padding: EdgeInsets.all(12.0.h),
+                child: widget.drawer == false
+                    ? GestureDetector(
+                        onTap: () => Get.back(),
+                        child: const Icon(
+                          AntDesign.leftcircleo,
+                          color: Colors.white,
+                          size: 30,
+                        ),
+                      )
+                    : DrawerWidget(color: Color(kLight.value)),
+              ),
+            ),
           ),
           body: notifier.isLoading
               ? const PageLoader()
               : Container(
                   padding: EdgeInsets.symmetric(horizontal: 12.w),
-                  width: width,
-                  height: height,
+                  width: double.infinity,
                   decoration: BoxDecoration(
                     color: Color(kLight.value),
-                    borderRadius: BorderRadius.all(Radius.circular(12.w)),
+                    borderRadius: BorderRadius.circular(12.w),
                   ),
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 20.w),
@@ -106,7 +105,9 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                           Center(
                             child: CircleAvatar(
                               radius: 75,
-                              backgroundImage: NetworkImage(profile!.profile ?? imageUrl),
+                              backgroundImage: NetworkImage(
+                                profile?.profile ?? imageUrl,
+                              ),
                               backgroundColor: Colors.transparent,
                             ),
                           ),
@@ -129,12 +130,6 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                             controller: location,
                             hintText: 'Enter your location',
                             keyboardType: TextInputType.text,
-                            // validator: (val) {
-                            //   if (val == null || val.isEmpty) {
-                            //     return 'Please enter a location';
-                            //   }
-                            //   return null;
-                            // },
                           ),
                           const HeightSpacer(size: 20),
                           Text("Phone number"),
@@ -162,38 +157,29 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                                   phone: phone.text.trim(),
                                 );
 
-                                if (notifier.error != null) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: const Text(
-                                          'Failed to update profile'),
-                                      backgroundColor: Color(kDark.value),
-                                      behavior: SnackBarBehavior.floating,
-                                      duration: const Duration(seconds: 2),
-                                    ),
-                                  );
-                                } else {
-                                  final prefs =
-                                      await SharedPreferences.getInstance();
-                                  await prefs.setBool('profile_updated', true);
-                                  await notifier.loadProfile();
-                                  final profile = notifier.profile;
-                                  if (profile != null) {
-                                    username.text = profile.username;
-                                    location.text = profile.location;
-                                    phone.text = profile.phone;
-                                  }
+                                final message = notifier.error != null
+                                    ? 'Failed to update profile'
+                                    : 'Profile updated successfully';
 
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: const Text(
-                                          'Profile updated successfully'),
-                                      backgroundColor: Color(kDark.value),
-                                      behavior: SnackBarBehavior.floating,
-                                      duration: const Duration(seconds: 2),
-                                    ),
-                                  );
+                                final prefs =
+                                    await SharedPreferences.getInstance();
+                                await prefs.setBool('profile_updated', true);
+                                await notifier.loadProfile();
+
+                                if (notifier.profile != null) {
+                                  username.text = notifier.profile!.username;
+                                  location.text = notifier.profile!.location;
+                                  phone.text = notifier.profile!.phone;
                                 }
+
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(message),
+                                    backgroundColor: Color(kDark.value),
+                                    behavior: SnackBarBehavior.floating,
+                                    duration: const Duration(seconds: 2),
+                                  ),
+                                );
                               }
                             },
                           ),
