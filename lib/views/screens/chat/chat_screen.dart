@@ -561,7 +561,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                       children: [
                                         ReusableText(
                                           text: chatNotifier.msgTime(
-                                              data.chat.updatedAt.toString()),
+                                              data.updatedAt.toString()),
                                           style: appStyle(
                                               10,
                                               Color(kDark.value),
