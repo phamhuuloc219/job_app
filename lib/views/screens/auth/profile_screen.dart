@@ -8,6 +8,7 @@ import 'package:job_app/services/helpers/auth_helper.dart';
 import 'package:job_app/views/common/BackBtn.dart';
 import 'package:job_app/views/common/app_bar.dart';
 import 'package:job_app/views/common/custom_outline_btn.dart';
+import 'package:job_app/views/common/disconnect.dart';
 import 'package:job_app/views/common/drawer/drawer_widget.dart';
 import 'package:job_app/views/common/exports.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -140,7 +141,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ConnectionState.waiting) {
                           return const PageLoad();
                         } else if (snapshot.hasError) {
-                          return Text("Error: ${snapshot.error}");
+                          return DisconnectScreen(text: "Disconnect",);
                         } else {
                           var profile = snapshot.data;
                           return buildStyleContainer(

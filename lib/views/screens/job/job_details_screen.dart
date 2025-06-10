@@ -16,20 +16,22 @@ import 'package:job_app/services/helpers/messaging_helper.dart';
 import 'package:job_app/views/common/BackBtn.dart';
 import 'package:job_app/views/common/app_bar.dart';
 import 'package:job_app/views/common/custom_outline_btn.dart';
+import 'package:job_app/views/common/disconnect.dart';
 import 'package:job_app/views/common/exports.dart';
 import 'package:job_app/views/common/height_spacer.dart';
 import 'package:job_app/views/common/page_load.dart';
 import 'package:job_app/views/common/styled_container.dart';
 import 'package:job_app/views/screens/auth/login_screen.dart';
 import 'package:job_app/views/screens/bookmark/bookmarks_screen.dart';
-import 'package:job_app/views/screens/main_screen.dart';
+import 'package:job_app/views/screens/chat/chat_list.dart';
 import 'package:provider/provider.dart';
 
 class JobDetailsScreen extends StatefulWidget {
-  const JobDetailsScreen({super.key,
-    required this.title,
-    required this.id,
-    required this.companyName});
+  const JobDetailsScreen(
+      {super.key,
+      required this.title,
+      required this.id,
+      required this.companyName});
 
   final String title;
   final String id;
@@ -41,6 +43,7 @@ class JobDetailsScreen extends StatefulWidget {
 
 class _JobDetailsScreenState extends State<JobDetailsScreen> {
   late Future<GetJobRes> job;
+  bool _isApplying = false;
 
   @override
   void initState() {
@@ -64,47 +67,48 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
             child: CustomAppBar(actions: [
               loginNotifier.loggedIn != false
                   ? Consumer<BookNotifier>(
-                builder: (context, bookNotifier, child) {
-                  bookNotifier.getBookMark(widget.id);
+                      builder: (context, bookNotifier, child) {
+                        bookNotifier.getBookMark(widget.id);
 
-                  return GestureDetector(
-                    onTap: () {
-                      if (bookNotifier.bookmark == true) {
-                        bookNotifier
-                            .deleteBookMark(bookNotifier.bookmarkId);
-                      } else {
-                        BookMarkReqRes model =
-                        BookMarkReqRes(job: widget.id);
-                        var newModel = bookMarkReqResToJson(model);
-                        bookNotifier.addBookMark(newModel);
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: const Text('Bookmark added successfully'),
-                            backgroundColor: Color(kDark.value),
-                            behavior: SnackBarBehavior.floating,
-                            duration: const Duration(seconds: 3),
-                            action: SnackBarAction(
-                              label: 'View',
-                              textColor: Color(kLight.value),
-                              onPressed: () {
-                                Get.to(() => BookmarksScreen());
-                              },
+                        return GestureDetector(
+                          onTap: () {
+                            if (bookNotifier.bookmark == true) {
+                              bookNotifier
+                                  .deleteBookMark(bookNotifier.bookmarkId);
+                            } else {
+                              BookMarkReqRes model =
+                                  BookMarkReqRes(job: widget.id);
+                              var newModel = bookMarkReqResToJson(model);
+                              bookNotifier.addBookMark(newModel);
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content:
+                                      const Text('Bookmark added successfully'),
+                                  backgroundColor: Color(kDark.value),
+                                  behavior: SnackBarBehavior.floating,
+                                  duration: const Duration(seconds: 3),
+                                  action: SnackBarAction(
+                                    label: 'View',
+                                    textColor: Color(kLight.value),
+                                    onPressed: () {
+                                      Get.to(() => BookmarksScreen());
+                                    },
+                                  ),
+                                ),
+                              );
+                            }
+                          },
+                          child: Padding(
+                            padding: EdgeInsets.only(right: 12.w),
+                            child: Icon(
+                              bookNotifier.bookmark == false
+                                  ? Fontisto.bookmark
+                                  : Fontisto.bookmark_alt,
                             ),
                           ),
                         );
-                      }
-                    },
-                    child: Padding(
-                      padding: EdgeInsets.only(right: 12.w),
-                      child: Icon(
-                        bookNotifier.bookmark == false
-                            ? Fontisto.bookmark
-                            : Fontisto.bookmark_alt,
-                      ),
-                    ),
-                  );
-                },
-              )
+                      },
+                    )
                   : const SizedBox.shrink(),
             ], child: const BackBtn()),
           ),
@@ -116,7 +120,7 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const PageLoad();
                 } else if (snapshot.hasError) {
-                  return Text("Error: ${snapshot.error}");
+                  return DisconnectScreen(text: "Disconnect",);
                 } else {
                   final job = snapshot.data;
 
@@ -133,14 +137,14 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                               decoration: BoxDecoration(
                                   color: Color(kLightGrey.value),
                                   borderRadius:
-                                  BorderRadius.all(Radius.circular(9.w))),
+                                      BorderRadius.all(Radius.circular(9.w))),
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   CircleAvatar(
                                     radius: 30.w,
                                     backgroundImage:
-                                    NetworkImage(job!.imageUrl),
+                                        NetworkImage(job!.imageUrl),
                                   ),
                                   const HeightSpacer(size: 10),
                                   ReusableText(
@@ -157,10 +161,10 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                   const HeightSpacer(size: 15),
                                   Padding(
                                     padding:
-                                    EdgeInsets.symmetric(horizontal: 50),
+                                        EdgeInsets.symmetric(horizontal: 50),
                                     child: Row(
                                       mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
                                         CustomOutlineBtn(
                                             width: width * .26,
@@ -237,35 +241,46 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                             padding: EdgeInsets.only(bottom: 20.0.w),
                             child: loginNotifier.loggedIn == false
                                 ? CustomOutlineBtn(
-                              onTap: () {
-                                Get.to(() => LoginScreen());
-                              },
-                              text: "Please Login",
-                              height: height * 0.06,
-                              color: Color(kLight.value),
-                              color2: Color(kOrange.value),
-                            )
+                                    onTap: () {
+                                      Get.to(() => LoginScreen());
+                                    },
+                                    text: "Please Login",
+                                    height: height * 0.06,
+                                    color: Color(kLight.value),
+                                    color2: Color(kOrange.value),
+                                  )
                                 : CustomOutlineBtn(
-                              onTap: () {
-                                CreateChat model = CreateChat(
-                                    userId: job.companyId.userId);
-                                ChatHelper.apply(model).then((response) {
-                                  if (response[0]) {
-                                    SendMessage model = SendMessage(
-                                        content: "Hello, Im interested in ${job.title} job in ${job.location} ",
-                                        chatId: response[1],
-                                        receiver: job.companyId.userId);
-                                    MessagingHelper.sendMessage(model).whenComplete(() {
-                                      Get.to(()=> const Mainscreen());
-                                    },);
-                                  }
-                                });
-                              },
-                              text: "Apply",
-                              height: height * 0.06,
-                              color: Color(kLight.value),
-                              color2: Color(kOrange.value),
-                            ),
+                                    onTap: () async {
+                                      setState(() => _isApplying = true);
+
+                                      final createChat = CreateChat(
+                                          userId: job.companyId.userId);
+                                      final response =
+                                          await ChatHelper.apply(createChat);
+
+                                      if (response[0]) {
+                                        final chatId = response[1];
+
+                                        final message = SendMessage(
+                                          content:
+                                              "Hello, I'm interested in ${job.title} job in ${job.location}",
+                                          chatId: chatId,
+                                          receiver: job.companyId.userId,
+                                        );
+
+                                        await MessagingHelper.sendMessage(
+                                            message);
+
+                                        Get.to(() => ChatList());
+                                      }
+
+                                      setState(() => _isApplying = false);
+                                    },
+                                    text: _isApplying ? "Applying..." : "Apply",
+                                    height: height * 0.06,
+                                    color: Color(kLight.value),
+                                    color2: Color(kOrange.value),
+                                  ),
                           ),
                         ),
                       ],

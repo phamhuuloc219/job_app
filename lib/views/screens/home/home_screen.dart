@@ -57,7 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: CustomAppBar(
             actions: [
               Padding(
-                padding: EdgeInsets.all(12.0.h),
+                padding: EdgeInsets.all(8.0.h),
                 child: GestureDetector(
                   onTap: () {
                     Get.to(()=> ProfileScreen(drawer: false));

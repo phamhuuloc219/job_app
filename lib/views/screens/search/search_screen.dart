@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:job_app/constants/app_constants.dart';
 import 'package:job_app/models/response/jobs/jobs_response.dart';
 import 'package:job_app/services/helpers/jobs_helper.dart';
+import 'package:job_app/views/common/disconnect.dart';
 import 'package:job_app/views/common/loader.dart';
 import 'package:job_app/views/common/page_load.dart';
 import 'package:job_app/views/screens/job/widgets/job_vertical_title.dart';
@@ -47,7 +48,7 @@ class _SearchScreenState extends State<SearchScreen> {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(child: PageLoad());
             } else if (snapshot.hasError) {
-              return Text("Error: ${snapshot.error}");
+              return DisconnectScreen(text: "Disconnect",);
             } else if (snapshot.data!.isEmpty) {
               return NoSearchResults(text: "No Jobs Available");
             } else {

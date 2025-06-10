@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:job_app/constants/app_constants.dart';
 import 'package:job_app/controllers/jobs_provider.dart';
 import 'package:job_app/models/response/jobs/jobs_response.dart';
+import 'package:job_app/views/common/disconnect.dart';
 import 'package:job_app/views/common/loader.dart';
 import 'package:job_app/views/common/pages_loader.dart';
 import 'package:job_app/views/screens/job/widgets/uploaded_title.dart';
@@ -24,7 +25,21 @@ class PopularJobList extends StatelessWidget {
               if(snapshot.connectionState == ConnectionState.waiting){
                 return Center(child: PageLoader());
               } else if(snapshot.hasError){
-                return Text("Error: ${snapshot.error}");
+                return Center(
+                  child: Padding(
+                    padding: EdgeInsets.all(20.h),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          "assets/images/404.png",
+                          height: 130,
+                        ),
+                      ],
+                    ),
+                  ),
+                );
               } else if(snapshot.data!.isEmpty){
                 return NoSearchResults(text: "No Jobs Available");
               } else{
